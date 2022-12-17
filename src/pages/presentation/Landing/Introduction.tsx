@@ -9,6 +9,7 @@ import {
   Container,
   Grid,
   Tooltip,
+  Link,
   Typography as MuiTypography,
 } from "@mui/material";
 import { spacing } from "@mui/system";
@@ -121,81 +122,26 @@ function Introduction() {
         <Grid container alignItems="center" justifyContent="center" spacing={4}>
           <Grid item xs={12} sm={9} md={8} lg={8}>
             <Content>
-              <Version variant="body2">v4.2.0</Version>
+              {/* <Version variant="body2">v4.2.0</Version> */}
               <Title variant="h1" gutterBottom>
-                The simplest and fastest way to build your next{" "}
-                <span>Material UI</span> dashboard or app.
+                Decision Engine Login
               </Title>
               <Grid container justifyContent="center" spacing={4}>
                 <Grid item xs={12} lg={10}>
                   <Subtitle color="textSecondary">
-                    Mira comes with hundreds of UI elements, forms, tables,
-                    charts, pages and icons that helps you to create your web
-                    apps or applications faster.
+                    Login form comes here
                   </Subtitle>
+                  <Link component={NavLink} to="/dashboard/analytics">
+                    Landing Page
+                  </Link>
                 </Grid>
               </Grid>
-              <Box my={6}>
-                <Button
-                  href="#demos"
-                  variant="contained"
-                  color="secondary"
-                  size="large"
-                >
-                  <Visibility />
-                  Live Demo
-                  <ArrowForward />
-                </Button>
-              </Box>
-
-              <Typography variant="body2" color="textSecondary">
-                Available for:
-              </Typography>
-              <Box my={3}>
-                <Tooltip title="JavaScript">
-                  <BrandIcon
-                    alt="JavaScript"
-                    src="/static/img/brands/javascript.svg"
-                    style={{ width: "40px" }}
-                  />
-                </Tooltip>
-                <Tooltip title="TypeScript">
-                  <BrandIcon
-                    alt="TypeScript"
-                    src="/static/img/brands/typescript.svg"
-                    style={{ width: "40px", background: "#FFF" }}
-                  />
-                </Tooltip>
-                <Tooltip title="Figma">
-                  <BrandIcon
-                    alt="Figma"
-                    src="/static/img/brands/figma.svg"
-                    style={{ width: "22px" }}
-                  />
-                </Tooltip>
-                <Tooltip title="Sketch">
-                  <BrandIcon
-                    alt="Sketch"
-                    src="/static/img/brands/sketch.svg"
-                    style={{ width: "34px" }}
-                  />
-                </Tooltip>
-              </Box>
             </Content>
           </Grid>
         </Grid>
-        <Grid container alignItems="center" justifyContent="center" spacing={4}>
-          <Grid item xs={12} sm={10} md={9} lg={9}>
-            <ImageWrapper>
-              <NavLink to="/dashboard/analytics" target="_blank">
-                <Image
-                  alt="Mira - React Admin Template"
-                  src={`/static/img/screenshots/dashboard-analytics-large.jpg`}
-                />
-              </NavLink>
-            </ImageWrapper>
-          </Grid>
-        </Grid>
+
+
+
       </Container>
     </Wrapper>
   );

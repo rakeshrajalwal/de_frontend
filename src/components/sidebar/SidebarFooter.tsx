@@ -40,37 +40,7 @@ const SidebarFooter: React.FC = ({ ...rest }) => {
   const { user } = useAuth();
 
   return (
-    <Footer {...rest}>
-      <Grid container spacing={2}>
-        <Grid item>
-          <FooterBadge
-            overlap="circular"
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            variant="dot"
-          >
-            {!!user && <Avatar alt={user.displayName} src={user.avatar} />}
-            {/* Demo data */}
-            {!user && (
-              <Avatar
-                alt="Lucy Lavender"
-                src="/static/img/avatars/avatar-1.jpg"
-              />
-            )}
-          </FooterBadge>
-        </Grid>
-        <Grid item>
-          {!!user && (
-            <FooterText variant="body2">{user.displayName}</FooterText>
-          )}
-          {/* Demo data */}
-          {!user && <FooterText variant="body2">Lucy Lavender</FooterText>}
-          <FooterSubText variant="caption">UX Designer</FooterSubText>
-        </Grid>
-      </Grid>
-    </Footer>
+    <></>
   );
 };
 

@@ -49,13 +49,13 @@ const AppBarComponent: React.FC = () => (
             <Grid item>
               <Brand>
                 <BrandIcon />
-                Mira
+                DE
               </Brand>
             </Grid>
             <Grid item xs />
             <Grid item>
               <Box sx={{ display: { xs: "none", md: "inline-block" } }}>
-                <Button
+                {/* <Button
                   ml={2}
                   color="inherit"
                   component={Link}
@@ -71,8 +71,8 @@ const AppBarComponent: React.FC = () => (
                   to="/documentation/welcome"
                   target="_blank"
                 >
-                  Documentation
-                </Button>
+                  Documentation 
+                </Button> */}
                 <Button
                   ml={2}
                   color="inherit"
@@ -83,7 +83,7 @@ const AppBarComponent: React.FC = () => (
                   Support
                 </Button>
               </Box>
-              <Button
+              {/* <Button
                 ml={2}
                 color="primary"
                 variant="contained"
@@ -91,7 +91,7 @@ const AppBarComponent: React.FC = () => (
                 target="_blank"
               >
                 Buy Now
-              </Button>
+              </Button> */}
             </Grid>
           </Grid>
         </Container>
