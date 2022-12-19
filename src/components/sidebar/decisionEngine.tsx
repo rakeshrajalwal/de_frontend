@@ -18,29 +18,37 @@ import {
 } from "react-feather";
 
 const pagesSection = [
-
   {
-    href: "/pages/blank",
+    href: "/home",
     icon: Layout,
     title: "Run Summaries",
   },
   {
-    href: "/dashboard",
+    href: "/model",
     icon: Sliders,
     title: "Model",
     children: [
       {
-        href: "/models",
+        href: "/model/view",
         title: "View Models",
       },
       {
         href: "/model/create",
         title: "Create Model",
       },
+      {
+        href: "/model/run",
+        title: "Run Model",
+      },
     ],
   },
-  
+  {
+    href: "/logout",
+    icon: Users,
+    title: "Logout",
+  },
 ] as SidebarItemsType[];
+
 
 
 const navItems = [
@@ -48,6 +56,7 @@ const navItems = [
     title: "Pages",
     pages: pagesSection,
   },
+
 ];
 
 export default navItems;

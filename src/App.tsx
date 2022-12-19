@@ -32,8 +32,8 @@ function App({ emotionCache = clientSideEmotionCache }) {
     <CacheProvider value={emotionCache}>
       <HelmetProvider>
         <Helmet
-          titleTemplate="%s | Mira"
-          defaultTitle="Mira - React Material Admin Dashboard"
+          titleTemplate="%s | DE"
+          defaultTitle="Decision Engine - Recognise Bank"
         />
         <Provider store={store}>
           {/* @ts-ignore */}

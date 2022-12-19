@@ -131,7 +131,7 @@ function Introduction() {
                   <Subtitle color="textSecondary">
                     Login form comes here
                   </Subtitle>
-                  <Link component={NavLink} to="/dashboard/analytics">
+                  <Link component={NavLink} to="/home">
                     Landing Page
                   </Link>
                 </Grid>
