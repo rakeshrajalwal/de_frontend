@@ -3,23 +3,11 @@ import React from "react";
 import async from "./components/Async";
 
 // Layouts
-import AuthLayout from "./layouts/Auth";
-import DashboardLayout from "./layouts/Dashboard";
-import DocLayout from "./layouts/Doc";
 import PresentationLayout from "./layouts/Presentation";
 import DELayout from "./layouts/DE"
 
 // Guards
 import AuthGuard from "./components/guards/AuthGuard";
-
-// Auth components
-import SignIn from "./pages/auth/SignIn";
-import SignUp from "./pages/auth/SignUp";
-import ResetPassword from "./pages/auth/ResetPassword";
-import Page404 from "./pages/auth/Page404";
-import Page500 from "./pages/auth/Page500";
-
-
 
 // Form components
 import SelectionCtrls from "./pages/forms/SelectionControls";
@@ -46,9 +34,6 @@ import Landing from "./pages/presentation/Landing";
 // Protected routes
 import ProtectedPage from "./pages/protected/ProtectedPage";
 
-// Dashboard components
-const Default = async(() => import("./pages/dashboards/Default"));
-const Analytics = async(() => import("./pages/dashboards/Analytics"));
 //const SaaS = async(() => import("./pages/dashboards/SaaS"));
 
 // Form components
@@ -58,10 +43,6 @@ const Formik = async(() => import("./pages/forms/Formik"));
 
 // Icon components
 const FeatherIcons = async(() => import("./pages/icons/FeatherIcons"));
-const Profile = async(() => import("./pages/pages/Profile"));
-const Tasks = async(() => import("./pages/pages/Tasks"));
-const Calendar = async(() => import("./pages/pages/Calendar"));
-
 // Table components
 const DataGrid = async(() => import("./pages/tables/DataGrid"));
 

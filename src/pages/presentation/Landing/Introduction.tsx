@@ -122,7 +122,7 @@ function Introduction() {
         <Grid container alignItems="center" justifyContent="center" spacing={4}>
           <Grid item xs={12} sm={9} md={8} lg={8}>
             <Content>
-              {/* <Version variant="body2">v4.2.0</Version> */}
+             
               <Title variant="h1" gutterBottom>
                 Decision Engine Login
               </Title>

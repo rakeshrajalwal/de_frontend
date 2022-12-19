@@ -55,25 +55,8 @@ const AppBarComponent: React.FC = () => (
             <Grid item xs />
             <Grid item>
               <Box sx={{ display: { xs: "none", md: "inline-block" } }}>
+
                 {/* <Button
-                  ml={2}
-                  color="inherit"
-                  component={Link}
-                  to="/dashboard/analytics"
-                  target="_blank"
-                >
-                  Live Preview
-                </Button>
-                <Button
-                  ml={2}
-                  color="inherit"
-                  component={Link}
-                  to="/documentation/welcome"
-                  target="_blank"
-                >
-                  Documentation 
-                </Button> */}
-                <Button
                   ml={2}
                   color="inherit"
                   component={Link}
@@ -81,17 +64,9 @@ const AppBarComponent: React.FC = () => (
                   target="_blank"
                 >
                   Support
-                </Button>
+                </Button> */}
               </Box>
-              {/* <Button
-                ml={2}
-                color="primary"
-                variant="contained"
-                href="https://mui.com/store/items/mira-pro-react-material-admin-dashboard/"
-                target="_blank"
-              >
-                Buy Now
-              </Button> */}
+
             </Grid>
           </Grid>
         </Container>

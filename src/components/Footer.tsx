@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const ListItemButton = styled(MuiListItemButton)<ListItemButtonProps>`
+const ListItemButton = styled(MuiListItemButton) <ListItemButtonProps>`
   display: inline-block;
   width: auto;
   padding-left: ${(props) => props.theme.spacing(2)};
@@ -52,7 +52,7 @@ function Footer() {
           md={6}
         >
           <List>
-            <ListItemButton component="a" href="#">
+            {/* <ListItemButton component="a" href="#">
               <ListItemText primary="Support" />
             </ListItemButton>
             <ListItemButton component="a" href="#">
@@ -63,13 +63,13 @@ function Footer() {
             </ListItemButton>
             <ListItemButton component="a" href="#">
               <ListItemText primary="Terms of Service" />
-            </ListItemButton>
+  </ListItemButton> */}
           </List>
         </Grid>
         <Grid container item xs={12} md={6} justifyContent="flex-end">
           <List>
             <ListItemButton>
-              <ListItemText primary={`© ${new Date().getFullYear()} - Mira`} />
+              <ListItemText primary={`© ${new Date().getFullYear()} - DE`} />
             </ListItemButton>
           </List>
         </Grid>
