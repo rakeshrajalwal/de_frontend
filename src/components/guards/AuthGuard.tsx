@@ -12,7 +12,7 @@ function AuthGuard({ children }: AuthGuardType) {
   const { isAuthenticated, isInitialized } = useAuth();
 
   if (isInitialized && !isAuthenticated) {
-    return <Navigate to="/auth/sign-in" />;
+    return <Navigate to="/" />;
   }
 
   return <React.Fragment>{children}</React.Fragment>;

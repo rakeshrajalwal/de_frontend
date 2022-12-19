@@ -2,6 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
 import { rgba } from "polished";
+import SignIn from "../../../components/auth/SignIn";
 
 import {
   Box,
@@ -124,16 +125,17 @@ function Introduction() {
             <Content>
              
               <Title variant="h1" gutterBottom>
-                Decision Engine Login
+                Decision Engine
               </Title>
               <Grid container justifyContent="center" spacing={4}>
                 <Grid item xs={12} lg={10}>
                   <Subtitle color="textSecondary">
-                    Login form comes here
+                    
                   </Subtitle>
-                  <Link component={NavLink} to="/home">
+                  {/* <Link component={NavLink} to="/home">
                     Landing Page
-                  </Link>
+                  </Link> */}
+                  <SignIn />
                 </Grid>
               </Grid>
             </Content>
