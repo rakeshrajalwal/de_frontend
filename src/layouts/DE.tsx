@@ -12,7 +12,6 @@ import Navbar from "../components/navbar/Navbar";
 import dEItems from "../components/sidebar/decisionEngine";
 import Sidebar from "../components/sidebar/Sidebar";
 import Footer from "../components/Footer";
-import Settings from "../components/Settings";
 
 const drawerWidth = 258;
 
@@ -93,7 +92,7 @@ const DE: React.FC<DEType> = ({ children }) => {
         </MainContent>
         <Footer />
       </AppContent>
-      <Settings />
+      
     </Root>
   );
 };
