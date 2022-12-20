@@ -34,12 +34,11 @@ function Logout() {
 
     const handleSignOut = async () => {
         await signOut();
-        navigate("/auth/sign-in");
+        navigate("/");
     };
 
     return (
         <React.Fragment>
-
 
             <div onClick={handleSignOut}>Sign out</div>
 

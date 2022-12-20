@@ -16,8 +16,8 @@ const users: User[] = [
   {
     id: "a8553063-7bd5-45ed-adbe-db6f069a3802",
     displayName: "Lucy Lavender",
-    email: "demo@bootlab.io",
-    password: "unsafepassword",
+    email: "deadmin@recognisebank.co.uk",
+    password: "deadmin@123",
     avatar: "/static/img/avatars/avatar-1.jpg",
   },
 ];
