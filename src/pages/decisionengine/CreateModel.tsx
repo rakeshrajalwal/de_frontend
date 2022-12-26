@@ -4,6 +4,7 @@ import {Accordion, AccordionDetails, AccordionSummary, Box, Paper, TextField} fr
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import lodash from 'lodash';
 import {Field, Form, Formik, useField, useFormik} from "formik";
+import Policy from './components/Policy'
 
 // import './styles.css';
 
@@ -19,6 +20,12 @@ export interface IProduct {
         }[]
     }[]
 }
+
+interface IRange {
+  min: number,
+  max: number
+}
+
 export interface IModel {
     name: string,
     factors: {
@@ -30,6 +37,7 @@ export interface IModel {
             signals: {
                 name: string
                 weight: number|string,
+               
             }[]
         }[]
     }[]
@@ -181,6 +189,7 @@ function CreateModel() {
                 return (
                     <Form>
                         <div className="">
+                            <Policy />
                             <div>create model</div>
                             <button type="submit">Submit</button>
                             {formik.values.factors.map((f, i) => (
