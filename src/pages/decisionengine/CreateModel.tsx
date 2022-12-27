@@ -139,7 +139,32 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
                     }}>{node.name}</Paper>
                 </Grid>
                 <Grid xs={6}>
-                    <TextField variant="outlined" size={"small"} {...field} />
+                <Grid container spacing={5}>
+                    {/* <div style={{ display: "flex", flexDirection: "row" }}> */}
+
+                        <Grid >
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                aria-label="Increment value"
+
+                            >
+                                -
+                            </Button>
+                        </Grid>
+                        <Grid xs={2}><TextField variant="outlined" size={"small"} {...field} />
+                        </Grid>
+                        <Grid  ><Button
+                            variant="outlined"
+                            size="small"
+                            aria-label="Increment value"
+
+                        >
+                            +
+                        </Button>
+                        </Grid>
+                    
+                    </Grid>
                 </Grid>
             </Grid>
         </Box>
