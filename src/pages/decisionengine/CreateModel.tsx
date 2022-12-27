@@ -139,31 +139,29 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
                     }}>{node.name}</Paper>
                 </Grid>
                 <Grid xs={6}>
-                <Grid container spacing={5}>
-                    {/* <div style={{ display: "flex", flexDirection: "row" }}> */}
-
+                    <Grid container spacing={5}>
                         <Grid >
                             <Button
                                 variant="outlined"
                                 size="small"
                                 aria-label="Increment value"
-
+                                {...field}
                             >
                                 -
                             </Button>
                         </Grid>
                         <Grid xs={2}><TextField variant="outlined" size={"small"} {...field} />
                         </Grid>
-                        <Grid  ><Button
-                            variant="outlined"
-                            size="small"
-                            aria-label="Increment value"
-
-                        >
-                            +
-                        </Button>
+                        <Grid  >
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                aria-label="Increment value"
+                                {...field}
+                            >
+                                +
+                            </Button>
                         </Grid>
-                    
                     </Grid>
                 </Grid>
             </Grid>
@@ -174,7 +172,7 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
 const CriteriaEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => {
 
     return (
-        <Typography >Hi</Typography>
+        <Typography >Criteria</Typography>
     )
 }
 
