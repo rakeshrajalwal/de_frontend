@@ -129,25 +129,34 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
     const [field, meta, helpers] = useField(`${path}.weight`);
     return (
         <Box sx={{ flexGrow: 1 }}>
+
             <Grid container spacing={5} {...rest}>
+
                 <Grid xs={6}>
-                    <Paper style={{
-                        backgroundColor: "#434DB0",
-                        color: "white",
-                        fontWeight: "bold",
-                        padding: 10
-                    }}>{node.name}</Paper>
+                    <AccordionSummary >
+
+                        <Paper sx={{ flexGrow: 1 }} style={{
+                            backgroundColor: "#434DB0",
+                            color: "white",
+                            fontWeight: "bold",
+                            padding: 10
+                        }}>{node.name}</Paper>
+
+                    </AccordionSummary>
                 </Grid>
-                <Grid xs={6}>
-                    <Grid container spacing={5}>
+
+                {/* </Accordion> */}
+                <Grid xs={6} mt={2}
+                >
+
+                    <Grid container spacing={3}>
                         <Grid >
                             <Button
                                 variant="outlined"
                                 size="small"
                                 aria-label="Increment value"
                                 {...field}
-                            >
-                                -
+                            > -
                             </Button>
                         </Grid>
                         <Grid xs={2}><TextField variant="outlined" size={"small"} {...field} />
@@ -163,9 +172,10 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
                             </Button>
                         </Grid>
                     </Grid>
+
                 </Grid>
             </Grid>
-        </Box>
+        </Box >
     )
 }
 
@@ -179,9 +189,9 @@ const CriteriaEditor: React.FC<{ node: INode, path: string }> = ({ node, path })
 const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => {
     return (
         <Accordion>
-            <AccordionSummary>
-                <WeightEditor node={node} path={`${path}`} />
-            </AccordionSummary>
+
+            <WeightEditor node={node} path={`${path}`} />
+
             <AccordionDetails>
                 <Grid container>
                     <Grid xs={8} style={{ paddingLeft: 50 }}>
