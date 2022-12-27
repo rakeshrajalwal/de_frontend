@@ -29,7 +29,7 @@ const Breadcrumbs = styled(MuiBreadcrumbs)(spacing);
 const Paper = styled(MuiPaper)(spacing);
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 150 },
+  { field: "id", headerName: "ID", width: 30 },
   { field: "name", headerName: "Name", width: 150, editable: true },
   {
     field: "product",
@@ -40,31 +40,31 @@ const columns: GridColDef[] = [
   {
     field: "loan_range",
     headerName: "Loan Range",
-    width: 200,
+    width: 150,
     editable: true,
   },
   {
     field: "term",
     headerName: "Term",
-    width: 150,
+    width: 75,
     editable: true,
   },
   {
     field: "purpose",
     headerName: "Purpose",
-    width: 150,
+    width: 100,
     editable: true,
   },
   {
     field: "secured",
     headerName: "Secured",
-    width: 150,
+    width: 75,
     editable: true,
   },
   {
     field: "created_by",
     headerName: "Created By",
-    width: 150,
+    width: 120,
     editable: true,
   },
 ];
