@@ -16,9 +16,8 @@ import {
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { spacing, SpacingProps } from "@mui/system";
-import createTheme from '../../theme';
+import { Loader } from 'react-feather';
 
-// import './styles.css';
 
 interface ChipProps extends SpacingProps {
   component?: React.ElementType;
@@ -37,6 +36,13 @@ const Chip = styled(MuiChip)<ChipProps>(spacing);
 const Breadcrumbs = styled(MuiBreadcrumbs)(spacing);
 
 const Paper = styled(MuiPaper)(spacing);
+
+const datagridSx = {
+  "& .MuiDataGrid-columnHeaders": {
+    backgroundColor: "#D9F1FC",
+    fontWeight: 'bold',
+  }
+};
 
 const columns: GridColDef[] = [
   {
@@ -57,7 +63,7 @@ const columns: GridColDef[] = [
       } else if (params.row.status == 'unapproved') {
         return (<CancelIcon style={{ color: 'red' }} />)
       } else {
-        return (<PendingOutlinedIcon />)
+        return (<Loader />)
       }
     }
   },
@@ -67,7 +73,6 @@ const columns: GridColDef[] = [
     width: 150,
     description: "name",
     headerAlign: 'center',
-    
   },
   {
     field: "product",
@@ -137,12 +142,12 @@ function ModelDataGrid() {
     <Paper>
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid
-          // sx={{ backgroundColor: '#D9F1FC' }}
+          sx={datagridSx}
           rowsPerPageOptions={[5, 10, 25]}
           rows={rows}
           columns={columns}
           pageSize={5}
-          style={{ fontFamily: 'Verdana', alignSelf: 'center' }}
+          style={{ fontFamily: 'Verdana' }}
         />
       </div>
     </Paper>
