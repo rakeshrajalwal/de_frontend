@@ -47,7 +47,7 @@ function Policy() {
             termMin: '',
             termMax: '',
             purpose: '',
-            securedOrNot: 'unsecured'
+            isSecured: false
         },
         // validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -214,11 +214,11 @@ function Policy() {
                                 <Grid item md={4} xs={12} mt={6}>
 
                                     <label>
-                                        <Field type="radio" name="securedOrNot" value="secured" />
+                                        <Field type="radio" name="isSecured" value="true" />
                                         Secured
                                     </label>
                                     <label>
-                                        <Field type="radio" name="securedOrNot" value="unsecured" />
+                                        <Field type="radio" name="isSecured" value="false" />
                                         Unsecured
                                     </label>
 

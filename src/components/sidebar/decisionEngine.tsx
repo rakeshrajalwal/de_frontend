@@ -33,6 +33,10 @@ const pagesSection = [
         href: "/model/policy",
         title: "Policy",
       },
+      {
+        href: "/model/criteria",
+        title: "Criteria",
+      },
     ],
   },
   {

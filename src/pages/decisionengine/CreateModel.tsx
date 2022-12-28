@@ -183,6 +183,7 @@ const CriteriaEditor: React.FC<{ node: INode, path: string }> = ({ node, path })
 
     return (
         <Typography >Criteria</Typography>
+
     )
 }
 
@@ -203,7 +204,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
 
                                 <WeightEditor key={i} node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
 
-                                <CriteriaEditor key={i} node={sig} path={`${path}.signals[${i}]`} />
+                                <CriteriaEditor key={i+10} node={sig} path={`${path}.signals[${i}]`} />
 
                             </Grid>
                         ))}
@@ -248,7 +249,7 @@ function getEmptyModel(p: IProduct): IModel {
             termMin: '',
             termMax: '',
             purpose: '',
-            securedOrNot: 'unsecured',
+            isSecured: false,
         },
         factors: p.factors.map(f => ({
             name: f.name,
