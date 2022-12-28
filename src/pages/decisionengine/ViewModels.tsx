@@ -40,7 +40,12 @@ const Paper = styled(MuiPaper)(spacing);
 const datagridSx = {
   "& .MuiDataGrid-columnHeaders": {
     backgroundColor: "#D9F1FC",
+  },
+  "& .MuiDataGrid-columnHeaderTitle": {
     fontWeight: 'bold',
+  },
+  "& .MuiDataGrid-cellContent": {
+    wordWrap: 'break-word !important',
   }
 };
 
