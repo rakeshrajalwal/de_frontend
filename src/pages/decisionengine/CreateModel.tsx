@@ -2,6 +2,7 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Paper, TextField, Typography, Button } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
+import Criteria from './components/Criteria';
 import lodash from 'lodash';
 import { Field, Form, Formik, useField, useFormik, useFormikContext } from "formik";
 import { number } from 'yup';
@@ -28,7 +29,7 @@ const Range = {
 }
 
 
-const Criteria = {
+const Criterias = {
     type: {
         strong: Range,
         good: Range,
@@ -182,7 +183,7 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
 const CriteriaEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => {
 
     return (
-        <Typography >Criteria</Typography>
+        <Criteria />
 
     )
 }
@@ -204,7 +205,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
 
                                 <WeightEditor key={i} node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
 
-                                <CriteriaEditor key={i+10} node={sig} path={`${path}.signals[${i}]`} />
+                                <CriteriaEditor key={i + 10} node={sig} path={`${path}.signals[${i}]`} />
 
                             </Grid>
                         ))}
@@ -260,7 +261,7 @@ function getEmptyModel(p: IProduct): IModel {
                 signals: sf.signals.map(sig => ({
                     name: sig.name,
                     weight: '',
-                    criteria: Criteria.type
+                    criteria: Criterias.type
                 }))
             }))
         }))

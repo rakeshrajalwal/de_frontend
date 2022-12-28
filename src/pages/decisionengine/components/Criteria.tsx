@@ -192,7 +192,7 @@ function Criteria() {
                             </Card>
                         </Grid>
                     </Grid>
-                    <Button type="submit">Submit</Button>
+                    {/* <Button type="submit">Submit</Button> */}
                 </form>
 
 
