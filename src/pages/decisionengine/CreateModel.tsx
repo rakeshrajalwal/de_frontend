@@ -293,9 +293,9 @@ const PolicyEditor = ({ path }: { path: string }) => {
 
 const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key: string]: any }) => {
     const [field, meta, helpers] = useField(`${path}.weight`);
-    console.log(field, "the weight field")
+
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, margin: 2 }}>
 
             <Grid container spacing={5} {...rest}>
 
@@ -313,35 +313,26 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
                 </Grid>
 
                 {/* </Accordion> */}
-                <Grid xs={4} mt={2}
-                >
+                <Grid xs={3} mt={2} >
+                    <Grid container style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', margin: 5 }}
+                    >
+                        <Button
+                            variant="outlined"
+                            size="small"
+                            aria-label="Increment value"
+                            
+                        > - </Button>
 
-                    <Grid container spacing={3}>
-                        <Grid >
-                            <Button
-                                variant="outlined"
-                                size="small"
-                                aria-label="Increment value"
-                            // onPress={() => {
-                            //     replace(...field, { ...field, returnValue: record.returnValue + 1})
-                            //   }}
-                            > -
-                            </Button>
+                        <Grid xs={2} spacing={3}> <TextField variant="outlined" size="small" {...field} />
                         </Grid>
-                        <Grid xs={2}><TextField variant="outlined" size={"small"} {...field} />
-                        </Grid>
-                        <Grid  >
-                            <Button
-                                variant="outlined"
-                                size="small"
-                                aria-label="Increment value"
-                                {...field}
-                            >
-                                +
-                            </Button>
-                        </Grid>
+
+                        <Button
+                            variant="outlined"
+                            size="small"
+                            aria-label="Increment value"
+                            {...field}
+                        > + </Button>
                     </Grid>
-
                 </Grid>
             </Grid>
         </Box >
@@ -359,7 +350,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
     const [poormax, meta8, helpers8] = useField(`${path}.criteria.poor.max`);
 
     return (
-        <Grid container>
+        <Grid container >
 
             <Card style={{ border: '2px solid blue', padding: '5px' }} sx={{ flexGrow: 1 }}>
                 <CardContent>
@@ -453,7 +444,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
 const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => {
     return (
-        <Accordion>
+        <Accordion style={{ marginTop: 5 }}>
 
             <WeightEditor node={node} path={`${path}`} />
 
@@ -535,4 +526,4 @@ function CreateModel() {
     )
 }
 
-export default CreateModel;
+export default CreateModel
