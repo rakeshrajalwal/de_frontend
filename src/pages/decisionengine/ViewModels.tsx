@@ -3,12 +3,8 @@ import styled from "@emotion/styled";
 import { Helmet } from "react-helmet-async";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel'
-import PendingOutlinedIcon from '@mui/icons-material/PendingOutlined';
 
 import {
-  Breadcrumbs as MuiBreadcrumbs,
-  Card as MuiCard,
-  CardContent as MuiCardContent,
   Divider as MuiDivider,
   Chip as MuiChip,
   Paper as MuiPaper,
@@ -25,15 +21,9 @@ interface ChipProps extends SpacingProps {
   icon?: JSX.Element | null;
 }
 
-const Card = styled(MuiCard)(spacing);
-
-const CardContent = styled(MuiCardContent)(spacing);
-
 const Divider = styled(MuiDivider)(spacing);
 
 const Chip = styled(MuiChip)<ChipProps>(spacing);
-
-const Breadcrumbs = styled(MuiBreadcrumbs)(spacing);
 
 const Paper = styled(MuiPaper)(spacing);
 
@@ -78,6 +68,9 @@ const columns: GridColDef[] = [
     width: 150,
     description: "name",
     headerAlign: 'center',
+    // renderCell: (params) => {
+    //   return (<div style={{ overflowWrap: 'break-word', textOverflow: 'clip' }}> {params.row.name} </div>)
+    // }
   },
   {
     field: "product",
@@ -145,10 +138,10 @@ const rows = [
 function ModelDataGrid() {
   return (
     <Paper>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ height: "30rem", width: "100%" }}>
         <DataGrid
           sx={datagridSx}
-          rowsPerPageOptions={[5, 10, 25]}
+          // rowsPerPageOptions={[5, 10, 25]}
           rows={rows}
           columns={columns}
           pageSize={5}
