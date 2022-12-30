@@ -45,14 +45,14 @@ const columns: GridColDef[] = [
   {
     field: "id",
     headerName: "ID",
-    width: 10,
+    // width: 10,
     hide: true,
     headerAlign: 'center',
   },
   {
     field: "status",
     headerName: "",
-    width: 20,
+    flex : 0.5,
     headerAlign: 'center',
     renderCell: (params) => {
       if (params.row.status == 'approved') {
@@ -67,7 +67,8 @@ const columns: GridColDef[] = [
   {
     field: "name",
     headerName: "Name",
-    width: 150,
+    // width: 150,
+    flex: 8,
     description: "name",
     headerAlign: 'center',
     // renderCell: (params) => {
@@ -77,44 +78,51 @@ const columns: GridColDef[] = [
   {
     field: "product",
     headerName: "Product",
-    width: 200,
+    // width: 200,
+    flex: 9,
     description: "product",
     headerAlign: 'center',
   },
   {
     field: "loan_range",
     headerName: "Loan Range",
-    width: 150,
+    // width: 150,
+    flex: 7,
     headerAlign: 'center',
   },
   {
     field: "term",
     headerName: "Term",
-    width: 75,
+    // width: 75,
+    flex: 5,
     headerAlign: 'center',
   },
   {
     field: "purpose",
     headerName: "Purpose",
-    width: 100,
+    // width: 100,
+    flex: 5,
     headerAlign: 'center',
   },
   {
     field: "secured",
     headerName: "Secured",
-    width: 75,
+    // width: 75,
+    flex: 4,
     headerAlign: 'center',
   },
   {
     field: "created_by",
     headerName: "Created By",
-    width: 120,
+    // width: 120,
+    flex: 5,
     headerAlign: 'center',
   },
   {
     field: "is_active",
     headerName: "",
-    width: 100,
+    // width: 100,
+    flex: 4,
     renderCell: (params) => {
       if (params.row.is_active) {
         return (<Chip label="Active" color="primary" variant="outlined" m={1} size='small' style={{ borderRadius: '8rem' }} />)
