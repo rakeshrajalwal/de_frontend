@@ -303,12 +303,11 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
     const [field, meta, helpers] = useField(`${path}.weight`);
 
     const inc = () => {
-        console.log(field.value, "field value")
-        helpers.setValue(field.value + 1)
+        helpers.setValue(parseInt(field.value) + 1)
     }
 
     const dec = () => {
-        helpers.setValue(field.value - 1)
+        helpers.setValue(parseInt(field.value) - 1)
     }
     return (
         <Box sx={{ flexGrow: 1, margin: 2 }}>
