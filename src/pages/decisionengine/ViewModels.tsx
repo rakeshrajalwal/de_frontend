@@ -38,6 +38,9 @@ const datagridSx = {
   },
   "& .MuiDataGrid-cellContent": {
     wordWrap: 'break-word !important',
+  },
+  "& .MuiDataGrid-cell": {
+    whiteSpace: "normal !important",
   }
 };
 
@@ -79,7 +82,7 @@ const columns: GridColDef[] = [
     field: "product",
     headerName: "Product",
     // width: 200,
-    flex: 9,
+    flex: 6,
     description: "product",
     headerAlign: 'center',
   },
@@ -87,14 +90,14 @@ const columns: GridColDef[] = [
     field: "loan_range",
     headerName: "Loan Range",
     // width: 150,
-    flex: 7,
+    flex: 8,
     headerAlign: 'center',
   },
   {
     field: "term",
     headerName: "Term",
     // width: 75,
-    flex: 5,
+    flex: 4,
     headerAlign: 'center',
   },
   {
@@ -122,12 +125,12 @@ const columns: GridColDef[] = [
     field: "is_active",
     headerName: "",
     // width: 100,
-    flex: 4,
+    flex: 5,
     renderCell: (params) => {
       if (params.row.is_active) {
-        return (<Chip label="Active" color="primary" variant="outlined" m={1} size='small' style={{ borderRadius: '8rem' }} />)
+        return (<Chip label="Active" color="primary" variant="outlined" m={1} size='small' style={{ borderRadius: '8rem', }} />)
       } else {
-        return (<Chip label="Inactive" variant="outlined" m={1} size='small' style={{ borderRadius: '8rem' }} />)
+        return (<Chip label="Inactive" variant="outlined" m={1} size='small' style={{ borderRadius: '8rem', }} />)
       }
     }
   },
@@ -148,7 +151,7 @@ const modelRows: model[] = [
 function ModelDataGrid() {
   return (
     <Paper>
-      <div style={{ height: "30rem", width: "100%" }}>
+      <div style={{ height: "26rem", width: "100%" }}>
         <DataGrid
           sx={datagridSx}
           // rowsPerPageOptions={[5, 10, 25]}
