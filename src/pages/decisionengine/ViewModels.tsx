@@ -2,28 +2,30 @@ import * as React from 'react';
 import styled from "@emotion/styled";
 import { Helmet } from "react-helmet-async";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel'
-
+import CancelIcon from '@mui/icons-material/Cancel';
 import {
-  Divider as MuiDivider,
   Chip as MuiChip,
   Paper as MuiPaper,
   Typography,
 } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { spacing, SpacingProps } from "@mui/system";
-import { Loader } from 'react-feather';
+import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import { spacing, } from "@mui/system";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
-
-interface ChipProps extends SpacingProps {
-  component?: React.ElementType;
-  href?: string;
-  icon?: JSX.Element | null;
+interface model {
+  id: number;
+  name: string;
+  product: string;
+  loan_range: string;
+  term: string;
+  purpose: string;
+  secured: string;
+  created_by: string;
+  status: string;
+  is_active: boolean;
 }
 
-const Divider = styled(MuiDivider)(spacing);
-
-const Chip = styled(MuiChip)<ChipProps>(spacing);
+const Chip = styled(MuiChip)(spacing);
 
 const Paper = styled(MuiPaper)(spacing);
 
@@ -58,7 +60,7 @@ const columns: GridColDef[] = [
       } else if (params.row.status == 'unapproved') {
         return (<CancelIcon style={{ color: 'red' }} />)
       } else {
-        return (<Loader />)
+        return (<AccessTimeIcon style={{ color: 'orange' }} />)
       }
     }
   },
@@ -115,15 +117,15 @@ const columns: GridColDef[] = [
     width: 100,
     renderCell: (params) => {
       if (params.row.is_active) {
-        return (<Chip label="Active" color="primary" variant="outlined" m={1} size='small' style={{ borderRadius: 10 }} />)
+        return (<Chip label="Active" color="primary" variant="outlined" m={1} size='small' style={{ borderRadius: '8rem' }} />)
       } else {
-        return (<Chip label="Inactive" variant="outlined" m={1} size='small' style={{ borderRadius: 10 }} />)
+        return (<Chip label="Inactive" variant="outlined" m={1} size='small' style={{ borderRadius: '8rem' }} />)
       }
     }
   },
 ];
 
-const rows = [
+const modelRows: model[] = [
   { id: 1, name: "Term Loan", product: "Working Capital Loan", loan_range: "100000 - 300000", term: "3-5 Y", purpose: "Tax", secured: "yes", created_by: "Christopher", status: "approved", is_active: true },
   { id: 2, name: "Invoice Financing", product: "Working Capital Loan", loan_range: "100000 - 300000", term: "2-5 Y", purpose: "Growth", secured: "no", created_by: "Christopher", status: "unapproved", is_active: false },
   { id: 3, name: "Business line of credit", product: "Working Capital Loan", loan_range: "100000 - 300000", term: "2-4 Y", purpose: "Tax, Growth", secured: "yes", created_by: "Christopher", status: "in-review", is_active: true },
@@ -142,10 +144,22 @@ function ModelDataGrid() {
         <DataGrid
           sx={datagridSx}
           // rowsPerPageOptions={[5, 10, 25]}
-          rows={rows}
+          rows={modelRows}
           columns={columns}
           pageSize={5}
           style={{ fontFamily: 'Verdana' }}
+          disableColumnFilter
+          disableColumnSelector
+          disableDensitySelector
+          components={{ Toolbar: GridToolbar }}
+          componentsProps={{
+            toolbar: {
+              csvOptions: { disableToolbarButton: true },
+              printOptions: { disableToolbarButton: true },
+              showQuickFilter: true,
+              quickFilterProps: { debounceMs: 500 },
+            },
+          }}
         />
       </div>
     </Paper>
@@ -159,8 +173,6 @@ function ViewModels() {
       <Typography variant="h3" gutterBottom display="inline">
         Models
       </Typography>
-
-      <Divider my={6} />
 
       <ModelDataGrid />
     </React.Fragment>
