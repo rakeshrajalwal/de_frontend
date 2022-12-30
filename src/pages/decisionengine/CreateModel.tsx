@@ -7,6 +7,7 @@ import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvi
 import Select from '@mui/material/Select';
 import { number } from 'yup';
 import MenuItem from '@mui/material/MenuItem';
+import SettingsIcon from '@mui/icons-material/Settings';
 //import Policy from './components/Policy'
 
 // import './styles.css';
@@ -197,58 +198,56 @@ const PolicyEditor = () => {
 
                         <Grid item md={6} >
                             <Grid container>
-                                <Grid item md={3} xs={6}>
+                                <Grid item md={3} xs={4}>
                                     <Typography variant="h6" mt={8} >
                                         Loan Range (£):
                                     </Typography>
                                 </Grid>
-                                <Grid item md={2} xs={6} mt={6}>
+                                <Grid item md={6} xs={6} mt={6} style={{ display: 'flex', flexDirection: 'row', gap: 5 }} >
                                     <TextField
                                         label="min"
                                         variant="standard"
                                         {...loanMin}
 
                                     />
-                                    <Grid item md={2}>
-                                        <Typography variant="body1">to</Typography>
-                                    </Grid>
-                                    <Grid item md={3}>
-                                        <TextField
-                                            label="max"
-                                            variant="standard"
-                                            {...loanMax}
 
-                                        />
-                                    </Grid>
+                                    <Typography mt={6} variant="body1">to</Typography>
+
+                                    <TextField
+                                        label="max"
+                                        variant="standard"
+                                        {...loanMax}
+
+                                    />
+
                                 </Grid>
                             </Grid>
                         </Grid>
 
                         <Grid item md={6} >
                             <Grid container>
-                                <Grid item md={3} xs={6}>
+                                <Grid item md={3} xs={4}>
                                     <Typography variant="h6" mt={8} >
                                         Term:
                                     </Typography>
                                 </Grid>
-                                <Grid item md={2} xs={6} mt={6}>
+                                <Grid item md={6} xs={6} mt={6} style={{ display: 'flex', flexDirection: 'row', gap: 5 }} >
                                     <TextField
                                         label="min"
                                         variant="standard"
                                         {...termMin}
 
                                     />
-                                    <Grid item md={2}>
-                                        <Typography variant="body1">to</Typography>
-                                    </Grid>
-                                    <Grid item md={3}>
-                                        <TextField
-                                            label="max"
-                                            variant="standard"
-                                            {...termMax}
 
-                                        />
-                                    </Grid>
+                                    <Typography mt={6} variant="body1">to</Typography>
+
+                                    <TextField
+                                        label="max"
+                                        variant="standard"
+                                        {...termMax}
+
+                                    />
+
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -363,95 +362,95 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
     const [satisfactorymax, meta6, helpers6] = useField(`${path}.criteria.satisfactory.max`);
     const [weakmin, meta7, helpers7] = useField(`${path}.criteria.weak.min`);
     const [weakmax, meta8, helpers8] = useField(`${path}.criteria.weak.max`);
+    //   var x = `{<Card style={{ border: '2px solid blue', padding: '5px' }} sx={{ flexGrow: 1 }}>
+    //   <CardContent>
+    //       <Typography style={{ textAlign: 'center' }} variant="h6" gutterBottom>
+    //           Edit Criteria
+    //       </Typography>
 
+    //       <Grid gap={2} style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-evenly", margin: 5 }}>
+
+    //           <Typography fontWeight={"bold"} color={"#009300"}>Strong</Typography>
+
+    //           <TextField size="small"
+
+    //               {...strongmin}
+    //           />
+
+    //           <Typography mt={2}> or </Typography>
+
+    //           <Select
+    //               size="small"
+    //               variant="outlined"
+    //               {...strongmax}
+    //           >
+    //               <MenuItem value={'above'}>above</MenuItem>
+    //               <MenuItem value={'below'}>below</MenuItem>
+    //           </Select>
+    //       </Grid>
+
+    //       <Grid gap={2} style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", margin: 5 }}>
+
+    //           <Typography fontWeight={"bold"} color={"#9DD566"}>Good</Typography>
+
+    //           <TextField size="small"
+    //               {...goodmin}
+
+    //           />
+
+    //           <Typography mt={2}> to </Typography>
+
+    //           <TextField size="small"
+    //               {...goodmax}
+    //           />
+    //       </Grid>
+
+
+    //       <Grid gap={2} style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", margin: 5 }}>
+
+    //           <Typography fontWeight={"bold"} color={"#FCC200"}>Satisfactory</Typography>
+
+    //           <TextField size="small"
+    //               {...satisfactorymin}
+    //           />
+
+    //           <Typography mt={2}> to </Typography>
+
+    //           <TextField size="small"
+    //               {...satisfactorymax}
+    //           />
+
+    //       </Grid>
+
+
+    //       <Grid gap={2} style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", margin: 5 }}>
+
+    //           <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography>
+
+    //           <TextField size="small"
+    //               {...weakmin}
+
+    //           />
+
+    //           <Typography mt={2}> or </Typography>
+
+    //           <Select
+    //               size="small"
+    //               variant="outlined"
+    //               {...weakmax}
+    //           >
+    //               <MenuItem value={`above`}>above</MenuItem>
+    //               <MenuItem value={`below`}>below</MenuItem>
+    //           </Select>
+
+    //       </Grid>
+    //   </CardContent>
+    // </Card>
+    // }`
     return (
         <Grid container >
 
-            <Card style={{ border: '2px solid blue', padding: '5px' }} sx={{ flexGrow: 1 }}>
-                <CardContent>
-                    <Typography style={{ textAlign: 'center' }} variant="h6" gutterBottom>
-                        Edit Criteria
-                    </Typography>
-
-                    <Grid gap={2} style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-evenly", margin: 5 }}>
-
-                        <Typography fontWeight={"bold"} color={"#009300"}>Strong</Typography>
-
-                        <TextField size="small"
-
-                            {...strongmin}
-                        />
-
-                        <Typography mt={2}> or </Typography>
-
-                        <Select
-                            size="small"
-                            variant="outlined"
-                            {...strongmax}
-                        >
-                            <MenuItem value={'above'}>above</MenuItem>
-                            <MenuItem value={'below'}>below</MenuItem>
-                        </Select>
-                    </Grid>
-
-                    <Grid gap={2} style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", margin: 5 }}>
-
-                        <Typography fontWeight={"bold"} color={"#9DD566"}>Good</Typography>
-
-                        <TextField size="small"
-                            {...goodmin}
-
-                        />
-
-                        <Typography mt={2}> to </Typography>
-
-                        <TextField size="small"
-                            {...goodmax}
-                        />
-                    </Grid>
-
-
-                    <Grid gap={2} style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", margin: 5 }}>
-
-                        <Typography fontWeight={"bold"} color={"#FCC200"}>Satisfactory</Typography>
-
-                        <TextField size="small"
-                            {...satisfactorymin}
-                        />
-
-                        <Typography mt={2}> to </Typography>
-
-                        <TextField size="small"
-                            {...satisfactorymax}
-                        />
-
-                    </Grid>
-
-
-                    <Grid gap={2} style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", margin: 5 }}>
-
-                        <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography>
-
-                        <TextField size="small"
-                            {...weakmin}
-
-                        />
-
-                        <Typography mt={2}> or </Typography>
-
-                        <Select
-                            size="small"
-                            variant="outlined"
-                            {...weakmax}
-                        >
-                            <MenuItem value={`above`}>above</MenuItem>
-                            <MenuItem value={`below`}>below</MenuItem>
-                        </Select>
-
-                    </Grid>
-                </CardContent>
-            </Card>
-
+            <svg data-testid="SettingsIcon"></svg>
         </Grid>
 
     )
@@ -470,9 +469,12 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                             <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`} />
                         ))}
                         {node.signals?.map((sig, i) => (
-                            <div key={i}>
+                            <div key={i} style={{ display: 'flex', flexDirection: 'row' }}>
                                 <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
-                                <CriteriaEditor node={sig} path={`${path}.signals[${i}]`} />
+                                {/* <CriteriaEditor node={sig} path={`${path}.signals[${i}]`} /> */}
+                                <Grid item mt={6}>
+                                    <CriteriaEditor node={sig} path={`${path}.signals[${i}]`} />
+                                </Grid>
                             </div>
                         ))}
 
