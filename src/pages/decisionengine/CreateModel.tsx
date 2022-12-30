@@ -29,20 +29,34 @@ const Range = {
     max: ''
 }
 
+interface IRange {
+    min: number | string,
+    max: number | string
+}
+
+export interface IPolicy {
+    name: string,
+    loanRange: IRange,
+    loanTermInMonths: IRange,
+    loanPurpose: string,
+    isSecured: boolean
+}
+
 
 const Criterias = {
     type: {
         strong: Range,
         good: Range,
         satisfactory: Range,
-        poor: Range
+        weak: Range
     },
     // required: true
 };
 
 export interface IModel {
     name: string,
-    policy: any,
+    product: string,
+    policy: IPolicy,
     factors: {
         name: string,
         weight: number | string,
@@ -128,164 +142,158 @@ interface INode {
 
 const PolicyEditor = () => {
 
-    const [product, meta, helpers] = useField(`policy.product`);//product name
-    const [model, meta8, helpers8] = useField(`policy.name`);//name of model
-    const [loanMin, meta2, helpers2] = useField(`policy.loanMin`);
-    const [loanMax, meta3, helpers3] = useField(`policy.loanMax`);
-    const [termMin, meta4, helpers4] = useField(`policy.termMin`);
-    const [termMax, meta5, helpers5] = useField(`policy.termMax`);
-    const [purpose, meta6, helpers6] = useField(`policy.purpose`);
+    const [product, meta, helpers] = useField(`product`);//product name
+    const [name, meta8, helpers8] = useField(`name`);//name of model
+    const [loanMin, meta2, helpers2] = useField(`policy.loanRange.min`);
+    const [loanMax, meta3, helpers3] = useField(`policy.loanRange.max`);
+    const [termMin, meta4, helpers4] = useField(`policy.loanTermInMonths.min`);
+    const [termMax, meta5, helpers5] = useField(`policy.loanTermInMonths.max`);
+    const [purpose, meta6, helpers6] = useField(`policy.loanPurpose`);
     const [isSecured, meta7, helpers7] = useField(`policy.isSecured`);
 
     return (
 
         <div className="">
-            <form >
-                <Card >
-                    <CardContent>
+            <Card >
+                <CardContent>
 
-                        <Grid container >
-
-                            <Grid item md={1.5} xs={6}>
-                                <Typography variant="h6" mt={8} >
-                                    Product:
-                                </Typography>
-                            </Grid>
-                            <Grid item md={4} xs={6} mt={6}>
-                                <Select
-                                    fullWidth
-                                    variant="standard"
-                                    {...product}
-                                >
-                                    <MenuItem value={'Working Capital Loan'}>Working Capital Loan</MenuItem>
-                                    <MenuItem value={'Product 2'}>Product 2</MenuItem>
-                                    <MenuItem value={'Product 3'}>Product 3</MenuItem>
-                                </Select>
-                            </Grid>
-
-                            <Grid item md={0.5} xs={0}></Grid>
-                            <Grid item md={1.5} xs={6}  >
-                                <Typography variant="h6" mt={8} >
-                                    Model:
-                                </Typography>
-                            </Grid>
-                            <Grid item md={4} xs={6} mt={6}>
-                                <TextField
-                                    fullWidth
-                                    variant="standard"
-                                    {...model}
-
-                                />
-
-                            </Grid>
+                    <Grid container >
+                        <Grid item md={1.5} xs={6}>
+                            <Typography variant="h6" mt={8} >
+                                Product:
+                            </Typography>
+                        </Grid>
+                        <Grid item md={4} xs={6} mt={6}>
+                            <Select
+                                fullWidth
+                                variant="standard"
+                                {...product}
+                            >
+                                <MenuItem value={'Working Capital Loan'}>Working Capital Loan</MenuItem>
+                                <MenuItem value={'Product 2'}>Product 2</MenuItem>
+                                <MenuItem value={'Product 3'}>Product 3</MenuItem>
+                            </Select>
                         </Grid>
 
-                        {/* loan range and term */}
+                        <Grid item md={0.5} xs={0}></Grid>
+                        <Grid item md={1.5} xs={6}  >
+                            <Typography variant="h6" mt={8} >
+                                Model:
+                            </Typography>
+                        </Grid>
+                        <Grid item md={4} xs={6} mt={6}>
+                            <TextField
+                                fullWidth
+                                variant="standard"
+                                {...name}
 
-                        <Grid container >
+                            />
 
-                            <Grid item md={6} >
-                                <Grid container>
-                                    <Grid item md={3} xs={6}>
-                                        <Typography variant="h6" mt={8} >
-                                            Loan Range (£):
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item md={2} xs={6} mt={6}>
-                                        <TextField
-                                            label="min"
-                                            variant="standard"
-                                            {...loanMin}
+                        </Grid>
+                    </Grid>
 
-                                        />
-                                        <Grid item md={2}>
-                                            <Typography variant="body1">to</Typography>
-                                        </Grid>
-                                        <Grid item md={3}>
-                                            <TextField
-                                                label="max"
-                                                variant="standard"
-                                                {...loanMax}
+                    {/* loan range and term */}
+                    <Grid container >
 
-                                            />
-                                        </Grid>
-                                    </Grid>
+                        <Grid item md={6} >
+                            <Grid container>
+                                <Grid item md={3} xs={6}>
+                                    <Typography variant="h6" mt={8} >
+                                        Loan Range (£):
+                                    </Typography>
                                 </Grid>
-                            </Grid>
+                                <Grid item md={2} xs={6} mt={6}>
+                                    <TextField
+                                        label="min"
+                                        variant="standard"
+                                        {...loanMin}
 
-                            <Grid item md={6} >
-                                <Grid container>
-                                    <Grid item md={3} xs={6}>
-                                        <Typography variant="h6" mt={8} >
-                                            Term:
-                                        </Typography>
+                                    />
+                                    <Grid item md={2}>
+                                        <Typography variant="body1">to</Typography>
                                     </Grid>
-                                    <Grid item md={2} xs={6} mt={6}>
+                                    <Grid item md={3}>
                                         <TextField
-                                            label="min"
+                                            label="max"
                                             variant="standard"
-                                            {...termMin}
+                                            {...loanMax}
 
                                         />
-                                        <Grid item md={2}>
-                                            <Typography variant="body1">to</Typography>
-                                        </Grid>
-                                        <Grid item md={3}>
-                                            <TextField
-                                                label="max"
-                                                variant="standard"
-                                                {...termMax}
-
-                                            />
-                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
 
-                        {/* purpose */}
-                        <Grid container >
+                        <Grid item md={6} >
+                            <Grid container>
+                                <Grid item md={3} xs={6}>
+                                    <Typography variant="h6" mt={8} >
+                                        Term:
+                                    </Typography>
+                                </Grid>
+                                <Grid item md={2} xs={6} mt={6}>
+                                    <TextField
+                                        label="min"
+                                        variant="standard"
+                                        {...termMin}
 
-                            <Grid item md={1} xs={6}>
-                                <Typography variant="h6" mt={8} >
-                                    Purpose:
-                                </Typography>
+                                    />
+                                    <Grid item md={2}>
+                                        <Typography variant="body1">to</Typography>
+                                    </Grid>
+                                    <Grid item md={3}>
+                                        <TextField
+                                            label="max"
+                                            variant="standard"
+                                            {...termMax}
+
+                                        />
+                                    </Grid>
+                                </Grid>
                             </Grid>
-                            <Grid item md={4} xs={6} mt={6}>
-                                <Select
-                                    fullWidth
-                                    variant="standard"
-                                    {...purpose}
-                                >
-                                    <MenuItem value={`Purpose 1`}>Purpose 1</MenuItem>
-                                    <MenuItem value={`Purpose 2`}>Purpose 2</MenuItem>
-                                    <MenuItem value={`Purpose 3`}>Purpose 3</MenuItem>
-                                </Select>
-                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    {/* purpose */}
+                    <Grid container >
+
+                        <Grid item md={1} xs={6}>
+                            <Typography variant="h6" mt={8} >
+                                Purpose:
+                            </Typography>
+                        </Grid>
+                        <Grid item md={4} xs={6} mt={6}>
+                            <Select
+                                fullWidth
+                                variant="standard"
+                                {...purpose}
+                            >
+                                <MenuItem value={`Purpose 1`}>Purpose 1</MenuItem>
+                                <MenuItem value={`Purpose 2`}>Purpose 2</MenuItem>
+                                <MenuItem value={`Purpose 3`}>Purpose 3</MenuItem>
+                            </Select>
+                        </Grid>
 
 
-                            {/* //secured */}
-                            <Grid item md={1} xs={0}></Grid>
-                            <Grid item md={4} xs={12} mt={6}>
+                        {/* //secured */}
+                        <Grid item md={1} xs={0}></Grid>
+                        <Grid item md={4} xs={12} mt={6}>
 
-                                <label>
-                                    <Field type="radio" {...isSecured} value="true" />
-                                    Secured
-                                </label>
-                                <label>
-                                    <Field type="radio" {...isSecured} value="false" />
-                                    Unsecured
-                                </label>
-
-                            </Grid>
+                            <label>
+                                <Field type="radio" {...isSecured} value="true" />
+                                Secured
+                            </label>
+                            <label>
+                                <Field type="radio" {...isSecured} value="false" />
+                                Unsecured
+                            </label>
 
                         </Grid>
 
-                    </CardContent>
-                </Card>
-            </form>
+                    </Grid>
 
-
+                </CardContent>
+            </Card>
         </div>
 
     )
@@ -354,8 +362,8 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
     const [goodmax, meta4, helpers4] = useField(`${path}.criteria.good.max`);
     const [satisfactorymin, meta5, helpers5] = useField(`${path}.criteria.satisfactory.min`);
     const [satisfactorymax, meta6, helpers6] = useField(`${path}.criteria.satisfactory.max`);
-    const [poormin, meta7, helpers7] = useField(`${path}.criteria.poor.min`);
-    const [poormax, meta8, helpers8] = useField(`${path}.criteria.poor.max`);
+    const [weakmin, meta7, helpers7] = useField(`${path}.criteria.weak.min`);
+    const [weakmax, meta8, helpers8] = useField(`${path}.criteria.weak.max`);
 
     return (
         <Grid container >
@@ -426,7 +434,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                         <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography>
 
                         <TextField size="small"
-                            {...poormin}
+                            {...weakmin}
 
                         />
 
@@ -435,7 +443,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                         <Select
                             size="small"
                             variant="outlined"
-                            {...poormax}
+                            {...weakmax}
                         >
                             <MenuItem value={`above`}>above</MenuItem>
                             <MenuItem value={`below`}>below</MenuItem>
@@ -479,14 +487,13 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
 
 function getEmptyModel(p: IProduct): IModel {
     return {
-        name: '',
+        name: '',//modelname
+        product: '',
         policy: {
-            product: '',
-            loanMin: '',
-            loanMax: '',
-            termMin: '',
-            termMax: '',
-            purpose: '',
+            name: '',//policyname
+            loanRange: { min: '', max: '' },
+            loanTermInMonths: { min: '', max: '' },
+            loanPurpose: '',
             isSecured: false,
         },
         factors: p.factors.map(f => ({
