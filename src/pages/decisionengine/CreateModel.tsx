@@ -126,16 +126,16 @@ interface INode {
     signals?: INode[];
 }
 
-const PolicyEditor = ({ path }: { path: string }) => {
+const PolicyEditor = () => {
 
-    const [product, meta, helpers] = useField(`${path}.policy.product`);//product name
-    const [model, meta8, helpers8] = useField(`${path}.name`);//name of model
-    const [loanMin, meta2, helpers2] = useField(`${path}.policy.loanMin`);
-    const [loanMax, meta3, helpers3] = useField(`${path}.policy.loanMax`);
-    const [termMin, meta4, helpers4] = useField(`${path}.policy.termMin`);
-    const [termMax, meta5, helpers5] = useField(`${path}.policy.termMax`);
-    const [purpose, meta6, helpers6] = useField(`${path}.policy.purpose`);
-    const [isSecured, meta7, helpers7] = useField(`${path}.policy.isSecured`);
+    const [product, meta, helpers] = useField(`policy.product`);//product name
+    const [model, meta8, helpers8] = useField(`policy.name`);//name of model
+    const [loanMin, meta2, helpers2] = useField(`policy.loanMin`);
+    const [loanMax, meta3, helpers3] = useField(`policy.loanMax`);
+    const [termMin, meta4, helpers4] = useField(`policy.termMin`);
+    const [termMax, meta5, helpers5] = useField(`policy.termMax`);
+    const [purpose, meta6, helpers6] = useField(`policy.purpose`);
+    const [isSecured, meta7, helpers7] = useField(`policy.isSecured`);
 
     return (
 
@@ -294,12 +294,20 @@ const PolicyEditor = ({ path }: { path: string }) => {
 const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key: string]: any }) => {
     const [field, meta, helpers] = useField(`${path}.weight`);
 
+    const inc = () => {
+        console.log(field.value, "field value")
+        helpers.setValue(field.value + 1)
+    }
+
+    const dec = () => {
+        helpers.setValue(field.value - 1)
+    }
     return (
         <Box sx={{ flexGrow: 1, margin: 2 }}>
 
             <Grid container spacing={5} {...rest}>
 
-                <Grid xs={8}>
+                <Grid item xs={8}>
                     <AccordionSummary >
 
                         <Paper sx={{ flexGrow: 1 }} style={{
@@ -313,24 +321,24 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
                 </Grid>
 
                 {/* </Accordion> */}
-                <Grid xs={3} mt={2} >
+                <Grid item xs={3} mt={2} >
                     <Grid container style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', margin: 5 }}
                     >
                         <Button
                             variant="outlined"
                             size="small"
                             aria-label="Increment value"
-                            
+                            onClick={dec}
                         > - </Button>
 
-                        <Grid xs={2} spacing={3}> <TextField variant="outlined" size="small" {...field} />
+                        <Grid item xs={4} > <TextField variant="outlined" size="small" {...field} />
                         </Grid>
 
                         <Button
                             variant="outlined"
                             size="small"
                             aria-label="Increment value"
-                            {...field}
+                            onClick={inc}
                         > + </Button>
                     </Grid>
                 </Grid>
@@ -450,15 +458,15 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
 
             <AccordionDetails>
                 <Grid container>
-                    <Grid xs={8} style={{ paddingLeft: 50 }}>
+                    <Grid item xs={8} style={{ paddingLeft: 50 }}>
                         {node.subFactors?.map((sf, i) => (
                             <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`} />
                         ))}
                         {node.signals?.map((sig, i) => (
-                            <>
-                                <WeightEditor key={i} node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
-                                <CriteriaEditor key={i} node={sig} path={`${path}.signals[${i}]`} />
-                            </>
+                            <div key={i}>
+                                <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
+                                <CriteriaEditor node={sig} path={`${path}.signals[${i}]`} />
+                            </div>
                         ))}
 
                     </Grid>
@@ -513,6 +521,7 @@ function CreateModel() {
                     <Form>
                         <div className="">
                             <Typography variant="h1">create model</Typography>
+                            <PolicyEditor />
 
                             <button type="submit" style={{ margin: '10px' }}>Submit</button>
                             {formik.values.factors.map((f, i) => (

@@ -116,12 +116,12 @@ function Policy() {
 
                                 <Grid item md={6} >
                                     <Grid container>
-                                        <Grid item md={3} xs={6}>
+                                        <Grid item md={3} xs={4}>
                                             <Typography variant="h6" mt={8} >
                                                 Loan Range (£):
                                             </Typography>
                                         </Grid>
-                                        <Grid item md={2} xs={6} mt={6}>
+                                        <Grid item md={6} xs={6} mt={6} style={{ display: 'flex', flexDirection: 'row', gap: 5 }} >
                                             <TextField
                                                 id="loanMin"
                                                 name="loanMin"
@@ -131,20 +131,20 @@ function Policy() {
                                                 onChange={formik.handleChange}
 
                                             />
-                                            <Grid item md={2}>
-                                                <Typography variant="body1">to</Typography>
-                                            </Grid>
-                                            <Grid item md={3}>
-                                                <TextField
-                                                    id="loanMax"
-                                                    name="loanMax"
-                                                    label="max"
-                                                    variant="standard"
-                                                    value={formik.values.loanMax}
-                                                    onChange={formik.handleChange}
 
-                                                />
-                                            </Grid>
+                                            <Typography mt={6} variant="body1">to</Typography>
+
+
+                                            <TextField
+                                                id="loanMax"
+                                                name="loanMax"
+                                                label="max"
+                                                variant="standard"
+                                                value={formik.values.loanMax}
+                                                onChange={formik.handleChange}
+
+                                            />
+
                                         </Grid>
                                     </Grid>
                                 </Grid>
