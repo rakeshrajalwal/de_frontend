@@ -1,33 +1,21 @@
 import * as React from 'react';
-import { render } from 'react-dom';
 import styled from "@emotion/styled";
 import { Helmet } from "react-helmet-async";
 
 import {
-  Breadcrumbs as MuiBreadcrumbs,
-  Card as MuiCard,
-  CardContent as MuiCardContent,
   Divider as MuiDivider,
   Paper as MuiPaper,
   Typography,
-  Box,
   IconButton,
 } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
 import { Info, User, Monitor, Eye, RefreshCw } from "react-feather";
 
 
 import { data } from './data';
 
-
-const Card = styled(MuiCard)(spacing);
-
-const CardContent = styled(MuiCardContent)(spacing);
-
 const Divider = styled(MuiDivider)(spacing);
-
-const Breadcrumbs = styled(MuiBreadcrumbs)(spacing);
 
 const Paper = styled(MuiPaper)(spacing);
 
@@ -43,13 +31,12 @@ const datagridSx = {
   },
   "& .MuiDataGrid-cellContent": {
     wordWrap: 'break-word !important',
+  },
+  "& .MuiDataGrid-cell": {
+    whiteSpace: "normal !important",
   }
 };
 
-const alignment = {
-  display: "flex",
-  justifyContent: "flexend"
-}
 const columns: GridColDef[] = [
   {
     field: "id",
@@ -169,7 +156,7 @@ const columns: GridColDef[] = [
 function RunSummariesGrid() {
   return (
     <Paper>
-      <div style={{ height: "30rem", width: "100%" }}>
+      <div style={{ height: "25.2rem", width: "100%" }}>
         <DataGrid
           // rowsPerPageOptions={[5, 10, 25]}
           sx={datagridSx}
@@ -177,6 +164,18 @@ function RunSummariesGrid() {
           columns={columns}
           pageSize={5}
           style={{fontFamily: 'Verdana'}}
+          disableColumnFilter
+          disableColumnSelector
+          disableDensitySelector
+          components={{ Toolbar: GridToolbar }}
+          componentsProps={{
+            toolbar: {
+              csvOptions: { disableToolbarButton: true },
+              printOptions: { disableToolbarButton: true },
+              showQuickFilter: true,
+              quickFilterProps: { debounceMs: 500 },
+            },
+          }}
         />
       </div>
     </Paper>
@@ -190,8 +189,6 @@ function RunSummaries() {
       <Typography variant="h3" gutterBottom display="inline">
         Run Summaries
       </Typography>
-
-      <Divider my={6} />
 
       <RunSummariesGrid />
     </React.Fragment>
