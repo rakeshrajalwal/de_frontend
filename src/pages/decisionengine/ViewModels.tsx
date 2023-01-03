@@ -127,7 +127,7 @@ const datagridSx = {
   },
   "& .MuiChip-label": {
     textAlign: 'center',
-    fontSize: '1.8ex',
+    fontSize: '1.5ex',
   },
   "& .MuiDataGrid-toolbarContainer": {
     backgroundColor: '#F7F9FC',
@@ -151,7 +151,7 @@ const columns: GridColDef[] = [
     renderCell: (params) => {
       if (params.row.status == 'approved') {
         return (<CheckCircleIcon style={{ color: 'green', fontSize: '2.5ex' }} />)
-      } else if (params.row.status == 'unapproved') {
+      } else if (params.row.status == 'rejected') {
         return (<CancelIcon style={{ color: 'red', fontSize: '2.5ex' }} />)
       } else {
         return (<AccessTime style={{ color: 'orange', fontSize: '2.5ex' }} />)
@@ -252,9 +252,9 @@ const columns: GridColDef[] = [
     flex: 5,
     renderCell: (params) => {
       if (params.row.is_active) {
-        return (<Chip label="Active" color="primary" variant="outlined" m={1} size='small' style={{ borderRadius: '0.3rem', blockSize: '2.8ex' }} />)
+        return (<Chip label="Active" color="primary" variant="outlined" m={1} size='small' style={{ borderRadius: '0.3rem', blockSize: '2.6ex' }} />)
       } else {
-        return (<Chip label="Inactive" variant="outlined" m={1} size='small' style={{ borderRadius: '0.3rem', blockSize: '2.8ex' }} />)
+        return (<Chip label="Inactive" variant="outlined" m={1} size='small' style={{ borderRadius: '0.3rem', blockSize: '2.6ex' }} />)
       }
     }
   },
@@ -262,13 +262,13 @@ const columns: GridColDef[] = [
 
 const modelRows: model[] = [
   { id: 1, name: 'Term Loan', product: 'Working Capital Loan', loan_range: '100000 - 300000', term: '3-5 Y', purpose: 'Tax', secured: 'yes', created_by: 'Christopher', status: 'approved', is_active: true, created_on: '11/12/22 12:30', last_run: 'ncino', runs: 634, last_run_date: '15/12/22 11:45' },
-  { id: 2, name: 'Invoice Financing', product: 'Working Capital Loan', loan_range: '100000 - 300000', term: '2-5 Y', purpose: 'Growth', secured: 'no', created_by: 'Christopher', status: 'unapproved', is_active: false, created_on: '17/12/22 12:30', last_run: '-', runs: 0, last_run_date: '' },
+  { id: 2, name: 'Invoice Financing', product: 'Working Capital Loan', loan_range: '100000 - 300000', term: '2-5 Y', purpose: 'Growth', secured: 'no', created_by: 'Christopher', status: 'rejected', is_active: false, created_on: '17/12/22 12:30', last_run: '-', runs: 0, last_run_date: '' },
   { id: 3, name: 'Business line of credit', product: 'Working Capital Loan', loan_range: '100000 - 300000', term: '2-4 Y', purpose: 'Tax, Growth', secured: 'yes', created_by: 'Christopher', status: 'in-review', is_active: true, created_on: '11/12/22 12:30', last_run: 'ncino', runs: 634, last_run_date: '15/12/22 11:45' },
-  { id: 4, name: 'Term Loan', product: 'Working Capital Loan', loan_range: '100000 - 300000', term: '2-5 Y', purpose: 'Growth', secured: 'no', created_by: 'Christopher', status: 'unapproved', is_active: false, created_on: '11/12/22 12:30', last_run: '-', runs: 0, last_run_date: '' },
+  { id: 4, name: 'Term Loan', product: 'Working Capital Loan', loan_range: '100000 - 300000', term: '2-5 Y', purpose: 'Growth', secured: 'no', created_by: 'Christopher', status: 'rejected', is_active: false, created_on: '11/12/22 12:30', last_run: '-', runs: 0, last_run_date: '' },
   { id: 5, name: 'Term Loan', product: 'Working Capital Loan', loan_range: '100000 - 300000', term: '2-6 Y', purpose: 'Tax', secured: 'yes', created_by: 'Christopher', status: 'approved', is_active: true, created_on: '11/12/22 12:30', last_run: 'ncino', runs: 634, last_run_date: '15/12/22 11:45' },
   { id: 6, name: 'Invoice Financing', product: 'Working Capital Loan', loan_range: '100000 - 300000', term: '3-5 Y', purpose: 'Tax', secured: 'yes', created_by: 'Christopher', status: 'in-review', is_active: true, created_on: '11/12/22 12:30', last_run: 'ncino', runs: 634, last_run_date: '15/12/22 11:45' },
   { id: 7, name: 'Invoice Financing', product: 'Working Capital Loan', loan_range: '100000 - 300000', term: '1-5 Y', purpose: 'Growth', secured: 'no', created_by: 'Christopher', status: 'approved', is_active: false, created_on: '11/12/22 12:30', last_run: 'ncino', runs: 634, last_run_date: '15/12/22 11:45' },
-  { id: 8, name: 'Invoice Financing', product: 'Working Capital Loan', loan_range: '100000 - 300000', term: '2-5 Y', purpose: 'Tax', secured: 'no', created_by: 'Christopher', status: 'unapproved', is_active: true, created_on: '11/12/22 12:30', last_run: 'ncino', runs: 634, last_run_date: '15/12/22 11:45' },
+  { id: 8, name: 'Invoice Financing', product: 'Working Capital Loan', loan_range: '100000 - 300000', term: '2-5 Y', purpose: 'Tax', secured: 'no', created_by: 'Christopher', status: 'rejected', is_active: true, created_on: '11/12/22 12:30', last_run: 'ncino', runs: 634, last_run_date: '15/12/22 11:45' },
   { id: 9, name: 'Term Loan', product: 'Working Capital Loan', loan_range: '100000 - 300000', term: '3-5 Y', purpose: 'Growth, Tax', secured: 'yes', created_by: 'Christopher', status: 'in-review', is_active: false, created_on: '11/12/22 12:30', last_run: 'ncino', runs: 634, last_run_date: '15/12/22 11:45' },
 ];
 
@@ -326,7 +326,7 @@ function ViewModels() {
             <IconButton aria-label="User" size="small">
               <CancelIcon style={{ color: 'red', fontSize: '1.8ex' }} />
             </IconButton>
-            <p>Unapproved </p>
+            <p>Rejected </p>
 
             <IconButton aria-label="Preview" size="small">
               <AccessTime style={{ color: 'orange', fontSize: '1.8ex' }} />
