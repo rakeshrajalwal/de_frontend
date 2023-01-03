@@ -533,16 +533,18 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
         },
     ];
 
-    const [show, setShow] = useState({ "id" : 0, "toshow" : true});
+    const [show, setShow] = useState({ "id": 0, "toshow": true });
 
     // const [showNone, setAllShowNone] = useState(false);
 
-     function displayCriteriaEditor() {
-                  //setShow() 
+    // function displayCriteriaEditor() {
+    //     setShow(show => ({
+            
+    //     }));
 
-     }
+    // }
     //var element = [];
-   // const [hovered, setHovered] = useState(false);
+    // const [hovered, setHovered] = useState(false);
 
     return (
         <Accordion style={{ marginTop: 1 }}>
@@ -575,12 +577,11 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                                 </Grid>
                                 <Grid item xs={1.5}></Grid>
                                 <Grid item xs={4} mt={4}>
-                                    {/* <Typography > show critera</Typography>  */}
-                                    {/* <svg data-testid="SettingsIcon"></svg> */}
+                                    
                                     <SettingsIcon
-                                         onClick={(i) => displayCriteriaEditor }
-                                        // onMouseEnter={() => setHovered(true)}
-                                        // onMouseLeave={() => setHovered(false)}
+                                        onClick={(e) => setShow({id : i, toshow: true})}
+                                    // onMouseEnter={() => setHovered(true)}
+                                    // onMouseLeave={() => setHovered(false)}
 
                                     />
                                     {/* <Slider
@@ -595,7 +596,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                                     /> */}
                                 </Grid>
                                 {/* <Grid item xs={12} style={{ display: 'none' }}> */}
-                                 {show.id == i && show.toshow  && <CriteriaEditor key={i} node={sig} path={`${path}.signals[${i}]`} />} 
+                                {show.id == i && show.toshow && <CriteriaEditor key={i} node={sig} path={`${path}.signals[${i}]`} />}
                                 {/* {element.map(item => <HoveredComponent key={i} node={sig} path={`${path}.signals[${i}]`} />)} */}
                                 {/* </Grid> */}
                             </Grid>
@@ -608,18 +609,6 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
     )
 
 }
-
-// const HoveredComponent = ({ itemName, node, path, ...rest }: { node: INode, path: string, [key: string]: any }) => {
-//     const [hovered, setHovered] = useState(false);
-
-//     return (<> 
-//         <div
-//             onMouseEnter={() => setHovered(true)}
-//             onMouseLeave={() => setHovered(false)}
-//         >{itemName}</div>
-//         {hovered && <CriteriaEditor key={i} node={node} path={`${path}.signals[${i}]`} />} }
-//     </>)
-// }
 
 
 function getEmptyModel(p: IProduct): IModel {
