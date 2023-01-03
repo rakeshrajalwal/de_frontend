@@ -320,8 +320,7 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
             <div style={{ display: 'flex', gap: 10 }}>
                 <Paper style={{
                     flexGrow: 1,
-                    backgroundColor: "#F5F5F5",
-                    // backgroundColor : '#434DB0',
+                    backgroundColor: "rgba(0,0,0,0)",
                     color: "black",
                     fontWeight: "bold",
                     padding: 10,
@@ -352,7 +351,7 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
                                 textAlign: 'center'
                             }
                         }}
-                        variant="outlined" size="small" {...field} style={{ width: 80, height: 39.5, backgroundColor: "rgba(0, 0, 0, 0.06)" }} />
+                        variant="outlined" size="small" {...field} style={{ width: 50, height: 39.5, backgroundColor: "rgba(0, 0, 0, 0.06)" }} />
                     <Button variant="contained" style={{ aspectRatio: 1, minWidth: "unset", backgroundColor: '#434DB0' }} size="small" onClick={inc} > + </Button>
                 </div>
             </div>
@@ -536,39 +535,39 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
     const [show, setShow] = useState({ "id": -1, "toshow": true });
 
     return (
-        <Accordion style={{ marginTop: 1 }}>
+        <>
+            <Accordion style={{ marginTop: 1 }}>
+                <AccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', }} />} sx={{
+                    flexDirection: 'row-reverse',
+                    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+                        transform: 'rotate(90deg)',
+                    },
+                    '& .Mui-expanded': {
+                        backgroundColor: '#434DB0',
+                    },
+                    backgroundColor: '#F5F5F5'
+                }}
 
-            <AccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', }} />} sx={{
-                flexDirection: 'row-reverse',
-                '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-                    transform: 'rotate(90deg)',
-                },
-            }}
-            // onChange = {(e,expanded) => {
-            //     if(expanded){
+                >
+                    <WeightEditor node={node} path={`${path}`} />
+                </AccordionSummary>
 
-            //     }
-
-            >
-                <WeightEditor node={node} path={`${path}`} />
-            </AccordionSummary>
-
-            <AccordionDetails>
-                <Grid container>
-                    <Grid item xs={8} style={{ paddingLeft: 25 }}>
-                        {node.subFactors?.map((sf, i) => (
-                            <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`} />
-                        ))}
-                        {node.signals?.map((sig, i) => (
-                            <Grid container key={i} >
-                                <Grid item xs={8}>
-                                    <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
-                                </Grid>
-                                <Grid item xs={1.5}></Grid>
-                                <Grid item xs={2} mt={4}>
-                                    <SettingsIcon style={{ cursor: 'pointer' }} onClick={(e) => setShow({ id: i, toshow: true })}
-                                    />
-                                    {/* <Slider
+                <AccordionDetails>
+                    <Grid container>
+                        <Grid item xs={8} style={{ paddingLeft: 25 }}>
+                            {node.subFactors?.map((sf, i) => (
+                                <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`} />
+                            ))}
+                            {node.signals?.map((sig, i) => (
+                                <Grid container key={i} >
+                                    <Grid item xs={8}>
+                                        <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
+                                    </Grid>
+                                    <Grid item xs={1.5}></Grid>
+                                    <Grid item xs={2} mt={4}>
+                                        <SettingsIcon style={{ cursor: 'pointer' }} onClick={(e) => setShow({ id: i, toshow: true })}
+                                        />
+                                        {/* <Slider
                                         aria-label="Restricted values"
                                         //defaultValue={10}
                                         //valueLabelFormat={valueLabelFormat}
@@ -578,15 +577,24 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                                         marks={criteriaValueSlider}
                                         disable={true}
                                     /> */}
+                                    </Grid>
+                                    {show.id == i && show.toshow && 
+                                 <Grid item xs={12}
+                                 //style={{position : 'absolute', marginRight: '10px', float: 'right'}}
+                                 >
+                                <CriteriaEditor key={i} node={sig} path={`${path}.signals[${i}]`} />
+                                 </Grid>
+                                }
                                 </Grid>
-                                {show.id == i && show.toshow && <CriteriaEditor key={i} node={sig} path={`${path}.signals[${i}]`} />}
-                            </Grid>
-                        ))}
+                            ))}
 
+                        </Grid>
                     </Grid>
-                </Grid>
-            </AccordionDetails>
-        </Accordion >
+                </AccordionDetails>
+
+            </Accordion >
+            {/* <div style={{ float: 'right', top: '0' }}>Hi</div> */}
+        </>
     )
 
 }
