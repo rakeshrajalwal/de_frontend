@@ -527,15 +527,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
             label: 'below',
         },
         {
-            value: 10,
-            label: '10',
-        },
-        {
-            value: 37,
-            label: '37',
-        },
-        {
-            value: above,
+            value: 100,
             label: 'above',
         },
     ];
@@ -566,23 +558,27 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                         ))}
                         {node.signals?.map((sig, i) => (
                             <Grid container key={i} >
-                                <Grid item xs={12}>
+                                <Grid item xs={6}>
                                     <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
                                 </Grid>
-                                {/* <Grid item xs={4}>
-                                    {/* <Typography > show critera</Typography> 
-                                    <Slider
+                                <Grid item xs={1.5}></Grid>
+                                <Grid item xs={4} mt={4}>
+                                    {/* <Typography > show critera</Typography>  */}
+                                    {/* <svg data-testid="SettingsIcon"></svg> */}
+                                    <SettingsIcon />
+                                    {/* <Slider
                                         aria-label="Restricted values"
-                                        defaultValue={10}
+                                        //defaultValue={10}
                                         //valueLabelFormat={valueLabelFormat}
                                         //getAriaValueText={valuetext}
                                         // step={null}
                                         // valueLabelDisplay="auto"
                                         marks={criteriaValueSlider}
-                                    />
-                                </Grid> */}
-                                <Grid item xs={12} >
-                                    <CriteriaEditor node={sig} path={`${path}.signals[${i}]`} />
+                                        disable={true}
+                                    /> */}
+                                </Grid>
+                                <Grid item xs={12} style={{ display: 'none' }}>
+                                    <CriteriaEditor node={sig} path={`${path}.signals[${i}]`}  />
                                 </Grid>
                             </Grid>
                         ))}
