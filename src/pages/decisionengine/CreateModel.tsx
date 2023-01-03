@@ -11,6 +11,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 //import Policy from './components/Policy'
 
 // import './styles.css';
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 
 export interface IProduct {
     name: string,
@@ -449,7 +450,12 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
     return (
         <Accordion style={{ marginTop: 5 }}>
 
-            <AccordionSummary>
+            <AccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', }} />}  sx={{
+                flexDirection: 'row-reverse',
+                '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+                  transform: 'rotate(90deg)',
+                },            
+            }}>
                 <WeightEditor node={node} path={`${path}`} />
             </AccordionSummary>
 
