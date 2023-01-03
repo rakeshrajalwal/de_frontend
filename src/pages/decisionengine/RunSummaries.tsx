@@ -75,14 +75,28 @@ const columns: GridColDef[] = [
     field: "Loan Amount",
     headerName: "Loan Amount",
     headerAlign: 'center',
-    flex: 5
+    flex: 5,
+    renderCell: (params) => {
+      return (
+        <div style = {{marginLeft: '3ex'}}>
+          {params.row['Loan Amount']}
+        </div>
+      )
+    }
 
   },
   {
     field: "Term",
     headerName: "Term",
     headerAlign: 'center',
-    flex: 2
+    flex: 2,
+    renderCell: (params) => {
+      return (
+        <div style = {{marginLeft: '2ex'}}>
+          {params.row.Term}
+        </div>
+      )
+    }
   },
   {
     field: "Result",
@@ -92,7 +106,7 @@ const columns: GridColDef[] = [
     renderCell: (params) => {
       if (params.row.Result < 3) {
         return (
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", marginLeft:'5ex' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", marginLeft:'6ex' }}>
             <strong>{params.row.Result}</strong>
             <div style={{width:'1ex'}}></div>
             <p style={{ color: "#64b964", border: '0.3ex solid #64b964', borderRadius: '3ex', padding: '0.3ex' }}>Strong</p>
@@ -101,7 +115,7 @@ const columns: GridColDef[] = [
       }
       else if (params.row.Result >= 3 && params.row.Result <= 5) {
         return (
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", marginLeft:'5ex' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", marginLeft:'6ex' }}>
             <strong>{params.row.Result}</strong>
             <div style={{width:'1ex'}}></div>
             <p style={{ color: "#fecd29", border: '0.3ex solid #fecd29', borderRadius: '3ex', padding: '0.3ex' }}>Satisfactory</p>
@@ -110,7 +124,7 @@ const columns: GridColDef[] = [
       }
       else if (params.row.Result > 5) {
         return (
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", marginLeft:'5ex' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", marginLeft:'6ex' }}>
             <p>Failed</p>
             <IconButton aria-label="Info" size="small">
               <Info style = {{width:'2ex',}}/>
