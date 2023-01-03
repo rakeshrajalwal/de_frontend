@@ -82,56 +82,69 @@ const product: IProduct = {
     name: "Working Capital Loan",
     factors: [
         {
-            name: "Financial Strength",
-            subFactors: [
+            "name": "Financial Strength",
+            "subFactors": [
                 {
-                    name: "Market Conditions",
-                    signals: [
-                        { name: "GP%vsSector" },
-                        { name: "NP%vsSector" },
-                        { name: "LeveragevsSector" },
-                        { name: "GearingvsSector" }
+                    "name": "Market Conditions ",
+                    "signals": [
+                        { "name": "GP%vsSector" },
+                        { "name": "NP%vsSector" },
+                        { "name": "LeverageVsSector" },
+                        { "name": "GearingVsSector" }
                     ]
                 },
                 {
-                    name: "Debt Service",
-                    signals: [
-                        { name: "EBIDTA:DSC" }
+                    "name": "Debt Service",
+                    "signals": [
+                        { "name": "EBIDTA:DSC" }
                     ]
                 },
                 {
-                    name: "Financial Stability",
-                    signals: [
-                        { name: "%ChgTurnover" },
-                        { name: "EBIDTA%ratio" },
-                        { name: "Stressed EBIDTA:DSC" },
-                        { name: "%ChgRetainedProfits" }
+                    "name": "Financial Stability",
+                    "signals": [
+                        { "name": "%ChgTurnover" },
+                        { "name": "EBIDTA%ratio" },
+                        { "name": "Stressed EBIDTA:DSC" },
+                        { "name": "%ChgRetainedProfits" }
                     ]
                 },
                 {
-                    name: "Gearing ratio",
-                    signals: [
-                        { name: "Gearing" },
+                    "name": "Gearing ratio",
+                    "signals": [
+                        { "name": "Gearing" }
                     ]
                 },
                 {
-                    name: "Leverage",
-                    signals: [
-                        { name: "Leverage" },
+                    "name": "Leverage",
+                    "signals": [
+                        { "name": "Leverage" }
                     ]
-                },
+                }
             ]
         },
         {
-            name: "Strength of Business Owner/Guarantor & Security Package",
-            subFactors: [
+            "name": "Strength of Business Owner/Guarantor & Security Package",
+            "subFactors": [
                 {
-                    name: "Financial Capacity & Willingness to Support",
-                    signals: [
-                        { name: "Sponsors Debt" },
-                        { name: "Sponsors Net Worth" },
-                        { name: "Sponsor Credit Score" },
-                        { name: "Business Interuption Insurance" },
+                    "name": "Financial Capacity & Willingness to Support",
+                    "signals": [
+                        { "name": "Sponsors Debt" },
+                        { "name": "Sponsors Net Worth" },
+                        { "name": "Sponsor Credit Score" },
+                        { "name": "Business Interuption Insurance" }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Transaction Characteristics ",
+            "subFactors": [
+                {
+                    "name": "Term of Loan vs. Purpose",
+                    "signals": [
+                        {
+                            "name": "TermvsPurpose"
+                        }
                     ]
                 }
             ]
@@ -536,7 +549,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
 
     return (
         <>
-            <Accordion style={{ marginTop: 1 }}>
+            <Accordion style={{ marginTop: 1, borderRadius: '100px' }}>
                 <AccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', }} />} sx={{
                     flexDirection: 'row-reverse',
                     '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
@@ -578,13 +591,13 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                                         disable={true}
                                     /> */}
                                     </Grid>
-                                    {show.id == i && show.toshow && 
-                                 <Grid item xs={12}
-                                 //style={{position : 'absolute', marginRight: '10px', float: 'right'}}
-                                 >
-                                <CriteriaEditor key={i} node={sig} path={`${path}.signals[${i}]`} />
-                                 </Grid>
-                                }
+                                    {show.id == i && show.toshow &&
+                                        <Grid item xs={12}
+                                        //style={{position : 'absolute', marginRight: '10px', float: 'right'}}
+                                        >
+                                            <CriteriaEditor key={i} node={sig} path={`${path}.signals[${i}]`} />
+                                        </Grid>
+                                    }
                                 </Grid>
                             ))}
 
