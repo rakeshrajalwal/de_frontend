@@ -497,8 +497,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
                         {/* strong */}
                         <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-between", marginBottom: '5px' }}>
-
-                            <Typography fontWeight={"bold"} color={"#009300"}>Strong</Typography>
+                            <Grid item xs={2}> <Typography fontWeight={"bold"} color={"#009300"}>Strong</Typography></Grid>
 
                             <TextField size="small" inputProps={{
                                 style: {
@@ -534,7 +533,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
                         <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-between", marginBottom: '5px' }}>
 
-                            <Typography fontWeight={"bold"} color={"#9DD566"}>Good</Typography>
+                           <Grid item xs={2}> <Typography fontWeight={"bold"} color={"#9DD566"}>Good</Typography></Grid>
 
                             <TextField size="small" inputProps={{
                                 style: {
@@ -562,7 +561,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
                         <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-between", marginBottom: '5px' }}>
 
-                            <Typography fontWeight={"bold"} color={"#FCC200"}>Satisfactory</Typography>
+                           <Grid item xs={2}> <Typography fontWeight={"bold"} color={"#FCC200"}>Satisfactory</Typography></Grid>
 
                             <TextField size="small" inputProps={{
                                 style: {
@@ -590,7 +589,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
                         <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-between", marginBottom: '5px' }}>
 
-                            <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography>
+                          <Grid item xs={2}>  <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography></Grid>
 
                             <TextField size="small" inputProps={{
                                 style: {
@@ -635,11 +634,11 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
     return (
         <Accordion style={{ marginTop: 1 }}>
 
-            <AccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', }} />}  sx={{
+            <AccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', }} />} sx={{
                 flexDirection: 'row-reverse',
                 '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-                  transform: 'rotate(90deg)',
-                },            
+                    transform: 'rotate(90deg)',
+                },
             }}>
                 <WeightEditor node={node} path={`${path}`} />
             </AccordionSummary>
