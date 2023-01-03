@@ -533,7 +533,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
         },
     ];
 
-    const [show, setShow] = useState({ "id": 0, "toshow": true });
+    const [show, setShow] = useState({ "id": -1, "toshow": true });
 
     return (
         <Accordion style={{ marginTop: 1 }}>
