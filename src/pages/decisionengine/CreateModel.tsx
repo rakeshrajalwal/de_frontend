@@ -8,10 +8,12 @@ import Select from '@mui/material/Select';
 import { number } from 'yup';
 import MenuItem from '@mui/material/MenuItem';
 import SettingsIcon from '@mui/icons-material/Settings';
+import Slider from '@mui/material/Slider';
 //import Policy from './components/Policy'
 
 // import './styles.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import { ShowChart } from '@mui/icons-material';
 
 export interface IProduct {
     name: string,
@@ -310,13 +312,16 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
     const dec = () => {
         helpers.setValue(parseInt(field.value) - 1)
     }
+
+    const NUMERIC_REGEX = /^[0-9\b.,]+$/;
     return (
         <Box sx={{ flexGrow: 1, margin: 2 }}>
             <div style={{ display: 'flex', gap: 10 }}>
                 <Paper style={{
                     flexGrow: 1,
-                    backgroundColor: "#434DB0",
-                    color: "white",
+                    backgroundColor: "#F5F5F5",
+                    // backgroundColor : '#434DB0',
+                    color: "black",
                     fontWeight: "bold",
                     padding: 10,
                     display: "flex",
@@ -336,8 +341,10 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
 
                 <div style={{ display: 'flex', gap: 2 }} onClick={e => e.stopPropagation()}>
                     <Button variant="contained" style={{ aspectRatio: 1, minWidth: "unset", backgroundColor: '#434DB0' }} size="small" onClick={dec} > - </Button>
-                    <TextField sx={{
-                        "& fieldset": { border: 'none' },
+                    <TextField sx={{ "& fieldset": { border: 'none' } }} onKeyDown={(event) => {
+                        if (!NUMERIC_REGEX.test(event.key)) {
+                            event.preventDefault();
+                        }
                     }}
                         inputProps={{
                             style: {
@@ -514,6 +521,25 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 }
 
 const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => {
+    const criteriaValueSlider = [
+        {
+            value: 0,
+            label: 'below',
+        },
+        {
+            value: 10,
+            label: '10',
+        },
+        {
+            value: 37,
+            label: '37',
+        },
+        {
+            value: 100,
+            label: 'above',
+        },
+    ];
+
     return (
         <Accordion style={{ marginTop: 1 }}>
 
@@ -522,7 +548,13 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                 '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
                     transform: 'rotate(90deg)',
                 },
-            }}>
+            }}
+            // onChange = {(e,expanded) => {
+            //     if(expanded){
+
+            //     }
+
+            >
                 <WeightEditor node={node} path={`${path}`} />
             </AccordionSummary>
 
@@ -537,6 +569,18 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                                 <Grid item xs={12}>
                                     <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
                                 </Grid>
+                                {/* <Grid item xs={4}>
+                                    {/* <Typography > show critera</Typography> 
+                                    <Slider
+                                        aria-label="Restricted values"
+                                        defaultValue={10}
+                                        //valueLabelFormat={valueLabelFormat}
+                                        //getAriaValueText={valuetext}
+                                        // step={null}
+                                        // valueLabelDisplay="auto"
+                                        marks={criteriaValueSlider}
+                                    />
+                                </Grid> */}
                                 <Grid item xs={12} >
                                     <CriteriaEditor node={sig} path={`${path}.signals[${i}]`} />
                                 </Grid>
@@ -546,7 +590,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                     </Grid>
                 </Grid>
             </AccordionDetails>
-        </Accordion>
+        </Accordion >
     )
 
 }
