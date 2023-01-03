@@ -174,7 +174,7 @@ const PolicyEditor = () => {
 
         <div className="">
             <Card >
-                <CardContent style={{ paddingLeft: '60px', paddingRight: '60px' }}>
+                <CardContent style={{ paddingLeft: '60px', paddingRight: '60px', paddingTop: '0px' }}>
 
                     <Grid container >
                         <Grid item md={1.5} xs={6}>
@@ -297,16 +297,16 @@ const PolicyEditor = () => {
                         <Grid item md={0.5} xs={0}></Grid>
                         <Grid item md={4} xs={12} mt={6}>
 
-                            <div style={{ display: 'flex', flexDirection: 'row'}}>
+                            <div style={{ display: 'flex', flexDirection: 'row' }}>
                                 <label style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <Field type="radio" {...isSecured} value="true" />
-                                    <Typography variant="h5"  style={{ fontWeight: 900 }} >
+                                    <Typography variant="h5" style={{ fontWeight: 900 }} >
                                         Secured
                                     </Typography>
                                 </label>
                                 <label style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: '10px' }}>
                                     <Field type="radio" {...isSecured} value="false" />
-                                    <Typography variant="h5"  style={{ fontWeight: 900 }} >
+                                    <Typography variant="h5" style={{ fontWeight: 900 }} >
                                         Unsecured
                                     </Typography>
                                 </label>
@@ -668,10 +668,15 @@ function CreateModel() {
                 return (
                     <Form>
                         <div className="">
+                            <div style={{marginBottom : '10px', display: 'flex', flexDirection : 'row'}}>
                             <Typography variant="h3">Create Model</Typography>
+                                <button type="submit" style={{ margin: '10px', float: 'right' }}>Submit</button>
+                                
+                            </div>
+
                             <PolicyEditor />
 
-                            <button type="submit" style={{ margin: '10px' }}>Submit</button>
+
                             {formik.values.factors.map((f, i) => (
                                 <NodeEditor key={i} node={f} path={`factors[${i}]`} />
                             ))}
