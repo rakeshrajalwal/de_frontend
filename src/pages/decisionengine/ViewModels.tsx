@@ -113,10 +113,13 @@ const datagridSx = {
   "& .MuiDataGrid-columnHeaderTitle": {
     fontWeight: 'bold',
   },
+  "& .MuiPaper-elevation1": {
+    backgroundColor: '#F3FBFE',
+  },
   "& .MuiDataGrid-cellContent": {
     wordWrap: 'break-word !important',
     textAlign: 'center',
-    fontSize: '1.9ex',
+    fontSize: '1.5ex',
     justifyContent: 'center',
   },
   "& .MuiDataGrid-cell": {
@@ -250,6 +253,7 @@ const columns: GridColDef[] = [
     headerName: "",
     // width: 100,
     flex: 5,
+    align: 'center',
     renderCell: (params) => {
       if (params.row.is_active) {
         return (<Chip label="Active" color="primary" variant="outlined" m={1} size='small' style={{ borderRadius: '0.3rem', blockSize: '2.6ex' }} />)
