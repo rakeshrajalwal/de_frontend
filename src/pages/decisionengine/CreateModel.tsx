@@ -535,17 +535,6 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
 
     const [show, setShow] = useState({ "id": 0, "toshow": true });
 
-    // const [showNone, setAllShowNone] = useState(false);
-
-    // function displayCriteriaEditor() {
-    //     setShow(show => ({
-            
-    //     }));
-
-    // }
-    //var element = [];
-    // const [hovered, setHovered] = useState(false);
-
     return (
         <Accordion style={{ marginTop: 1 }}>
 
@@ -580,9 +569,6 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                                     
                                     <SettingsIcon
                                         onClick={(e) => setShow({id : i, toshow: true})}
-                                    // onMouseEnter={() => setHovered(true)}
-                                    // onMouseLeave={() => setHovered(false)}
-
                                     />
                                     {/* <Slider
                                         aria-label="Restricted values"
@@ -595,10 +581,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                                         disable={true}
                                     /> */}
                                 </Grid>
-                                {/* <Grid item xs={12} style={{ display: 'none' }}> */}
                                 {show.id == i && show.toshow && <CriteriaEditor key={i} node={sig} path={`${path}.signals[${i}]`} />}
-                                {/* {element.map(item => <HoveredComponent key={i} node={sig} path={`${path}.signals[${i}]`} />)} */}
-                                {/* </Grid> */}
                             </Grid>
                         ))}
 
