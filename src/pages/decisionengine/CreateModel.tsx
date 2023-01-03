@@ -363,130 +363,6 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
     const [weakmax, meta8, helpers8] = useField(`${path}.criteria.weak.max`);
 
     return (
-        // <Grid sx={{ flexGrow: 1 }}>
-        //     <Card style={{ border: '2px solid blue', padding: '10', marginBottom: 10 }} >
-        //         <CardContent style={{ padding: '2px' }}>
-        //             <Typography style={{ textAlign: 'center' }} variant="h6" >
-        //                 Edit Criteria
-        //             </Typography>
-        //             <Grid container spacing={2}>
-        //                 <Grid item xs={12} spacing={2} style={{ gap: '2', marginBottom: '5px', display: 'flex', flexDirection : 'row'}}>
-
-        //                     <Typography  fontWeight={"bold"} color={"#009300"}>Satisfactory</Typography>
-
-        //                     <TextField size="small"
-        //                         inputProps={{
-        //                             style: {
-        //                                 paddingLeft: '8px',
-        //                                 textAlign: 'center'
-        //                             }
-        //                         }}
-        //                         style={{ width: 50, height: 39.5 }}
-        //                         {...strongmin}
-        //                     />
-        //                     <Typography mt={2}> or </Typography>
-
-
-        //                     <Select
-        //                         size="small"
-        //                         variant="outlined"
-        //                         style={{ width: 50, height: 39.5 }}
-        //                         {...strongmax}
-        //                     >
-        //                         <MenuItem value={'above'}>above</MenuItem>
-        //                         <MenuItem value={'below'}>below</MenuItem>
-        //                     </Select>
-
-
-        //                 </Grid>
-
-        //                 <Grid container style={{ gap: '2' }}>
-
-        //                     <Grid item md={4}>
-        //                         <Typography fontWeight={"bold"} color={"#009300"}>Strong</Typography>
-        //                     </Grid>
-        //                     <Grid item md={2}>
-        //                         <TextField size="small"
-        //                             {...strongmin}
-        //                         />
-        //                     </Grid>
-
-        //                     <Grid item md={1}><Typography mt={2}> or </Typography></Grid>
-
-        //                     <Grid item md={2}>
-        //                         <Select
-        //                             size="small"
-        //                             variant="outlined"
-        //                             {...strongmax}
-        //                         >
-        //                             <MenuItem value={'above'}>above</MenuItem>
-        //                             <MenuItem value={'below'}>below</MenuItem>
-        //                         </Select>
-        //                     </Grid>
-        //                 </Grid>
-
-        //                 {/* <Grid container style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-evenly", margin: 5 }}>
-
-        //         <Grid item md={2}>  <Typography fontWeight={"bold"} color={"#9DD566"}>Good</Typography></Grid>
-        //         <Grid item md={1}>
-        //             <TextField size="small"
-        //                 {...goodmin}
-        //             />
-        //         </Grid>
-
-
-        //         <Grid item md={2}><Typography mt={2}> to </Typography></Grid>
-
-        //         <Grid item md={2}>  <TextField size="small"
-        //             {...goodmax}
-        //         />
-        //         </Grid>
-        //     </Grid>
-
-        //     <Grid container style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-evenly", margin: 5 }}>
-
-        //         <Grid item md={2}>  <Typography fontWeight={"bold"} color={"#FCC200"}>Satisfactory</Typography></Grid>
-        //         <Grid item md={1}>  <TextField size="small"
-        //             {...satisfactorymin}
-        //         />
-        //         </Grid>
-
-
-        //         <Grid item md={2}><Typography mt={2}> to </Typography></Grid>
-
-        //         <Grid item md={2}>  <TextField size="small"
-        //             {...satisfactorymax}
-        //         />
-        //         </Grid>
-        //     </Grid>
-
-        //     <Grid container style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-evenly", margin: 5 }}>
-
-        //         <Grid item md={2}>  <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography></Grid>
-        //         <Grid item md={1}>  <TextField size="small"
-        //             {...weakmin}
-
-        //         />
-        //         </Grid>
-
-
-        //         <Grid item md={2}><Typography mt={2}> or </Typography></Grid>
-
-        //         <Grid item md={2}>
-        //             <Select
-        //                 size="small"
-        //                 variant="outlined"
-        //                 {...weakmax}
-        //             >
-        //                 <MenuItem value={'above'}>above</MenuItem>
-        //                 <MenuItem value={'below'}>below</MenuItem>
-        //             </Select>
-        //         </Grid>
-        //     </Grid> */}
-        //             </Grid>
-        //         </CardContent>
-        //     </Card>
-        // </Grid>
         <Grid container>
             <Grid item md={12}>
                 <Card style={{ border: '2px solid blue' }}>
@@ -496,7 +372,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                         </Typography>
 
                         {/* strong */}
-                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-between", marginBottom: '5px' }}>
+                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", marginBottom: '5px' }}>
                             <Grid item xs={2}> <Typography fontWeight={"bold"} color={"#009300"}>Strong</Typography></Grid>
 
                             <TextField size="small" inputProps={{
@@ -514,7 +390,8 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                                 <Select
                                     size='small'
                                     defaultValue={'above'}
-                                    variant="outlined" inputProps={{
+                                    variant="outlined" 
+                                    inputProps={{
                                         style: {
                                             paddingLeft: '2px',
                                             paddingRight: '2px',
@@ -531,7 +408,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
                         </Grid>
 
-                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-between", marginBottom: '5px' }}>
+                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", marginBottom: '5px' }}>
 
                            <Grid item xs={2}> <Typography fontWeight={"bold"} color={"#9DD566"}>Good</Typography></Grid>
 
@@ -559,7 +436,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
                         </Grid>
 
-                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-between", marginBottom: '5px' }}>
+                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", marginBottom: '5px' }}>
 
                            <Grid item xs={2}> <Typography fontWeight={"bold"} color={"#FCC200"}>Satisfactory</Typography></Grid>
 
@@ -587,7 +464,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
                         </Grid>
 
-                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-between", marginBottom: '5px' }}>
+                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", marginBottom: '5px' }}>
 
                           <Grid item xs={2}>  <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography></Grid>
 
