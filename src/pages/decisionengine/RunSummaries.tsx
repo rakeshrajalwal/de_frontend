@@ -34,6 +34,8 @@ const datagridSx = {
   "& .MuiDataGrid-cellContent": {
     wordWrap: 'break-word !important',
     textAlign: 'center',
+    fontSize: '1.9ex',
+    justifyContent: 'center',
   },
   "& .MuiDataGrid-cell": {
     whiteSpace: "normal !important",
@@ -42,7 +44,7 @@ const datagridSx = {
     border: 'solid',
   },
   "& .MuiDataGrid-toolbarContainer":{
-    backgroundColor: 'aliceblue',
+    backgroundColor: '#F7F9FC',
   }
 };
 
@@ -51,52 +53,43 @@ const columns: GridColDef[] = [
     field: "id",
     headerName: "ID",
     headerAlign: 'center',
-    flex: 2
+    flex: 2,
+    align: 'center'
   },
   {
     field: "name",
     headerName: "Name",
     headerAlign: 'center',
-    flex: 5
+    flex: 5,
+    align: 'center'
   },
   {
     field: "Product",
     headerName: "Product",
     headerAlign: 'center',
-    flex: 7
+    flex: 7,
+    align: 'center'
   },
   {
     field: "Customer",
     headerName: "Customer",
     headerAlign: 'center',
-    flex: 7
+    flex: 7,
+    align: 'center'
   },
   {
     field: "Loan Amount",
     headerName: "Loan Amount",
     headerAlign: 'center',
     flex: 5,
-    renderCell: (params) => {
-      return (
-        <div style = {{marginLeft: '3ex'}}>
-          {params.row['Loan Amount']}
-        </div>
-      )
-    }
-
+    align: 'center'
   },
   {
     field: "Term",
     headerName: "Term",
     headerAlign: 'center',
     flex: 2,
-    renderCell: (params) => {
-      return (
-        <div style = {{marginLeft: '2ex'}}>
-          {params.row.Term}
-        </div>
-      )
-    }
+    align: 'center'
   },
   {
     field: "Result",
@@ -109,7 +102,7 @@ const columns: GridColDef[] = [
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", marginLeft:'6ex' }}>
             <strong>{params.row.Result}</strong>
             <div style={{width:'1ex'}}></div>
-            <p style={{ color: "#64b964", border: '0.3ex solid #64b964', borderRadius: '3ex', padding: '0.3ex' }}>Strong</p>
+            <p style={{ color: "#64b964", border: '0.3ex solid #64b964', borderRadius: '3ex', padding: '0.35ex' }}>Strong</p>
           </div>
         )
       }
@@ -118,20 +111,21 @@ const columns: GridColDef[] = [
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", marginLeft:'6ex' }}>
             <strong>{params.row.Result}</strong>
             <div style={{width:'1ex'}}></div>
-            <p style={{ color: "#fecd29", border: '0.3ex solid #fecd29', borderRadius: '3ex', padding: '0.3ex' }}>Satisfactory</p>
+            <p style={{ color: "#fecd29", border: '0.3ex solid #fecd29', borderRadius: '3ex', padding: '0.35ex' }}>Satisfactory</p>
           </div>
         )
       }
       else if (params.row.Result > 5) {
         return (
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", marginLeft:'6ex' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", marginLeft:'6ex'}}>
             <p>Failed</p>
             <IconButton aria-label="Info" size="small">
-              <Info style = {{width:'2ex',}}/>
+              <Info style = {{fontSize:'1.8ex',}}/>
             </IconButton></div>
         )
       }
-    }
+    },
+    align: 'center'
   },
   {
     field: "time",
@@ -140,24 +134,25 @@ const columns: GridColDef[] = [
     flex: 7,
     renderCell: (params) => {
       if (params.row.flag < 1) {
-        return (<div style={{marginLeft:'4ex'}}>
+        return (<div>
           <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'row' }}>
             <Typography mt={2}>{params.row["Run By"]}</Typography>
             <IconButton aria-label="Monitor" size="small">
-              <Monitor  style = {{width:'2ex',}}/>
+              <Monitor/>
             </IconButton></div>
           <span>{params.row.time}</span>
         </div>)
       } else {
-        return (<div style={{marginLeft:'4ex'}}>
+        return (<div>
           <div style={{ display: 'flex', flexDirection: 'row', textAlign: 'center' }}>
             <Typography mt={2}>{params.row["Run By"]}</Typography>
             <IconButton aria-label="User" size="small">
-              <User style = {{width:'2ex',}}/>
+              <User/>
             </IconButton></div>
           <span>{params.row.time}</span></div>)
       }
-    }
+    },
+    align: 'center'
   },
   {
     field: "flag",
@@ -167,20 +162,21 @@ const columns: GridColDef[] = [
     renderCell: (params) => {
       if (params.row.Result >= 5) {
         return (<IconButton aria-label="Re-Run" size="small">
-          <RefreshCw style = {{width:'2ex',marginLeft:'2ex'}}/>
+          <RefreshCw />
         </IconButton>)
       } else {
         return (<IconButton aria-label="Preview" size="small">
-          <Eye style = {{width:'2ex',marginLeft:'2ex'}}/>
+          <Eye />
         </IconButton>)
       }
-    }
+    },
+    align: 'center'
   },
 ];
 
 function RunSummariesGrid() {
   return (
-    <Paper sx={{backgroundColor: 'aliceblue'}}>
+    <Paper>
 
       <div style={{ height: "25.2rem", width: "100%" }}>
         <DataGrid
@@ -211,35 +207,34 @@ function RunSummariesGrid() {
 function RunSummaries() {
   return (
     <React.Fragment>
-      <Helmet title="Run Summaries" />
-      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Helmet title="Run Summary" />
+      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',fontSize:'1.4ex' }}>
         <div>
           <Typography variant="h3" gutterBottom display="inline">
             Run Summaries
           </Typography>
         </div>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'right' }}>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left' }}>
             <p>Source: </p>
             <IconButton aria-label="Monitor" size="small">
-              <Monitor style = {{width:'2ex',}}/>
+              <Monitor/>
             </IconButton>
             <div style={{width:'1ex'}}></div>
             <p>DE User: </p>
             <IconButton aria-label="User" size="small">
-              <User style = {{width:'2ex',}}/>
+              <User />
             </IconButton>
           </div>
-          <Divider />
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left' }}>
             <p>Preview: </p>
             <IconButton aria-label="Preview" size="small">
-              <Eye style = {{width:'2ex',}}/>
+              <Eye />
             </IconButton>
             <div style={{width:'1ex'}}></div>
             <p>Re-Run: </p>
             <IconButton aria-label="ReRun" size="small">
-              <RefreshCw style = {{width:'2ex',}}/>
+              <RefreshCw/>
             </IconButton>
           </div>
         </div>
