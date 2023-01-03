@@ -9,7 +9,7 @@ export const data = [
 	"Result" : 2.4,
 	"Run By" : "Rohan Singh",
 	"flag" : 0,
-	"time" : "00:00:00 00:00:00"
+	"time" : "29-12-2022 00:00"
 	},
 	{
 	"id" : 102,
@@ -21,7 +21,7 @@ export const data = [
 	"Result" : 6,
 	"Run By" : "Rohan Singh",
 	"flag" : 1,
-	"time" : "29-12-2022 00:00:00"
+	"time" : "29-12-2022 00:00"
 	},
 		{
 	"id" : 103,
@@ -33,7 +33,7 @@ export const data = [
 	"Result" : 2.4,
 	"Run By" : "Rohan Singh",
 	"flag" : 1,
-	"time" : "00:00:00 00:00:00"
+	"time" : "29-12-2022 00:00"
 	},
 	{
 	"id" : 104,
@@ -45,7 +45,7 @@ export const data = [
 	"Result" : 4,
 	"Run By" : "Rohan Singh",
 	"flag" : 0,
-	"time" : "12:02:2022 00:00:00"
+	"time" : "12-02-2022 00:00"
 	},
 		{
 	"id" : 105,
@@ -57,7 +57,7 @@ export const data = [
 	"Result" : 2.4,
 	"Run By" : "Rohan Singh",
 	"flag" : 0,
-	"time" : "00:00:00 00:00:00"
+	"time" : "29-12-2022 00:00"
 	},
 	{
 	"id" : 106,
@@ -69,7 +69,7 @@ export const data = [
 	"Result" : 4,
 	"Run By" : "Rohan Singh",
 	"flag" : 1,
-	"time" : "00:00:00 00:00:00"
+	"time" : "29-12-2022 00:00"
 	},
 		{
 	"id" : 107,
@@ -81,7 +81,7 @@ export const data = [
 	"Result" : 2.4,
 	"Run By" : "Rohan Singh",
 	"flag" : 0,
-	"time" : "00:00:00 00:00:00"
+	"time" : "29-12-2022 00:00"
 	},
 	{
 	"id" : 108,
@@ -93,7 +93,7 @@ export const data = [
 	"Result" : 4,
 	"Run By" : "Rohan Singh",
 	"flag" : 0,
-	"time" : "00:00:00 00:00:00"
+	"time" : "29-12-2022 00:00"
 	},
 		{
 	"id" : 109,
@@ -105,7 +105,7 @@ export const data = [
 	"Result" : 2.4,
 	"Run By" : "Rohan Singh",
 	"flag" : 1,
-	"time" : "00:00:00 00:00:00"
+	"time" : "29-12-2022 00:00"
 	},
 	{
 	"id" : 110,
@@ -117,7 +117,7 @@ export const data = [
 	"Result" : 4,
 	"Run By" : "Rohan Singh",
 	"flag" : 0,
-	"time" : "00:00:00 00:00:00"
+	"time" : "29-12-2022 00:00"
 	},
 		{
 	"id" : 111,
@@ -129,7 +129,7 @@ export const data = [
 	"Result" : 2.4,
 	"Run By" : "Rohan Singh",
 	"flag" : 0,
-	"time" : "00:00:00 00:00:00"
+	"time" : "29-12-2022 00:00"
 	},
 	{
 	"id" : 112,
@@ -141,7 +141,7 @@ export const data = [
 	"Result" : 4,
 	"Run By" : "Rohan Singh",
 	"flag" : 0,
-	"time" : "00:00:00 00:00:00"
+	"time" : "29-12-2022 00:00"
 	},
 		{
 	"id" : 113,
@@ -153,7 +153,7 @@ export const data = [
 	"Result" : 2.4,
 	"Run By" : "Rohan Singh",
 	"flag" : 1,
-	"time" : "00:00:00 00:00:00"
+	"time" : "29-12-2022 00:00"
 	},
 	{
 	"id" : 114,
@@ -165,6 +165,6 @@ export const data = [
 	"Result" : 4,
 	"Run By" : "Rohan Singh",
 	"flag" : 1,
-	"time" : "00:00:00 00:00:00"
+	"time" : "29-12-2022 00:00"
 	},
 ]
