@@ -561,14 +561,12 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                         ))}
                         {node.signals?.map((sig, i) => (
                             <Grid container key={i} >
-                                <Grid item xs={6}>
+                                <Grid item xs={8}>
                                     <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
                                 </Grid>
                                 <Grid item xs={1.5}></Grid>
-                                <Grid item xs={4} mt={4}>
-                                    
-                                    <SettingsIcon
-                                        onClick={(e) => setShow({id : i, toshow: true})}
+                                <Grid item xs={2} mt={4}>
+                                    <SettingsIcon style={{ cursor: 'pointer' }} onClick={(e) => setShow({ id: i, toshow: true })}
                                     />
                                     {/* <Slider
                                         aria-label="Restricted values"
