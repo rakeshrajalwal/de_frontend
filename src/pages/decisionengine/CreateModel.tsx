@@ -136,9 +136,10 @@ const product: IProduct = {
 };
 
 interface INode {
-    name: string;
-    subFactors?: INode[];
-    signals?: INode[];
+    name: string,
+    subFactors?: INode[],
+    signals?: INode[],
+    weight: number | string,
 }
 
 const PolicyEditor = () => {
@@ -302,7 +303,7 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
     const [field, meta, helpers] = useField(`${path}.weight`);
 
     const inc = () => {
-        helpers.setValue(parseInt(field.value) + 1)
+        helpers.setValue((parseInt(field.value) || 0) + 1)
     }
 
     const dec = () => {
@@ -310,45 +311,34 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
     }
     return (
         <Box sx={{ flexGrow: 1, margin: 2 }}>
+            <div style={{ display: 'flex', gap:10 }}>
+                <Paper style={{
+                    flexGrow: 1,
+                    backgroundColor: "#434DB0",
+                    color: "white",
+                    fontWeight: "bold",
+                    padding: 10,
+                    display: "flex",
+                    alignItems: 'center'
+                }}>
+                    <Typography sx={{flexGrow:1}}>{node.name}</Typography>
+                    {!!(node.signals || node.subFactors) && (
+                        <div style={{
+                            width: 10,
+                            height: 10,
+                            borderRadius: "50%",
+                            border: "1px solid",
+                            backgroundColor: treeWeightsOkay(node) ? "green" : 'red'
+                        }}></div>
+                    )}
+                </Paper>
 
-            <Grid container spacing={5} {...rest}>
-
-                <Grid item xs={8}>
-                    <AccordionSummary >
-
-                        <Paper sx={{ flexGrow: 1 }} style={{
-                            backgroundColor: "#434DB0",
-                            color: "white",
-                            fontWeight: "bold",
-                            padding: 10
-                        }}>{node.name}</Paper>
-
-                    </AccordionSummary>
-                </Grid>
-
-                {/* </Accordion> */}
-                <Grid item xs={3} mt={2} >
-                    <Grid container style={{ display: 'flex', flexDirection: 'row', justifyContent: '', margin: 5 }}
-                    >
-                        {/* <Button
-                            variant="outlined"
-                            size="small"
-                            aria-label="Increment value"
-                            onClick={dec}
-                        > - </Button> */}
-
-                        <Grid item xs={6} > <TextField variant="outlined" size="small" {...field} />
-                        </Grid>
-
-                        {/* <Button
-                            variant="outlined"
-                            size="small"
-                            aria-label="Increment value"
-                            onClick={inc}
-                        > + </Button> */}
-                    </Grid>
-                </Grid>
-            </Grid>
+                <div style={{ display: 'flex', gap:2 }} onClick={e => e.stopPropagation()}>
+                    <Button variant="contained" style={{ aspectRatio:1, minWidth: "unset" }} size="small" onClick={dec} > - </Button>
+                    <TextField variant="outlined" size="small" {...field} style={{ width: 80, height:39.5, backgroundColor: "rgba(0, 0, 0, 0.06)" }} />
+                    <Button variant="contained" style={{ aspectRatio:1, minWidth: "unset"  }} size="small" onClick={inc} > + </Button>
+                </div>
+            </div>
         </Box >
     )
 }
@@ -459,7 +449,9 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
     return (
         <Accordion style={{ marginTop: 5 }}>
 
-            <WeightEditor node={node} path={`${path}`} />
+            <AccordionSummary>
+                <WeightEditor node={node} path={`${path}`} />
+            </AccordionSummary>
 
             <AccordionDetails>
                 <Grid container>
@@ -470,7 +462,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                         {node.signals?.map((sig, i) => (
                             <div key={i} style={{ display: 'flex', flexDirection: 'row' }}>
                                 <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
-                                <CriteriaEditor node={sig} path={`${path}.signals[${i}]`} />
+                                {/* <CriteriaEditor node={sig} path={`${path}.signals[${i}]`} /> */}
                                 <Grid item mt={6}>
                                     {/* <CriteriaEditor node={sig} path={`${path}.signals[${i}]`} /> */}
                                 </Grid>
@@ -513,7 +505,14 @@ function getEmptyModel(p: IProduct): IModel {
     }
 }
 
-function CreateModel() {
+const treeWeightsOkay = (node: INode):boolean => {
+    const children = node.subFactors || node.signals;
+    return lodash.isEmpty(children) ||
+        (lodash.isEmpty(children?.map(treeWeightsOkay).filter(x => !x))
+            && (lodash.sumBy(children, node => parseInt(node.weight.toString())) === 100));
+}
+
+function CreateModel() {    
     return (
         <Formik
             initialValues={getEmptyModel(product)}
