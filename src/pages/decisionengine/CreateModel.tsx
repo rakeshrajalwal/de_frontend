@@ -174,11 +174,11 @@ const PolicyEditor = () => {
 
         <div className="">
             <Card >
-                <CardContent>
+                <CardContent style={{ paddingLeft: '60px', paddingRight: '60px' }}>
 
                     <Grid container >
                         <Grid item md={1.5} xs={6}>
-                            <Typography variant="h6" mt={8} >
+                            <Typography mt={8} variant="h5" style={{ fontWeight: 900 }}>
                                 Product:
                             </Typography>
                         </Grid>
@@ -196,7 +196,7 @@ const PolicyEditor = () => {
 
                         <Grid item md={0.5} xs={0}></Grid>
                         <Grid item md={1.5} xs={6}  >
-                            <Typography variant="h6" mt={8} >
+                            <Typography mt={8} variant="h5" style={{ fontWeight: 900 }} >
                                 Model:
                             </Typography>
                         </Grid>
@@ -216,12 +216,12 @@ const PolicyEditor = () => {
 
                         <Grid item md={6} >
                             <Grid container>
-                                <Grid item md={3} xs={4}>
-                                    <Typography variant="h6" mt={8} >
+                                <Grid item md={3} xs={4} gap={2}>
+                                    <Typography variant="h5" mt={8} style={{ fontWeight: 900 }} >
                                         Loan Range (£):
                                     </Typography>
                                 </Grid>
-                                <Grid item md={6} xs={6} mt={6} style={{ display: 'flex', flexDirection: 'row', gap: 5 }} >
+                                <Grid item md={6} xs={6} mt={3} style={{ display: 'flex', flexDirection: 'row', gap: 5, marginLeft: '10px' }} >
                                     <TextField
                                         label="min"
                                         variant="standard"
@@ -245,11 +245,11 @@ const PolicyEditor = () => {
                         <Grid item md={6} >
                             <Grid container>
                                 <Grid item md={3} xs={4}>
-                                    <Typography variant="h6" mt={8} >
+                                    <Typography mt={8} variant="h5" style={{ fontWeight: 900 }}>
                                         Term:
                                     </Typography>
                                 </Grid>
-                                <Grid item md={6} xs={6} mt={6} style={{ display: 'flex', flexDirection: 'row', gap: 5 }} >
+                                <Grid item md={6} xs={6} mt={3} style={{ display: 'flex', flexDirection: 'row', gap: 5 }} >
                                     <TextField
                                         label="min"
                                         variant="standard"
@@ -263,9 +263,10 @@ const PolicyEditor = () => {
                                         label="max"
                                         variant="standard"
                                         {...termMax}
+                                        style={{ textAlign: 'center' }}
 
                                     />
-
+                                    <Typography mt={6} variant="subtitle1">months</Typography>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -274,12 +275,12 @@ const PolicyEditor = () => {
                     {/* purpose */}
                     <Grid container >
 
-                        <Grid item md={1} xs={6}>
-                            <Typography variant="h6" mt={8} >
+                        <Grid item md={1.5} xs={6} mt={5}>
+                            <Typography variant="h5" style={{ fontWeight: 900 }}>
                                 Purpose:
                             </Typography>
                         </Grid>
-                        <Grid item md={4} xs={6} mt={6}>
+                        <Grid item md={4} xs={6} mt={3}>
                             <Select
                                 fullWidth
                                 variant="standard"
@@ -293,18 +294,23 @@ const PolicyEditor = () => {
 
 
                         {/* //secured */}
-                        <Grid item md={1} xs={0}></Grid>
+                        <Grid item md={0.5} xs={0}></Grid>
                         <Grid item md={4} xs={12} mt={6}>
 
-                            <label>
-                                <Field type="radio" {...isSecured} value="true" />
-                                Secured
-                            </label>
-                            <label>
-                                <Field type="radio" {...isSecured} value="false" />
-                                Unsecured
-                            </label>
-
+                            <div style={{ display: 'flex', flexDirection: 'row'}}>
+                                <label style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <Field type="radio" {...isSecured} value="true" />
+                                    <Typography variant="h5"  style={{ fontWeight: 900 }} >
+                                        Secured
+                                    </Typography>
+                                </label>
+                                <label style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: '10px' }}>
+                                    <Field type="radio" {...isSecured} value="false" />
+                                    <Typography variant="h5"  style={{ fontWeight: 900 }} >
+                                        Unsecured
+                                    </Typography>
+                                </label>
+                            </div>
                         </Grid>
 
                     </Grid>
