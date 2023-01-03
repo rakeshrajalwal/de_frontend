@@ -6,13 +6,17 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import {
   Chip as MuiChip,
   Paper as MuiPaper,
+  Button as MuiButton,
   Typography,
+  IconButton,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing, } from "@mui/system";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AccessTime from '@mui/icons-material/AccessTime';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import modelsJson from './getmodels.json';
 
-interface model {
+export interface model {
   id: number;
   name: string;
   product: string;
@@ -29,9 +33,78 @@ interface model {
   last_run_date: string;
 }
 
+export interface IProduct {
+  name: string,
+  factors: {
+    name: string,
+    subFactors: {
+      name: string,
+      signals: {
+        name: string
+      }[]
+    }[]
+  }[]
+}
+
+
+
+export interface IRange {
+  min: number | string,
+  max: number | string,
+  _id: string,
+}
+
+export interface ICriteria {
+  weak: IRange,
+  satisfactory: IRange,
+  good: IRange,
+  strong: IRange
+}
+
+export interface IPolicy {
+  name: string,
+  loanRange: IRange,
+  loanTermInMonths: IRange,
+  loanPurpose: string[],
+  isSecured: boolean
+}
+
+export interface IModel {
+  __v: number | string,
+  _id: string,
+  name: string,
+  product: string,
+  policy: IPolicy,
+  factors: {
+    _id: string,
+    name: string,
+    weight: number | string,
+    subFactors: {
+      _id: string,
+      name: string,
+      weight: number | string,
+      signals: {
+        _id: string,
+        name: string,
+        weight: number | string,
+        criteria: ICriteria,
+        overallWeight: number | string,
+      }[]
+    }[]
+  }[]
+}
+
 const Chip = styled(MuiChip)(spacing);
 
+const Button = styled(MuiButton)(spacing);
+
 const Paper = styled(MuiPaper)(spacing);
+
+const paperSx = {
+  "& .css-1bpvgg-MuiPaper-root": {
+    padding: '10rem',
+  }
+}
 
 const datagridSx = {
   "& .MuiDataGrid-columnHeaders": {
@@ -43,13 +116,22 @@ const datagridSx = {
   "& .MuiDataGrid-cellContent": {
     wordWrap: 'break-word !important',
     textAlign: 'center',
+    fontSize: '1.9ex',
+    justifyContent: 'center',
   },
   "& .MuiDataGrid-cell": {
     whiteSpace: 'normal !important',
   },
   "& .MuiDataGrid-toolbarQuickFilter": {
     border: 'solid',
-  }
+  },
+  "& .MuiChip-label": {
+    textAlign: 'center',
+    fontSize: '1.8ex',
+  },
+  "& .MuiDataGrid-toolbarContainer": {
+    backgroundColor: '#F7F9FC',
+  },
 };
 
 const columns: GridColDef[] = [
@@ -63,99 +145,116 @@ const columns: GridColDef[] = [
   {
     field: "status",
     headerName: "",
-    flex: 0.5,
+    flex: 0.2,
     headerAlign: 'center',
+    align: 'center',
     renderCell: (params) => {
       if (params.row.status == 'approved') {
-        return (<CheckCircleIcon style={{ color: 'green' }} />)
+        return (<CheckCircleIcon style={{ color: 'green', fontSize: '2.5ex' }} />)
       } else if (params.row.status == 'unapproved') {
-        return (<CancelIcon style={{ color: 'red' }} />)
+        return (<CancelIcon style={{ color: 'red', fontSize: '2.5ex' }} />)
       } else {
-        return (<AccessTimeIcon style={{ color: 'orange' }} />)
+        return (<AccessTime style={{ color: 'orange', fontSize: '2.5ex' }} />)
       }
     }
   },
   {
     field: "name",
     headerName: "Name",
+    description: "Name",
     // width: 150,
     flex: 7,
-    description: "name",
     headerAlign: 'center',
+    align: 'center',
   },
   {
     field: "product",
     headerName: "Product",
+    description: "Product",
     // width: 200,
     flex: 7,
-    description: "product",
     headerAlign: 'center',
+    align: 'center',
   },
   {
     field: "loan_range",
     headerName: "Loan Range",
+    description: "Loan Range",
     // width: 150,
-    flex: 8,
+    flex: 7,
     headerAlign: 'center',
+    align: 'center',
   },
   {
     field: "term",
     headerName: "Term",
+    description: "Term",
     // width: 75,
     flex: 4,
     headerAlign: 'center',
+    align: 'center',
   },
   {
     field: "purpose",
     headerName: "Purpose",
+    description: "Purpose",
     // width: 100,
     flex: 5,
     headerAlign: 'center',
+    align: 'center',
   },
   {
     field: "secured",
     headerName: "Secured",
+    description: "Secured",
     // width: 75,
-    flex: 4,
+    flex: 5,
     headerAlign: 'center',
+    align: 'center',
   },
   {
     field: "runs",
     headerName: "Runs",
+    description: "Runs",
     // width: 75,
     flex: 4,
     headerAlign: 'center',
+    align: 'center',
   },
   {
     field: "last_run",
     headerName: "Last Run",
+    description: "Last Run",
     // width: 75,
     flex: 7,
     headerAlign: 'center',
+    align: 'center',
     renderCell: (params) => {
-      return (<div style={{ textAlign: 'center' }}>{params.row.last_run}<br />{params.row.last_run_date} </div>);
+      return (<div style={{ textAlign: 'center', fontSize: '1.6ex' }}>{params.row.last_run}<br /><span style={{ fontSize: '1.5ex' }}>{params.row.last_run_date}</span></div>);
     }
   },
   {
     field: "created_by",
     headerName: "Created By",
+    description: "Created By",
     // width: 120,
     flex: 7,
     headerAlign: 'center',
+    align: 'center',
     renderCell: (params) => {
-      return (<div style={{ textAlign: 'center' }}>{params.row.created_by}<br />{params.row.created_on} </div>);
+      return (<div style={{ textAlign: 'center', fontSize: '1.6ex' }}>{params.row.created_by}<br /><span style={{ fontSize: '1.5ex' }}>{params.row.created_on} </span></div>);
     }
   },
   {
     field: "is_active",
     headerName: "",
     // width: 100,
-    flex: 6,
+    flex: 5,
     renderCell: (params) => {
       if (params.row.is_active) {
-        return (<Chip label="Active" color="primary" variant="outlined" m={1} size='small' style={{ borderRadius: '8rem', }} />)
+        return (<Chip label="Active" color="primary" variant="outlined" m={1} size='small' style={{ borderRadius: '0.3rem', blockSize: '2.8ex' }} />)
       } else {
-        return (<Chip label="Inactive" variant="outlined" m={1} size='small' style={{ borderRadius: '8rem', }} />)
+        return (<Chip label="Inactive" variant="outlined" m={1} size='small' style={{ borderRadius: '0.3rem', blockSize: '2.8ex' }} />)
       }
     }
   },
@@ -175,8 +274,8 @@ const modelRows: model[] = [
 
 function ModelDataGrid() {
   return (
-    <Paper>
-      <div style={{ height: "26rem", width: "100%" }}>
+    <Paper sx={paperSx}>
+      <div style={{ height: "25.2rem", width: "100%" }}>
         <DataGrid
           sx={datagridSx}
           // rowsPerPageOptions={[5, 10, 25]}
@@ -206,9 +305,37 @@ function ViewModels() {
   return (
     <React.Fragment>
       <Helmet title="Models" />
-      <Typography variant="h3" gutterBottom display="inline">
-        Models
-      </Typography>
+      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', fontSize: '1.4ex' }}>
+        <div>
+          <Typography variant="h3" gutterBottom display="inline">
+            Models
+          </Typography>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'right' }}>
+          <div style={{ display: 'flex', justifyContent: 'right' }}>
+            <Button mr={1} variant="contained" color="primary">
+              Create Model
+            </Button>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left' }}>
+            <IconButton aria-label="Monitor" size="small">
+              <CheckCircleIcon style={{ color: 'green', fontSize: '1.8ex' }} />
+            </IconButton>
+            <p>Approved </p>
+
+            <IconButton aria-label="User" size="small">
+              <CancelIcon style={{ color: 'red', fontSize: '1.8ex' }} />
+            </IconButton>
+            <p>Unapproved </p>
+
+            <IconButton aria-label="Preview" size="small">
+              <AccessTime style={{ color: 'orange', fontSize: '1.8ex' }} />
+            </IconButton>
+            <p>In-Review </p>
+
+          </div>
+        </div>
+      </div>
 
       <ModelDataGrid />
     </React.Fragment>
