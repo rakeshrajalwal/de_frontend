@@ -382,7 +382,8 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                                     textAlign: 'center',
                                     width: '50px'
                                 }
-                            }} />
+                            }}
+                                {...strongmin} />
 
                             <Typography mt={2}> or </Typography>
 
@@ -390,7 +391,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                                 <Select
                                     size='small'
                                     defaultValue={'above'}
-                                    variant="outlined" 
+                                    variant="outlined"
                                     inputProps={{
                                         style: {
                                             paddingLeft: '2px',
@@ -399,7 +400,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                                             width: '50px'
                                         }
                                     }}
-
+                                    {...strongmax}
                                 >
                                     <MenuItem value={`above`}>above</MenuItem>
                                     <MenuItem value={`below`}>below</MenuItem>
@@ -410,7 +411,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
                         <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", marginBottom: '5px' }}>
 
-                           <Grid item xs={2}> <Typography fontWeight={"bold"} color={"#9DD566"}>Good</Typography></Grid>
+                            <Grid item xs={2}> <Typography fontWeight={"bold"} color={"#9DD566"}>Good</Typography></Grid>
 
                             <TextField size="small" inputProps={{
                                 style: {
@@ -419,7 +420,8 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                                     textAlign: 'center',
                                     width: '50px'
                                 }
-                            }} />
+                            }}
+                                {...goodmin} />
 
                             <Typography mt={2}> to </Typography>
 
@@ -431,14 +433,15 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                                         textAlign: 'center',
                                         width: '50px'
                                     }
-                                }} />
+                                }}
+                                    {...goodmax} />
                             </Grid>
 
                         </Grid>
 
                         <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", marginBottom: '5px' }}>
 
-                           <Grid item xs={2}> <Typography fontWeight={"bold"} color={"#FCC200"}>Satisfactory</Typography></Grid>
+                            <Grid item xs={2}> <Typography fontWeight={"bold"} color={"#FCC200"}>Satisfactory</Typography></Grid>
 
                             <TextField size="small" inputProps={{
                                 style: {
@@ -447,7 +450,8 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                                     textAlign: 'center',
                                     width: '50px'
                                 }
-                            }} />
+                            }}
+                                {...satisfactorymin} />
 
                             <Typography mt={2}> to </Typography>
 
@@ -459,14 +463,15 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                                         textAlign: 'center',
                                         width: '50px'
                                     }
-                                }} />
+                                }}
+                                    {...satisfactorymax} />
                             </Grid>
 
                         </Grid>
 
                         <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", marginBottom: '5px' }}>
 
-                          <Grid item xs={2}>  <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography></Grid>
+                            <Grid item xs={2}>  <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography></Grid>
 
                             <TextField size="small" inputProps={{
                                 style: {
@@ -475,7 +480,8 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                                     textAlign: 'center',
                                     width: '50px'
                                 }
-                            }} />
+                            }}
+                                {...weakmin} />
 
                             <Typography mt={2}> or </Typography>
 
@@ -491,7 +497,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                                             width: '50px'
                                         }
                                     }}
-
+                                    {...weakmax}
                                 >
                                     <MenuItem value={`above`}>above</MenuItem>
                                     <MenuItem value={`below`}>below</MenuItem>
