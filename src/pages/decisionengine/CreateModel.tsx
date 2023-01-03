@@ -311,7 +311,7 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
     }
     return (
         <Box sx={{ flexGrow: 1, margin: 2 }}>
-            <div style={{ display: 'flex', gap:10 }}>
+            <div style={{ display: 'flex', gap: 10 }}>
                 <Paper style={{
                     flexGrow: 1,
                     backgroundColor: "#434DB0",
@@ -321,7 +321,7 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
                     display: "flex",
                     alignItems: 'center'
                 }}>
-                    <Typography sx={{flexGrow:1}}>{node.name}</Typography>
+                    <Typography sx={{ flexGrow: 1 }}>{node.name}</Typography>
                     {!!(node.signals || node.subFactors) && (
                         <div style={{
                             width: 10,
@@ -333,10 +333,18 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
                     )}
                 </Paper>
 
-                <div style={{ display: 'flex', gap:2 }} onClick={e => e.stopPropagation()}>
-                    <Button variant="contained" style={{ aspectRatio:1, minWidth: "unset" }} size="small" onClick={dec} > - </Button>
-                    <TextField variant="outlined" size="small" {...field} style={{ width: 80, height:39.5, backgroundColor: "rgba(0, 0, 0, 0.06)" }} />
-                    <Button variant="contained" style={{ aspectRatio:1, minWidth: "unset"  }} size="small" onClick={inc} > + </Button>
+                <div style={{ display: 'flex', gap: 2 }} onClick={e => e.stopPropagation()}>
+                    <Button variant="contained" style={{ aspectRatio: 1, minWidth: "unset", backgroundColor: '#434DB0' }} size="small" onClick={dec} > - </Button>
+                    <TextField sx={{
+                        "& fieldset": { border: 'none' },
+                    }}
+                        inputProps={{
+                            style: {
+                                textAlign: 'center'
+                            }
+                        }}
+                        variant="outlined" size="small" {...field} style={{ width: 80, height: 39.5, backgroundColor: "rgba(0, 0, 0, 0.06)" }} />
+                    <Button variant="contained" style={{ aspectRatio: 1, minWidth: "unset", backgroundColor: '#434DB0' }} size="small" onClick={inc} > + </Button>
                 </div>
             </div>
         </Box >
@@ -354,100 +362,277 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
     const [weakmax, meta8, helpers8] = useField(`${path}.criteria.weak.max`);
 
     return (
-        <Grid container >
-            <Card style={{ border: '2px solid blue', padding: '5px' }} sx={{ flexGrow: 1 }}>
-                <CardContent>
-                    <Typography style={{ textAlign: 'center' }} variant="h6" gutterBottom>
-                        Edit Criteria
-                    </Typography>
+        // <Grid sx={{ flexGrow: 1 }}>
+        //     <Card style={{ border: '2px solid blue', padding: '10', marginBottom: 10 }} >
+        //         <CardContent style={{ padding: '2px' }}>
+        //             <Typography style={{ textAlign: 'center' }} variant="h6" >
+        //                 Edit Criteria
+        //             </Typography>
+        //             <Grid container spacing={2}>
+        //                 <Grid item xs={12} spacing={2} style={{ gap: '2', marginBottom: '5px', display: 'flex', flexDirection : 'row'}}>
 
-                    <Grid gap={2} style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-evenly", margin: 5 }}>
+        //                     <Typography  fontWeight={"bold"} color={"#009300"}>Satisfactory</Typography>
 
-                        <Typography fontWeight={"bold"} color={"#009300"}>Strong</Typography>
-
-                        <TextField size="small"
-
-                            {...strongmin}
-                        />
-
-                        <Typography mt={2}> or </Typography>
-
-                        <Select
-                            size="small"
-                            variant="outlined"
-                            {...strongmax}
-                        >
-                            <MenuItem value={'above'}>above</MenuItem>
-                            <MenuItem value={'below'}>below</MenuItem>
-                        </Select>
-                    </Grid>
-
-                    <Grid gap={2} style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", margin: 5 }}>
-
-                        <Typography fontWeight={"bold"} color={"#9DD566"}>Good</Typography>
-
-                        <TextField size="small"
-                            {...goodmin}
-
-                        />
-
-                        <Typography mt={2}> to </Typography>
-
-                        <TextField size="small"
-                            {...goodmax}
-                        />
-                    </Grid>
+        //                     <TextField size="small"
+        //                         inputProps={{
+        //                             style: {
+        //                                 paddingLeft: '8px',
+        //                                 textAlign: 'center'
+        //                             }
+        //                         }}
+        //                         style={{ width: 50, height: 39.5 }}
+        //                         {...strongmin}
+        //                     />
+        //                     <Typography mt={2}> or </Typography>
 
 
-                    <Grid gap={2} style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", margin: 5 }}>
-
-                        <Typography fontWeight={"bold"} color={"#FCC200"}>Satisfactory</Typography>
-
-                        <TextField size="small"
-                            {...satisfactorymin}
-                        />
-
-                        <Typography mt={2}> to </Typography>
-
-                        <TextField size="small"
-                            {...satisfactorymax}
-                        />
-
-                    </Grid>
+        //                     <Select
+        //                         size="small"
+        //                         variant="outlined"
+        //                         style={{ width: 50, height: 39.5 }}
+        //                         {...strongmax}
+        //                     >
+        //                         <MenuItem value={'above'}>above</MenuItem>
+        //                         <MenuItem value={'below'}>below</MenuItem>
+        //                     </Select>
 
 
-                    <Grid gap={2} style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", margin: 5 }}>
+        //                 </Grid>
 
-                        <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography>
+        //                 <Grid container style={{ gap: '2' }}>
 
-                        <TextField size="small"
-                            {...weakmin}
+        //                     <Grid item md={4}>
+        //                         <Typography fontWeight={"bold"} color={"#009300"}>Strong</Typography>
+        //                     </Grid>
+        //                     <Grid item md={2}>
+        //                         <TextField size="small"
+        //                             {...strongmin}
+        //                         />
+        //                     </Grid>
 
-                        />
+        //                     <Grid item md={1}><Typography mt={2}> or </Typography></Grid>
 
-                        <Typography mt={2}> or </Typography>
+        //                     <Grid item md={2}>
+        //                         <Select
+        //                             size="small"
+        //                             variant="outlined"
+        //                             {...strongmax}
+        //                         >
+        //                             <MenuItem value={'above'}>above</MenuItem>
+        //                             <MenuItem value={'below'}>below</MenuItem>
+        //                         </Select>
+        //                     </Grid>
+        //                 </Grid>
 
-                        <Select
-                            size="small"
-                            variant="outlined"
-                            {...weakmax}
-                        >
-                            <MenuItem value={`above`}>above</MenuItem>
-                            <MenuItem value={`below`}>below</MenuItem>
-                        </Select>
+        //                 {/* <Grid container style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-evenly", margin: 5 }}>
 
-                    </Grid>
-                </CardContent>
-            </Card>
-            <svg data-testid="SettingsIcon"></svg>
-        </Grid>
+        //         <Grid item md={2}>  <Typography fontWeight={"bold"} color={"#9DD566"}>Good</Typography></Grid>
+        //         <Grid item md={1}>
+        //             <TextField size="small"
+        //                 {...goodmin}
+        //             />
+        //         </Grid>
 
+
+        //         <Grid item md={2}><Typography mt={2}> to </Typography></Grid>
+
+        //         <Grid item md={2}>  <TextField size="small"
+        //             {...goodmax}
+        //         />
+        //         </Grid>
+        //     </Grid>
+
+        //     <Grid container style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-evenly", margin: 5 }}>
+
+        //         <Grid item md={2}>  <Typography fontWeight={"bold"} color={"#FCC200"}>Satisfactory</Typography></Grid>
+        //         <Grid item md={1}>  <TextField size="small"
+        //             {...satisfactorymin}
+        //         />
+        //         </Grid>
+
+
+        //         <Grid item md={2}><Typography mt={2}> to </Typography></Grid>
+
+        //         <Grid item md={2}>  <TextField size="small"
+        //             {...satisfactorymax}
+        //         />
+        //         </Grid>
+        //     </Grid>
+
+        //     <Grid container style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-evenly", margin: 5 }}>
+
+        //         <Grid item md={2}>  <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography></Grid>
+        //         <Grid item md={1}>  <TextField size="small"
+        //             {...weakmin}
+
+        //         />
+        //         </Grid>
+
+
+        //         <Grid item md={2}><Typography mt={2}> or </Typography></Grid>
+
+        //         <Grid item md={2}>
+        //             <Select
+        //                 size="small"
+        //                 variant="outlined"
+        //                 {...weakmax}
+        //             >
+        //                 <MenuItem value={'above'}>above</MenuItem>
+        //                 <MenuItem value={'below'}>below</MenuItem>
+        //             </Select>
+        //         </Grid>
+        //     </Grid> */}
+        //             </Grid>
+        //         </CardContent>
+        //     </Card>
+        // </Grid>
+        <Grid container>
+            <Grid item md={12}>
+                <Card style={{ border: '2px solid blue' }}>
+                    <CardContent >
+                        <Typography style={{ textAlign: 'center' }} variant="h6" gutterBottom>
+                            Edit Criteria
+                        </Typography>
+
+                        {/* strong */}
+                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-between", marginBottom: '5px' }}>
+
+                            <Typography fontWeight={"bold"} color={"#009300"}>Strong</Typography>
+
+                            <TextField size="small" inputProps={{
+                                style: {
+                                    paddingLeft: '2px',
+                                    paddingRight: '2px',
+                                    textAlign: 'center',
+                                    width: '50px'
+                                }
+                            }} />
+
+                            <Typography mt={2}> or </Typography>
+
+                            <Grid item md={3}>
+                                <Select
+                                    size='small'
+                                    defaultValue={'above'}
+                                    variant="outlined" inputProps={{
+                                        style: {
+                                            paddingLeft: '2px',
+                                            paddingRight: '2px',
+                                            textAlign: 'center',
+                                            width: '50px'
+                                        }
+                                    }}
+
+                                >
+                                    <MenuItem value={`above`}>above</MenuItem>
+                                    <MenuItem value={`below`}>below</MenuItem>
+                                </Select>
+                            </Grid>
+
+                        </Grid>
+
+                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-between", marginBottom: '5px' }}>
+
+                            <Typography fontWeight={"bold"} color={"#9DD566"}>Good</Typography>
+
+                            <TextField size="small" inputProps={{
+                                style: {
+                                    paddingLeft: '2px',
+                                    paddingRight: '2px',
+                                    textAlign: 'center',
+                                    width: '50px'
+                                }
+                            }} />
+
+                            <Typography mt={2}> to </Typography>
+
+                            <Grid item md={3}>
+                                <TextField size="small" inputProps={{
+                                    style: {
+                                        paddingLeft: '2px',
+                                        paddingRight: '2px',
+                                        textAlign: 'center',
+                                        width: '50px'
+                                    }
+                                }} />
+                            </Grid>
+
+                        </Grid>
+
+                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-between", marginBottom: '5px' }}>
+
+                            <Typography fontWeight={"bold"} color={"#FCC200"}>Satisfactory</Typography>
+
+                            <TextField size="small" inputProps={{
+                                style: {
+                                    paddingLeft: '2px',
+                                    paddingRight: '2px',
+                                    textAlign: 'center',
+                                    width: '50px'
+                                }
+                            }} />
+
+                            <Typography mt={2}> to </Typography>
+
+                            <Grid item md={3}>
+                                <TextField size="small" inputProps={{
+                                    style: {
+                                        paddingLeft: '2px',
+                                        paddingRight: '2px',
+                                        textAlign: 'center',
+                                        width: '50px'
+                                    }
+                                }} />
+                            </Grid>
+
+                        </Grid>
+
+                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-between", marginBottom: '5px' }}>
+
+                            <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography>
+
+                            <TextField size="small" inputProps={{
+                                style: {
+                                    paddingLeft: '2px',
+                                    paddingRight: '2px',
+                                    textAlign: 'center',
+                                    width: '50px'
+                                }
+                            }} />
+
+                            <Typography mt={2}> or </Typography>
+
+                            <Grid item md={3}>
+                                <Select
+                                    size='small'
+                                    defaultValue={'below'}
+                                    variant="outlined" inputProps={{
+                                        style: {
+                                            paddingLeft: '2px',
+                                            paddingRight: '2px',
+                                            textAlign: 'center',
+                                            width: '50px'
+                                        }
+                                    }}
+
+                                >
+                                    <MenuItem value={`above`}>above</MenuItem>
+                                    <MenuItem value={`below`}>below</MenuItem>
+                                </Select>
+                            </Grid>
+
+                        </Grid>
+
+                    </CardContent>
+                </Card>
+            </Grid>
+        </Grid >
     )
 }
 
 const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => {
     return (
-        <Accordion style={{ marginTop: 5 }}>
+        <Accordion style={{ marginTop: 1 }}>
 
             <AccordionSummary>
                 <WeightEditor node={node} path={`${path}`} />
@@ -455,18 +640,19 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
 
             <AccordionDetails>
                 <Grid container>
-                    <Grid item xs={8} style={{ paddingLeft: 50 }}>
+                    <Grid item xs={8} style={{ paddingLeft: 25 }}>
                         {node.subFactors?.map((sf, i) => (
                             <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`} />
                         ))}
                         {node.signals?.map((sig, i) => (
-                            <div key={i} style={{ display: 'flex', flexDirection: 'row' }}>
-                                <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
-                                {/* <CriteriaEditor node={sig} path={`${path}.signals[${i}]`} /> */}
-                                <Grid item mt={6}>
-                                    {/* <CriteriaEditor node={sig} path={`${path}.signals[${i}]`} /> */}
+                            <Grid container key={i} >
+                                <Grid item xs={12}>
+                                    <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
                                 </Grid>
-                            </div>
+                                <Grid item xs={12} >
+                                    <CriteriaEditor node={sig} path={`${path}.signals[${i}]`} />
+                                </Grid>
+                            </Grid>
                         ))}
 
                     </Grid>
@@ -490,13 +676,13 @@ function getEmptyModel(p: IProduct): IModel {
         },
         factors: p.factors.map(f => ({
             name: f.name,
-            weight: '',
+            weight: '0',
             subFactors: f.subFactors.map(sf => ({
                 name: sf.name,
-                weight: '',
+                weight: '0',
                 signals: sf.signals.map(sig => ({
                     name: sig.name,
-                    weight: '',
+                    weight: '0',
                     criteria: Criterias.type
 
                 }))
@@ -505,14 +691,14 @@ function getEmptyModel(p: IProduct): IModel {
     }
 }
 
-const treeWeightsOkay = (node: INode):boolean => {
+const treeWeightsOkay = (node: INode): boolean => {
     const children = node.subFactors || node.signals;
     return lodash.isEmpty(children) ||
         (lodash.isEmpty(children?.map(treeWeightsOkay).filter(x => !x))
             && (lodash.sumBy(children, node => parseInt(node.weight.toString())) === 100));
 }
 
-function CreateModel() {    
+function CreateModel() {
     return (
         <Formik
             initialValues={getEmptyModel(product)}
@@ -526,7 +712,7 @@ function CreateModel() {
                 return (
                     <Form>
                         <div className="">
-                            <Typography variant="h1">create model</Typography>
+                            <Typography variant="h3">Create Model</Typography>
                             <PolicyEditor />
 
                             <button type="submit" style={{ margin: '10px' }}>Submit</button>
