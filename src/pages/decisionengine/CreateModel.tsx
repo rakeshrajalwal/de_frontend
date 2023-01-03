@@ -478,7 +478,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
                         <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", marginBottom: '5px' }}>
 
-                            <Grid item xs={2}>  <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography></Grid>
+                            <Grid item xs={2}>  <Typography fontWeight={"bold"} color={"#FA0102"}>Weak</Typography> </Grid>
 
                             <TextField size="small" inputProps={{
                                 style: {
@@ -535,7 +535,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
             label: '37',
         },
         {
-            value: 100,
+            value: above,
             label: 'above',
         },
     ];
