@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { render } from 'react-dom';
 import { Grid, Accordion, AccordionDetails, CardContent, Card, AccordionSummary, Box, Paper, TextField, Typography, Button } from "@mui/material";
 import Criteria from './components/Criteria';
@@ -13,7 +14,7 @@ import Slider from '@mui/material/Slider';
 
 // import './styles.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
-import { ShowChart } from '@mui/icons-material';
+import { ShowChart, ShowerTwoTone } from '@mui/icons-material';
 
 export interface IProduct {
     name: string,
@@ -531,6 +532,15 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
             label: 'above',
         },
     ];
+    const [show, setShow] = useState(false);
+    // const [showNone, setAllShowNone] = useState(false);
+
+    //  function displayCriteriaEditor(i) {
+    //               setShow() 
+
+    //  }
+    //var element = [];
+   // const [hovered, setHovered] = useState(false);
 
     return (
         <Accordion style={{ marginTop: 1 }}>
@@ -565,7 +575,12 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                                 <Grid item xs={4} mt={4}>
                                     {/* <Typography > show critera</Typography>  */}
                                     {/* <svg data-testid="SettingsIcon"></svg> */}
-                                    <SettingsIcon />
+                                    <SettingsIcon
+                                         onClick={() => setShow(prev => !prev)}
+                                        // onMouseEnter={() => setHovered(true)}
+                                        // onMouseLeave={() => setHovered(false)}
+
+                                    />
                                     {/* <Slider
                                         aria-label="Restricted values"
                                         //defaultValue={10}
@@ -577,9 +592,10 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                                         disable={true}
                                     /> */}
                                 </Grid>
-                                <Grid item xs={12} style={{ display: 'none' }}>
-                                    <CriteriaEditor node={sig} path={`${path}.signals[${i}]`}  />
-                                </Grid>
+                                {/* <Grid item xs={12} style={{ display: 'none' }}> */}
+                                 {show  && <CriteriaEditor key={i} node={sig} path={`${path}.signals[${i}]`} />} 
+                                {/* {element.map(item => <HoveredComponent key={i} node={sig} path={`${path}.signals[${i}]`} />)} */}
+                                {/* </Grid> */}
                             </Grid>
                         ))}
 
@@ -590,6 +606,19 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
     )
 
 }
+
+// const HoveredComponent = ({ itemName, node, path, ...rest }: { node: INode, path: string, [key: string]: any }) => {
+//     const [hovered, setHovered] = useState(false);
+
+//     return (<> 
+//         <div
+//             onMouseEnter={() => setHovered(true)}
+//             onMouseLeave={() => setHovered(false)}
+//         >{itemName}</div>
+//         {hovered && <CriteriaEditor key={i} node={node} path={`${path}.signals[${i}]`} />} }
+//     </>)
+// }
+
 
 function getEmptyModel(p: IProduct): IModel {
     return {
