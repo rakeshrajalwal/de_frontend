@@ -668,10 +668,9 @@ function CreateModel() {
                 return (
                     <Form>
                         <div className="">
-                            <div style={{marginBottom : '10px', display: 'flex', flexDirection : 'row'}}>
-                            <Typography variant="h3">Create Model</Typography>
-                                <button type="submit" style={{ margin: '10px', float: 'right' }}>Submit</button>
-                                
+                            <div style={{ marginBottom: '10px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Typography variant="h3">Create Model</Typography>
+                                <Button type="submit" style={{ margin: '10px', backgroundColor: '#434DB0', color: '#fff' }} size="large">Submit</Button>
                             </div>
 
                             <PolicyEditor />
