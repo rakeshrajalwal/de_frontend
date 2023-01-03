@@ -532,13 +532,15 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
             label: 'above',
         },
     ];
-    const [show, setShow] = useState(false);
+
+    const [show, setShow] = useState({ "id" : 0, "toshow" : true});
+
     // const [showNone, setAllShowNone] = useState(false);
 
-    //  function displayCriteriaEditor(i) {
-    //               setShow() 
+     function displayCriteriaEditor() {
+                  //setShow() 
 
-    //  }
+     }
     //var element = [];
    // const [hovered, setHovered] = useState(false);
 
@@ -576,7 +578,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                                     {/* <Typography > show critera</Typography>  */}
                                     {/* <svg data-testid="SettingsIcon"></svg> */}
                                     <SettingsIcon
-                                         onClick={() => setShow(prev => !prev)}
+                                         onClick={(i) => displayCriteriaEditor }
                                         // onMouseEnter={() => setHovered(true)}
                                         // onMouseLeave={() => setHovered(false)}
 
@@ -593,7 +595,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                                     /> */}
                                 </Grid>
                                 {/* <Grid item xs={12} style={{ display: 'none' }}> */}
-                                 {show  && <CriteriaEditor key={i} node={sig} path={`${path}.signals[${i}]`} />} 
+                                 {show.id == i && show.toshow  && <CriteriaEditor key={i} node={sig} path={`${path}.signals[${i}]`} />} 
                                 {/* {element.map(item => <HoveredComponent key={i} node={sig} path={`${path}.signals[${i}]`} />)} */}
                                 {/* </Grid> */}
                             </Grid>
