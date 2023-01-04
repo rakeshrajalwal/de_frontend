@@ -29,14 +29,6 @@ const pagesSection = [
         href: "/model/run",
         title: "Run Model",
       },
-      {
-        href: "/model/policy",
-        title: "Policy",
-      },
-      {
-        href: "/model/criteria",
-        title: "Criteria",
-      },
     ],
   },
   {
