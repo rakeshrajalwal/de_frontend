@@ -109,16 +109,6 @@ const routes = [
         path: "/model/run",
         element: <RunModel />,
       },
-      {
-        path: "/model/policy",
-        element: <Policy />,
-      },
-      {
-        path: "/model/criteria",
-        element: <Criteria />,
-      },
-
-
     ],
   },
   {
