@@ -9,23 +9,14 @@ import {
   Button as MuiButton,
   Typography,
   IconButton,
-  Pagination,
 } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
-  GridFooterContainer,
   GridToolbar,
-  GridPagination,
-  useGridApiContext,
-  gridPageCountSelector,
-  gridPageSelector,
-  useGridSelector
 } from "@mui/x-data-grid";
 import { spacing, } from "@mui/system";
 import AccessTime from '@mui/icons-material/AccessTime';
-import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import modelsJson from './getmodels.json';
 
 export interface model {
   id: number;
@@ -287,29 +278,6 @@ const modelRows: model[] = [
   { id: 9, name: 'Term Loan', product: 'Working Capital Loan', loan_range: '100000 - 300000', term: '3-5 Y', purpose: 'Growth, Tax', secured: 'yes', created_by: 'Christopher', status: 'in-review', is_active: false, created_on: '11/12/22 12:30', last_run: 'ncino', runs: 634, last_run_date: '15/12/22 11:45' },
 ];
 
-function CustomFooter() {
-  return (
-    <GridFooterContainer sx={{ justifyContent: 'right', }}>
-      <GridPagination />
-    </GridFooterContainer>
-  );
-}
-
-function CustomPagination() {
-  const apiRef = useGridApiContext();
-  const page = useGridSelector(apiRef, gridPageSelector);
-  const pageCount = useGridSelector(apiRef, gridPageCountSelector);
-
-  return (
-    <Pagination
-      color="primary"
-      count={pageCount}
-      page={page + 1}
-      onChange={(event, value) => apiRef.current.setPage(value - 1)}
-    />
-  );
-}
-
 function ModelDataGrid() {
   return (
     <Paper sx={paperSx}>
@@ -324,17 +292,14 @@ function ModelDataGrid() {
           disableColumnFilter
           disableColumnSelector
           disableDensitySelector
-          components={{ Toolbar: GridToolbar, Footer: CustomFooter, Pagination: CustomPagination, }}
+          hideFooterSelectedRowCount
+          components={{ Toolbar: GridToolbar, }}
           componentsProps={{
             toolbar: {
               csvOptions: { disableToolbarButton: true },
               printOptions: { disableToolbarButton: true },
               showQuickFilter: true,
               quickFilterProps: { debounceMs: 500 },
-            },
-            footer: {
-              hideFooterSelectedRowCount: true,
-              hideFooterRowCount: true,
             },
           }}
         />
