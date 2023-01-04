@@ -516,7 +516,8 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                                             paddingLeft: '0px',
                                             paddingRight: '0px',
                                             textAlign: 'center',
-                                            width: '60px'
+                                            width: '60px',
+                                            fontSize: '10px'
                                         }
                                     }}
 
