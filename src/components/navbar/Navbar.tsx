@@ -80,7 +80,7 @@ const Navbar: React.FC<NavbarProps> = ({ onDrawerToggle }) => {
   const { t } = useTranslation();
   return (
     <React.Fragment>
-      <AppBar position="sticky" elevation={0}>
+      <AppBar position="sticky" elevation={0} sx={{minHeight:0, height:0}}>
         <Toolbar>
           <Grid container alignItems="center">
             <Grid item sx={{ display: { xs: "block", md: "none" } }}>
