@@ -43,7 +43,7 @@ export interface IPolicy {
     name: string,
     loanRange: IRange,
     loanTermInMonths: IRange,
-    loanPurpose: string,
+    loanPurpose: [],
     isSecured: boolean
 }
 
@@ -565,7 +565,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                         //backgroundColor: '#434DB0',
                         background: "linear-gradient(90deg, #434DB0 70%, #F5F5F5 25%)"
                     },
-                    backgroundColor: '#F5F5F5'
+                   // backgroundColor: '#F5F5F5'
                 }}
 
                 >
@@ -583,7 +583,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                                     <Grid item xs={8}>
                                         <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
                                     </Grid>
-                                    <Grid item xs={1.5}></Grid>
+                                    <Grid item xs={1}></Grid>
                                     <Grid item xs={2} mt={4}>
                                         <SettingsIcon style={{ cursor: 'pointer' }} onClick={(e) => setShow({ id: i, toshow: true })}
                                         />
@@ -613,7 +613,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                 </AccordionDetails>
 
             </Accordion >
-            {/* <div style={{ float: 'right', top: '0' }}>Hi</div> */}
+            <div style={{ float: 'right', top: '0' }}>Hi</div>
         </>
     )
 
@@ -628,7 +628,7 @@ function getEmptyModel(p: IProduct): IModel {
             name: '',//policyname
             loanRange: { min: '', max: '' },
             loanTermInMonths: { min: '', max: '' },
-            loanPurpose: '',
+            loanPurpose: [],
             isSecured: false,
         },
         factors: p.factors.map(f => ({
