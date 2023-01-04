@@ -282,14 +282,16 @@ const PolicyEditor = () => {
                         </Grid>
                         <Grid item md={4} xs={6} mt={3}>
                             <Select
+                                multiple
                                 fullWidth
                                 variant="standard"
                                 {...purpose}
                             >
-                                <MenuItem value={`Purpose 1`}>Purpose 1</MenuItem>
-                                <MenuItem value={`Purpose 2`}>Purpose 2</MenuItem>
-                                <MenuItem value={`Purpose 3`}>Purpose 3</MenuItem>
+                                <MenuItem value={'Purpose 1'}>Purpose 1</MenuItem>
+                                <MenuItem value={'Purpose 2'}>Purpose 2</MenuItem>
+                                <MenuItem value={'Purpose 3'}>Purpose 3</MenuItem>
                             </Select>
+                           
                         </Grid>
 
 
@@ -565,7 +567,7 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                         //backgroundColor: '#434DB0',
                         background: "linear-gradient(90deg, #434DB0 70%, #F5F5F5 25%)"
                     },
-                   // backgroundColor: '#F5F5F5'
+                    // backgroundColor: '#F5F5F5'
                 }}
 
                 >
