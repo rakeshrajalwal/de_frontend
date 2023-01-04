@@ -562,7 +562,8 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
                         transform: 'rotate(90deg)',
                     },
                     '& .Mui-expanded': {
-                        backgroundColor: '#434DB0',
+                        //backgroundColor: '#434DB0',
+                        background: "linear-gradient(90deg, #434DB0 70%, #F5F5F5 25%)"
                     },
                     backgroundColor: '#F5F5F5'
                 }}
@@ -632,13 +633,13 @@ function getEmptyModel(p: IProduct): IModel {
         },
         factors: p.factors.map(f => ({
             name: f.name,
-            weight: '0',
+            weight: '',
             subFactors: f.subFactors.map(sf => ({
                 name: sf.name,
-                weight: '0',
+                weight: '',
                 signals: sf.signals.map(sig => ({
                     name: sig.name,
-                    weight: '0',
+                    weight: '',
                     criteria: Criterias.type
 
                 }))
