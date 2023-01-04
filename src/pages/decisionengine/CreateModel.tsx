@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useState } from 'react';
 import { render } from 'react-dom';
 import { Grid, Accordion, AccordionDetails, CardContent, Card, AccordionSummary, Box, Paper, TextField, Typography, Button } from "@mui/material";
 import Criteria from './components/Criteria';
@@ -11,11 +10,17 @@ import MenuItem from '@mui/material/MenuItem';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Slider from '@mui/material/Slider';
 //import Policy from './components/Policy'
+import './CreateModel.css';
 
 // import './styles.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
-import { ShowChart, ShowerTwoTone } from '@mui/icons-material';
+import { ShowChart } from '@mui/icons-material';
+import styled from "@emotion/styled";
 
+
+const Label = styled(Typography)`
+    font-weight: bold
+`;
 export interface IProduct {
     name: string,
     factors: {
@@ -159,6 +164,35 @@ interface INode {
     weight: number | string,
 }
 
+const ControlContainer = styled.div`
+display: flex;
+gap:15px;
+align-items:baseline;
+padding-left:5px;
+padding-right:15px;
+`;
+
+const RangeEditor = ({ minField, maxField }: { minField: object, maxField: object }) => (
+    <div style={{ display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1 }}>
+        <TextField style={{ flexGrow: 1 }} type={'number'}
+            variant="standard"
+            {...minField}
+            inputProps={{
+                placeholder: "Min",
+                style: { textAlign: 'center' }
+            }}
+        />
+        <Typography>to</Typography>
+        <TextField style={{ flexGrow: 1 }} type={'number'}
+            variant="standard"
+            {...maxField}
+            inputProps={{
+                placeholder: "Max",
+                style: { textAlign: 'center' }
+            }}
+        />
+    </div>
+)
 const PolicyEditor = () => {
 
     const [product, meta, helpers] = useField(`product`);//product name
@@ -172,159 +206,102 @@ const PolicyEditor = () => {
 
     return (
 
-        <div className="">
-            <Card >
-                <CardContent style={{ paddingLeft: '60px', paddingRight: '60px', paddingTop: '0px' }}>
-
-                    <Grid container >
-                        <Grid item md={1.5} xs={6}>
-                            <Typography mt={8} variant="h5" style={{ fontWeight: 900 }}>
-                                Product:
-                            </Typography>
-                        </Grid>
-                        <Grid item md={4} xs={6} mt={6}>
-                            <Select
-                                fullWidth
-                                variant="standard"
-                                {...product}
-                            >
-                                <MenuItem value={'Working Capital Loan'}>Working Capital Loan</MenuItem>
-                                <MenuItem value={'Product 2'}>Product 2</MenuItem>
-                                <MenuItem value={'Product 3'}>Product 3</MenuItem>
-                            </Select>
+        <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
+            <CardContent>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                    <Grid container>
+                        <Grid item md={6}>
+                            <ControlContainer>
+                                <Label>Product:</Label>
+                                <Select
+                                    fullWidth
+                                    variant="standard"
+                                    {...product}
+                                >
+                                    <MenuItem value={'Working Capital Loan'}>Working Capital Loan</MenuItem>
+                                    <MenuItem value={'Product 2'}>Product 2</MenuItem>
+                                    <MenuItem value={'Product 3'}>Product 3</MenuItem>
+                                </Select>
+                            </ControlContainer>
                         </Grid>
 
-                        <Grid item md={0.5} xs={0}></Grid>
-                        <Grid item md={1.5} xs={6}  >
-                            <Typography mt={8} variant="h5" style={{ fontWeight: 900 }} >
-                                Model:
-                            </Typography>
-                        </Grid>
-                        <Grid item md={4} xs={6} mt={6}>
-                            <TextField
-                                fullWidth
-                                variant="standard"
-                                {...name}
-
-                            />
-
+                        <Grid item md={6}>
+                            <ControlContainer>
+                                <Label>Model:</Label>
+                                <TextField
+                                    fullWidth
+                                    variant="standard"
+                                    {...name}
+                                />
+                            </ControlContainer>
                         </Grid>
                     </Grid>
 
-                    {/* loan range and term */}
-                    <Grid container >
-
+                    <Grid container>
                         <Grid item md={6} >
-                            <Grid container>
-                                <Grid item md={3} xs={4} gap={2}>
-                                    <Typography variant="h5" mt={8} style={{ fontWeight: 900 }} >
-                                        Loan Range (£):
-                                    </Typography>
-                                </Grid>
-                                <Grid item md={6} xs={6} mt={3} style={{ display: 'flex', flexDirection: 'row', gap: 5, marginLeft: '10px' }} >
-                                    <TextField
-                                        label="min"
-                                        variant="standard"
-                                        {...loanMin}
-
-                                    />
-
-                                    <Typography mt={6} variant="body1">to</Typography>
-
-                                    <TextField
-                                        label="max"
-                                        variant="standard"
-                                        {...loanMax}
-
-                                    />
-
-                                </Grid>
-                            </Grid>
+                            <ControlContainer>
+                                <Label>Loan Range (£):</Label>
+                                <RangeEditor minField={loanMin} maxField={loanMax} />
+                            </ControlContainer>
                         </Grid>
-
                         <Grid item md={6} >
-                            <Grid container>
-                                <Grid item md={3} xs={4}>
-                                    <Typography mt={8} variant="h5" style={{ fontWeight: 900 }}>
-                                        Term:
-                                    </Typography>
-                                </Grid>
-                                <Grid item md={6} xs={6} mt={3} style={{ display: 'flex', flexDirection: 'row', gap: 5 }} >
-                                    <TextField
-                                        label="min"
-                                        variant="standard"
-                                        {...termMin}
-
-                                    />
-
-                                    <Typography mt={6} variant="body1">to</Typography>
-
-                                    <TextField
-                                        label="max"
-                                        variant="standard"
-                                        {...termMax}
-                                        style={{ textAlign: 'center' }}
-
-                                    />
-                                    <Typography mt={6} variant="subtitle1">months</Typography>
-                                </Grid>
-                            </Grid>
+                            <ControlContainer>
+                                <Label>Term (months):</Label>
+                                <RangeEditor minField={termMin} maxField={termMax} />
+                            </ControlContainer>
                         </Grid>
                     </Grid>
 
-                    {/* purpose */}
-                    <Grid container >
-
-                        <Grid item md={1.5} xs={6} mt={5}>
-                            <Typography variant="h5" style={{ fontWeight: 900 }}>
-                                Purpose:
-                            </Typography>
+                    <Grid container style={{ alignItems: 'flex-end' }}>
+                        <Grid item md={6} >
+                            <ControlContainer>
+                                <Label>Purpose:</Label>
+                                <Select
+                                    multiple
+                                    fullWidth
+                                    variant="standard"
+                                    {...purpose}
+                                >
+                                    <MenuItem value={`Purpose 1`}>Purpose 1</MenuItem>
+                                    <MenuItem value={`Purpose 2`}>Purpose 2</MenuItem>
+                                    <MenuItem value={`Purpose 3`}>Purpose 3</MenuItem>
+                                </Select>
+                            </ControlContainer>
                         </Grid>
-                        <Grid item md={4} xs={6} mt={3}>
-                            <Select
-                                multiple
-                                fullWidth
-                                variant="standard"
-                                {...purpose}
-                            >
-                                <MenuItem value={'Purpose 1'}>Purpose 1</MenuItem>
-                                <MenuItem value={'Purpose 2'}>Purpose 2</MenuItem>
-                                <MenuItem value={'Purpose 3'}>Purpose 3</MenuItem>
-                            </Select>
-                           
+                        <Grid item md={6} >
+                            <label>
+                                <Field type="radio" {...isSecured} value="true" />
+                                <span style={{ fontWeight: "bold" }}>Secured</span>
+                            </label>
+                            <label>
+                                <Field type="radio" {...isSecured} value="false" />
+                                <span style={{ fontWeight: "bold" }}>Unsecured</span>
+                            </label>
                         </Grid>
-
-
-                        {/* //secured */}
-                        <Grid item md={0.5} xs={0}></Grid>
-                        <Grid item md={4} xs={12} mt={6}>
-
-                            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                <label style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <Field type="radio" {...isSecured} value="true" />
-                                    <Typography variant="h5" style={{ fontWeight: 900 }} >
-                                        Secured
-                                    </Typography>
-                                </label>
-                                <label style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: '10px' }}>
-                                    <Field type="radio" {...isSecured} value="false" />
-                                    <Typography variant="h5" style={{ fontWeight: 900 }} >
-                                        Unsecured
-                                    </Typography>
-                                </label>
-                            </div>
-                        </Grid>
-
                     </Grid>
 
-                </CardContent>
-            </Card>
-        </div>
+                </div>
+            </CardContent>
+        </Card>
 
     )
 }
 
-const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key: string]: any }) => {
+function HealthIndicator({ node }: { node: INode }) {
+    if (!(node.signals || node.subFactors)) {
+        return <></>
+    }
+
+    return <div style={{
+        width: 10,
+        height: 10,
+        borderRadius: "50%",
+        border: "1px solid",
+        backgroundColor: treeWeightsOkay(node) ? "green" : "red"
+    }}></div>;
+}
+
+const WeightEditor = ({ node, path, type, ...rest }: { node: INode, path: string, type: string, [key: string]: any }) => {
     const [field, meta, helpers] = useField(`${path}.weight`);
 
     const inc = () => {
@@ -335,45 +312,48 @@ const WeightEditor = ({ node, path, ...rest }: { node: INode, path: string, [key
         helpers.setValue(parseInt(field.value) - 1)
     }
 
-    const NUMERIC_REGEX = /^[0-9\b.,]+$/;
+    const colors: any = {
+        'blue': {
+            background: '#434DB0 0% 0% no-repeat padding-box',
+            color: '#FFFFFF'
+        },
+        'gray': {
+            backgroundColor: '#F5F5F5'
+        },
+        'white': {
+            backgroundColor: 'white'
+        }
+    }
+
     return (
-        <Box sx={{ flexGrow: 1, margin: 2 }}>
+        <Box sx={{ flexGrow: 1, margin: 2 }} className={type === 'white' ? 'signal-box' : ''}>
             <div style={{ display: 'flex', gap: 10 }}>
-                <Paper style={{
-                    flexGrow: 1,
-                    backgroundColor: "rgba(0,0,0,0)",
-                    color: "black",
-                    fontWeight: "bold",
-                    padding: 10,
-                    display: "flex",
-                    alignItems: 'center'
-                }}>
-                    <Typography sx={{ flexGrow: 1 }}>{node.name}</Typography>
-                    {!!(node.signals || node.subFactors) && (
-                        <div style={{
-                            width: 10,
-                            height: 10,
-                            borderRadius: "50%",
-                            border: "1px solid",
-                            backgroundColor: treeWeightsOkay(node) ? "green" : 'red'
-                        }}></div>
-                    )}
+                <Paper
+                    style={{
+                        flexGrow: 1,
+                        fontWeight: "bold",
+                        padding: "10px 20px",
+                        display: "flex",
+                        alignItems: 'center',
+                        borderRadius: 8,
+                        ...colors[type]
+                    }}>
+                    <Typography style={{ flexGrow: 1, font: 'normal normal bold 12px Verdana' }}>{node.name}</Typography>
+                    <HealthIndicator node={node} />
                 </Paper>
 
                 <div style={{ display: 'flex', gap: 2 }} onClick={e => e.stopPropagation()}>
-                    <Button variant="contained" style={{ aspectRatio: 1, minWidth: "unset", backgroundColor: '#434DB0' }} size="small" onClick={dec} > - </Button>
-                    <TextField sx={{ "& fieldset": { border: 'none' } }} onKeyDown={(event) => {
-                        if (!NUMERIC_REGEX.test(event.key)) {
-                            event.preventDefault();
-                        }
-                    }}
+                    <Button variant="contained" style={{ borderRadius: 8, width: 39.5, minWidth: "unset", backgroundColor: '#434DB0' }} size="small" onClick={dec} > - </Button>
+                    <TextField sx={{ "& fieldset": { border: 'none' } }} type={'number'}
                         inputProps={{
+                            min: 0,
+                            max: 100,
                             style: {
                                 textAlign: 'center'
                             }
                         }}
                         variant="outlined" size="small" {...field} style={{ width: 50, height: 39.5, backgroundColor: "rgba(0, 0, 0, 0.06)" }} />
-                    <Button variant="contained" style={{ aspectRatio: 1, minWidth: "unset", backgroundColor: '#434DB0' }} size="small" onClick={inc} > + </Button>
+                    <Button variant="contained" style={{ borderRadius: 8, width: 39.5, minWidth: "unset", backgroundColor: '#434DB0' }} size="small" onClick={inc} > + </Button>
                 </div>
             </div>
         </Box >
@@ -396,7 +376,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                 <Card style={{ border: '2px solid blue' }}>
                     <CardContent >
                         <Typography style={{ textAlign: 'center' }} variant="h6" gutterBottom>
-                            Edit Criteria
+                            Edit Criteria - {node.name}
                         </Typography>
 
                         {/* strong */}
@@ -541,7 +521,10 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
     )
 }
 
-const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => {
+const NodeEditor: React.FC<{ node: INode, path: string, level: number }> = ({ node, path, level }) => {
+    const [expanded, setExpanded] = React.useState<boolean>(false);
+    const toggleExpanded = () => setExpanded(!expanded);
+
     const criteriaValueSlider = [
         {
             value: 0,
@@ -553,74 +536,54 @@ const NodeEditor: React.FC<{ node: INode, path: string }> = ({ node, path }) => 
         },
     ];
 
-    const [show, setShow] = useState({ "id": -1, "toshow": true });
-
+    const [selectedSignal, setSelectedSignal] = React.useState<number>(-1);
     return (
-        <>
-            <Accordion style={{ marginTop: 1, borderRadius: '100px' }}>
-                <AccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', }} />} sx={{
-                    flexDirection: 'row-reverse',
-                    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-                        transform: 'rotate(90deg)',
-                    },
-                    '& .Mui-expanded': {
-                        //backgroundColor: '#434DB0',
-                        background: "linear-gradient(90deg, #434DB0 70%, #F5F5F5 25%)"
-                    },
-                    // backgroundColor: '#F5F5F5'
-                }}
+        <Accordion expanded={expanded} onChange={toggleExpanded} sx={{}} >
+            <AccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', }} />} sx={{
+                flexDirection: 'row-reverse',
+                '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+                    transform: 'rotate(90deg)',
+                },
+                '& .MuiAccordionSummary-content': {
+                    margin: level == 1 ? 2 : 0,
+                },
+                '& .MuiAccordionSummary-content.Mui-expanded': {
+                    margin: 0,
+                },
+            }}
+            >
+                <WeightEditor node={node} path={`${path}`} type={expanded ? 'blue' : 'gray'} />
+            </AccordionSummary>
 
-                >
-                    <WeightEditor node={node} path={`${path}`} />
-                </AccordionSummary>
+            <AccordionDetails>
+                <Grid container>
+                    <Grid item xs={8} style={{ paddingLeft: 25 }}>
+                        {node.subFactors?.map((sf, i) => (
+                            <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`} level={level + 1} />
+                        ))}
+                        {node.signals && (
+                            <div style={{ display: "flex" }}>
+                                <div>
+                                    {node.signals.map((sig, i) => (
+                                        <div key={i} style={{ display: 'flex' }}>
+                                            <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} type={'white'} />
+                                            <SettingsIcon style={{ marginTop: '10px', cursor: 'pointer' }} onClick={() => setSelectedSignal(selectedSignal === i ? -1 : i)} />
+                                        </div>
+                                    ))}
+                                </div>
+                                {selectedSignal >= 0 && (
+                                    <CriteriaEditor node={node.signals[selectedSignal]} path={`${path}.signals[${selectedSignal}]`} />
+                                )}
+                            </div>
+                        )}
 
-                <AccordionDetails>
-                    <Grid container>
-                        <Grid item xs={8} style={{ paddingLeft: 25 }}>
-                            {node.subFactors?.map((sf, i) => (
-                                <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`} />
-                            ))}
-                            {node.signals?.map((sig, i) => (
-                                <Grid container key={i} >
-                                    <Grid item xs={8}>
-                                        <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} />
-                                    </Grid>
-                                    <Grid item xs={1}></Grid>
-                                    <Grid item xs={2} mt={4}>
-                                        <SettingsIcon style={{ cursor: 'pointer' }} onClick={(e) => setShow({ id: i, toshow: true })}
-                                        />
-                                        {/* <Slider
-                                        aria-label="Restricted values"
-                                        //defaultValue={10}
-                                        //valueLabelFormat={valueLabelFormat}
-                                        //getAriaValueText={valuetext}
-                                        // step={null}
-                                        // valueLabelDisplay="auto"
-                                        marks={criteriaValueSlider}
-                                        disable={true}
-                                    /> */}
-                                    </Grid>
-                                    {show.id == i && show.toshow &&
-                                        <Grid item xs={12}
-                                        //style={{position : 'absolute', marginRight: '10px', float: 'right'}}
-                                        >
-                                            <CriteriaEditor key={i} node={sig} path={`${path}.signals[${i}]`} />
-                                        </Grid>
-                                    }
-                                </Grid>
-                            ))}
-
-                        </Grid>
                     </Grid>
-                </AccordionDetails>
-
-            </Accordion >
-            <div style={{ float: 'right', top: '0' }}>Hi</div>
-        </>
+                </Grid>
+            </AccordionDetails>
+        </Accordion >
     )
 
 }
-
 
 function getEmptyModel(p: IProduct): IModel {
     return {
@@ -635,13 +598,13 @@ function getEmptyModel(p: IProduct): IModel {
         },
         factors: p.factors.map(f => ({
             name: f.name,
-            weight: '',
+            weight: '0',
             subFactors: f.subFactors.map(sf => ({
                 name: sf.name,
-                weight: '',
+                weight: '0',
                 signals: sf.signals.map(sig => ({
                     name: sig.name,
-                    weight: '',
+                    weight: '0',
                     criteria: Criterias.type
 
                 }))
@@ -650,6 +613,7 @@ function getEmptyModel(p: IProduct): IModel {
     }
 }
 
+const treeWeightsOkay1 = (node: INode): boolean => true;
 const treeWeightsOkay = (node: INode): boolean => {
     const children = node.subFactors || node.signals;
     return lodash.isEmpty(children) ||
@@ -670,19 +634,20 @@ function CreateModel() {
                 const v = formik.values;
                 return (
                     <Form>
-                        <div className="">
-                            <div style={{ marginBottom: '10px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <Typography variant="h3">Create Model</Typography>
-                                <Button type="submit" style={{ margin: '10px', backgroundColor: '#434DB0', color: '#fff' }} size="large">Submit</Button>
-                            </div>
-
-                            <PolicyEditor />
-
-
-                            {formik.values.factors.map((f, i) => (
-                                <NodeEditor key={i} node={f} path={`factors[${i}]`} />
-                            ))}
+                        <div style={{ marginBottom: '5px', marginTop: '30px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Typography style={{ paddingBottom: 20, fontFamily: 'Verdana', fontWeight: 'bold', fontSize: '1.1rem' }}>Create Model</Typography>
+                            <Button disabled={!formik.isValid} type="submit" style={{ margin: '10px', backgroundColor: '#434DB0', color: '#fff', float: 'right' }} size="large">Submit</Button>
                         </div>
+
+                        <PolicyEditor />
+
+                        <Card sx={{ boxShadow: '0px 3px 6px #00000029', marginTop : '10px' }}>
+                            <CardContent>
+                                {formik.values.factors.map((f, i) => (
+                                    <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} />
+                                ))}
+                            </CardContent>
+                        </Card>
                     </Form>
                 );
             }}
