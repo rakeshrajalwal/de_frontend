@@ -17,6 +17,7 @@ import {
 } from "@mui/x-data-grid";
 import { spacing, } from "@mui/system";
 import AccessTime from '@mui/icons-material/AccessTime';
+import modelsJson from './getmodels.json';
 
 export interface model {
   id: number;
@@ -103,6 +104,9 @@ const Button = styled(MuiButton)(spacing);
 const Paper = styled(MuiPaper)(spacing);
 
 const paperSx = {
+  "& MuiPaper-root": {
+    fontFamily: 'Verdana',
+  },
   "& .css-1bpvgg-MuiPaper-root": {
     padding: '10rem',
   }
@@ -114,6 +118,9 @@ const datagridSx = {
   },
   "& .MuiDataGrid-columnHeaderTitle": {
     fontWeight: 'bold',
+    letterSpacing: '0.05ex',
+    opacity: 1,
+    color: '#1B2430',
   },
   "& .MuiPaper-elevation1": {
     backgroundColor: '#F3FBFE',
@@ -123,6 +130,9 @@ const datagridSx = {
     textAlign: 'center',
     fontSize: '1.5ex',
     justifyContent: 'center',
+    color: '#1B2430',
+    letterSpacing: '0.05ex',
+    opacity: 1,
   },
   "& .MuiDataGrid-cell": {
     whiteSpace: 'normal !important',
@@ -288,7 +298,6 @@ function ModelDataGrid() {
           rows={modelRows}
           columns={columns}
           pageSize={5}
-          style={{ fontFamily: 'Verdana' }}
           disableColumnFilter
           disableColumnSelector
           disableDensitySelector
@@ -320,22 +329,22 @@ function ViewModels() {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'right' }}>
           <div style={{ display: 'flex', justifyContent: 'right' }}>
-            <Button mr={1} variant="contained" color="primary">
+            <Button mr={1} variant="contained" color="primary" style={{ backgroundColor: '#434DB0' }}>
               Create Model
             </Button>
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left' }}>
-            <IconButton aria-label="Monitor" size="small">
+            <IconButton aria-label="Approved" size="small">
               <CheckCircleIcon style={{ color: 'green', fontSize: '1.8ex' }} />
             </IconButton>
             <p>Approved </p>
 
-            <IconButton aria-label="User" size="small">
+            <IconButton aria-label="Rejected" size="small">
               <CancelIcon style={{ color: 'red', fontSize: '1.8ex' }} />
             </IconButton>
             <p>Rejected </p>
 
-            <IconButton aria-label="Preview" size="small">
+            <IconButton aria-label="In-Review" size="small">
               <AccessTime style={{ color: 'orange', fontSize: '1.8ex' }} />
             </IconButton>
             <p>In-Review </p>
