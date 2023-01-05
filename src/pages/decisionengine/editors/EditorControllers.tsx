@@ -11,11 +11,10 @@ import {
     TextField ,
     Typography
 } from "@mui/material";
-import { spacing } from "@mui/system";
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { Formik, Form, Field, useField, useFormik, FormikProvider } from "formik";
-import { INode } from "../interfaces/CreateModelInterfaces";
+import {  useField } from "formik";
+
 
 export const NumberEditor = ({
     variant = 'standard',
