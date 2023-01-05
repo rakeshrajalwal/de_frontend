@@ -19,11 +19,9 @@ import {Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvid
 import Select from '@mui/material/Select';
 import {number} from 'yup';
 import MenuItem from '@mui/material/MenuItem';
-import SettingsIcon from '@mui/icons-material/Settings';
-import Slider from '@mui/material/Slider';
 //import Policy from './components/Policy'
 import { INode, IProduct , IModel, IRange , IPolicy} from "./interfaces/CreateModelInterfaces"
-import './styles/CreateModel.css';
+import './CreateModel.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import {ShowChart} from '@mui/icons-material';
 import styled from "@emotion/styled";
