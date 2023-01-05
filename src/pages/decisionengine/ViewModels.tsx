@@ -15,23 +15,6 @@ import { spacing } from "@mui/system";
 import AccessTime from "@mui/icons-material/AccessTime";
 import modelsJson from "./getmodels.json";
 
-export interface model {
-  id: number;
-  name: string;
-  product: string;
-  loan_range: string;
-  term: string;
-  purpose: string;
-  secured: string;
-  created_by: string;
-  created_on: string;
-  status: string;
-  is_active: boolean;
-  runs: number;
-  last_run: string;
-  last_run_date: string;
-}
-
 export interface IProduct {
   name: string;
   factors: {
