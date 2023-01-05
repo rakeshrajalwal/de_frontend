@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import SettingsIcon from '@mui/icons-material/Settings';
 import styles from "./styles/styles.module.css"
 import Slider from '@mui/material/Slider';
+import LinearScaleIcon from '@mui/icons-material/LinearScale';
 //import Policy from './components/Policy'
 import './styles/CreateModel.css';
 
@@ -543,7 +544,7 @@ const NodeEditor: React.FC<{ node: INode, path: string, level: number }> = ({ no
                                     {node.signals.map((sig, i) => (
                                         <div key={i} style={{ display: 'flex'}}>
                                             <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} type={'white'} />
-                                            <SettingsIcon style={{ marginTop: '15px', cursor: 'pointer' }} onClick={() => setSelectedSignal(selectedSignal === i ? -1 : i)} />
+                                            <SettingsIcon  style={{ marginTop: '15px', cursor: 'pointer'}} onClick={() => setSelectedSignal(selectedSignal === i ? -1 : i)} />
                                         </div>
                                     ))}
                                 </div>
