@@ -26,7 +26,6 @@ import RunSummaries from "./pages/decisionengine/RunSummaries";
 import ViewModels from "./pages/decisionengine/ViewModels";
 import CreateModel from "./pages/decisionengine/CreateModel";
 import RunModel from "./pages/decisionengine/RunModel";
-import Policy from "./pages/decisionengine/components/Policy";
 import Logout from "./pages/decisionengine/Logout";
 
 // Table components

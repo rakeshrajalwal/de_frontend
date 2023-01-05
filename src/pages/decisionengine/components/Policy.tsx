@@ -1,240 +1,203 @@
-
-import styled from "@emotion/styled";
-
-// import './styles.css';
+import * as React from 'react';
+import { render } from 'react-dom';
 import {
-    Breadcrumbs as MuiBreadcrumbs,
-    Button,
-    Card as MuiCard,
-    CardContent,
-    Divider as MuiDivider,
-    FormControl as MuiFormControl,
     Grid,
-    TextField as MuiTextField,
-    Typography
+    Accordion,
+    AccordionDetails,
+    CardContent,
+    Card,
+    AccordionSummary,
+    Box,
+    Paper,
+    TextField,
+    Typography,
+    Button
 } from "@mui/material";
-
-import { spacing } from "@mui/system";
+import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { Formik, Form, Field, useFormik, FormikProvider } from "formik";
+import styled from "@emotion/styled";
 
-const TextField = styled(MuiTextField)<{ my?: number }>(spacing);
-
-const Card = styled(MuiCard)(spacing);
-
-
-interface Values {
-    product: string,
-    model: string,
-    loanMin: string,
-    loanMax: string,
-    termMin: string,
-    termMax: string,
-    purpose: string,
-    securedOrNot: string
-}
-
-
-function Policy() {
-
-    const formik = useFormik({
-        initialValues: {
-            product: '',
-            model: '',
-            loanMin: '',
-            loanMax: '',
-            termMin: '',
-            termMax: '',
-            purpose: '',
-            isSecured: false
-        },
-        // validationSchema: validationSchema,
-        onSubmit: (values) => {
-            console.log(JSON.stringify(values, null, 2))
-            alert(JSON.stringify(values, null, 2));
-        },
-    });
-
-
-
+const Label = styled(Typography)`
+    font-weight: bold;
+    text-transform: capitalize;
+`;
+const CloseRangeEditor = ({
+    fieldPath,
+    variant = 'standard',
+    inputWidth = 'auto',
+    openRange = false
+}: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
+    const [minField] = useField(`${fieldPath}.min`);
+    const [maxField] = useField(`${fieldPath}.max`);
     return (
-        <FormikProvider value={formik}>
-            <div className="">
-                <form onSubmit={formik.handleSubmit}>
+        <div style={{ display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1 }}>
+            <NumberEditor field={minField} placeholder={'Min'} inputWidth={inputWidth} variant={variant} />
+            <Typography>to</Typography>
+            <NumberEditor field={maxField} placeholder={'Max'} inputWidth={inputWidth} variant={variant} />
+        </div>
+    );
+}
+const NumberEditor = ({
+    variant = 'standard',
+    field,
+    inputWidth = 'auto',
+    placeholder
+}: { variant?: 'standard' | 'outlined', field: object, inputWidth?: number | string, placeholder: string }) => (
+    <TextField
+        style={{ flexGrow: 1, height: 25 }}
+        type={'number'}
+        size={"small"}
+        variant={variant}
+        {...field}
+        InputLabelProps={{ style: { height: 25 } }}
+        InputProps={{
+            placeholder,
+            style: { width: inputWidth, height: 25 }
+        }}
+        inputProps={{ style: { textAlign: 'center' } }}
+    />
+)
 
-                    <Card >
-                        <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                Policy
-                            </Typography>
-
-                            <Grid container >
-
-                                <Grid item md={1.5} xs={6}>
-                                    <Typography variant="h6" mt={8} >
-                                        Product:
-                                    </Typography>
-                                </Grid>
-                                <Grid item md={4} xs={6} mt={6}>
-                                    <Select
-                                        id="product"
-                                        name="product"
-                                        fullWidth
-                                        variant="standard"
-                                        value={formik.values.product}
-                                        onChange={formik.handleChange}
-                                    >
-                                        <MenuItem value={'Working Capital Loan'}>Working Capital Loan</MenuItem>
-                                        <MenuItem value={'Product 2'}>Product 2</MenuItem>
-                                        <MenuItem value={'Product 3'}>Product 3</MenuItem>
-                                    </Select>
-                                </Grid>
-
-                                <Grid item md={0.5} xs={0}></Grid>
-                                <Grid item md={1.5} xs={6}  >
-                                    <Typography variant="h6" mt={8} >
-                                        Model:
-                                    </Typography>
-                                </Grid>
-                                <Grid item md={4} xs={6} mt={6}>
-                                    <TextField
-                                        fullWidth
-                                        id="model"
-                                        name="model"
-                                        variant="standard"
-                                        value={formik.values.model}
-                                        onChange={formik.handleChange}
-                                    />
-
-                                </Grid>
-                            </Grid>
-
-                            {/* loan range and term */}
-
-                            <Grid container >
-
-                                <Grid item md={6} >
-                                    <Grid container>
-                                        <Grid item md={3} xs={4}>
-                                            <Typography variant="h6" mt={8} >
-                                                Loan Range (£):
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item md={6} xs={6} mt={6} style={{ display: 'flex', flexDirection: 'row', gap: 5 }} >
-                                            <TextField
-                                                id="loanMin"
-                                                name="loanMin"
-                                                label="min"
-                                                variant="standard"
-                                                value={formik.values.loanMin}
-                                                onChange={formik.handleChange}
-
-                                            />
-
-                                            <Typography mt={6} variant="body1">to</Typography>
-
-
-                                            <TextField
-                                                id="loanMax"
-                                                name="loanMax"
-                                                label="max"
-                                                variant="standard"
-                                                value={formik.values.loanMax}
-                                                onChange={formik.handleChange}
-
-                                            />
-
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid item md={6} >
-                                    <Grid container>
-                                        <Grid item md={3} xs={6}>
-                                            <Typography variant="h6" mt={8} >
-                                                Term:
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item md={2} xs={6} mt={6}>
-                                            <TextField
-                                                id="termMin"
-                                                name="termMin"
-                                                label="min"
-                                                variant="standard"
-                                                value={formik.values.termMin}
-                                                onChange={formik.handleChange}
-
-                                            />
-                                            <Grid item md={2}>
-                                                <Typography variant="body1">to</Typography>
-                                            </Grid>
-                                            <Grid item md={3}>
-                                                <TextField
-                                                    id="termMax"
-                                                    name="termMax"
-                                                    label="max"
-                                                    variant="standard"
-                                                    value={formik.values.termMax}
-                                                    onChange={formik.handleChange}
-
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-
-                            {/* purpose */}
-                            <Grid container >
-
-                                <Grid item md={1} xs={6}>
-                                    <Typography variant="h6" mt={8} >
-                                        Purpose:
-                                    </Typography>
-                                </Grid>
-                                <Grid item md={4} xs={6} mt={6}>
-                                    <Select
-                                        id="purpose"
-                                        name="purpose"
-                                        fullWidth
-                                        variant="standard"
-                                        value={formik.values.purpose}
-                                        onChange={formik.handleChange}
-                                    >
-                                        <MenuItem value={`Purpose 1`}>Purpose 1</MenuItem>
-                                        <MenuItem value={`Purpose 2`}>Purpose 2</MenuItem>
-                                        <MenuItem value={`Purpose 3`}>Purpose 3</MenuItem>
-                                    </Select>
-                                </Grid>
-
-
-                                {/* //secured */}
-                                <Grid item md={1} xs={0}></Grid>
-                                <Grid item md={4} xs={12} mt={6}>
-
-                                    <label>
-                                        <Field type="radio" name="isSecured" value="true" />
-                                        Secured
-                                    </label>
-                                    <label>
-                                        <Field type="radio" name="isSecured" value="false" />
-                                        Unsecured
-                                    </label>
-
-                                </Grid>
-
-                            </Grid>
-
-                        </CardContent>
-                    </Card>
-                    <Button type="submit">Submit</Button>
-                </form>
-
-
-            </div>
-        </FormikProvider>
+const OpenRangeEditor = ({
+    fieldPath,
+    variant = 'standard',
+    inputWidth = 'auto',
+    openRange = false
+}: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
+    const [minField, , minHelper] = useField(`${fieldPath}.min`);
+    const [maxField, , maxHelper] = useField(`${fieldPath}.max`);
+    const [aboveOrBelow, setAboveOrBelow] = React.useState<string>('');
+    const setMinMax = (v: string) => {
+        setAboveOrBelow(v);
+        const min = minField.value;
+        const max = maxField.value;
+        const editableField = (aboveOrBelow === 'above') ? minHelper : maxHelper;
+        editableField.setValue(min ?? max);
+    }
+    return (
+        <div style={{ display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1 }}>
+            <NumberEditor field={(aboveOrBelow === 'above') ? minField : maxField} placeholder={''}
+                inputWidth={inputWidth} variant={variant} />
+            <Typography>or</Typography>
+            <Select value={aboveOrBelow} fullWidth variant={'standard'}
+                onChange={(e) => setMinMax(e.target.value)}>
+                <MenuItem value={'above'}>above</MenuItem>
+                <MenuItem value={'below'}>below</MenuItem>
+            </Select>
+        </div>
     );
 }
 
-export default Policy;
+const RangeEditor = ({
+    isOpen = false,
+    ...rest
+}: { isOpen?: boolean, fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
+    if (isOpen) {
+        return <OpenRangeEditor {...rest} />
+    } else {
+        return <CloseRangeEditor {...rest} />
+    }
+}
+
+const ControlContainer = styled.div`
+display: flex;
+gap:15px;
+align-items:baseline;
+padding-left:5px;
+padding-right:15px;
+`;
+
+
+export const PolicyEditor = () => {
+
+    const [product, meta, helpers] = useField(`product`);//product name
+    const [name, meta8, helpers8] = useField(`name`);//name of model
+    const [loanMin, meta2, helpers2] = useField(`policy.loanRange.min`);
+    const [loanMax, meta3, helpers3] = useField(`policy.loanRange.max`);
+    const [termMin, meta4, helpers4] = useField(`policy.loanTermInMonths.min`);
+    const [termMax, meta5, helpers5] = useField(`policy.loanTermInMonths.max`);
+    const [purpose, meta6, helpers6] = useField(`policy.loanPurpose`);
+    const [isSecured, meta7, helpers7] = useField(`policy.isSecured`);
+
+    return (
+
+        <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
+            <CardContent>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                    <Grid container>
+                        <Grid item md={6}>
+                            <ControlContainer>
+                                <Label>Product:</Label>
+                                <Select
+                                    fullWidth
+                                    variant="standard"
+                                    {...product}
+                                >
+                                    <MenuItem value={'Working Capital Loan'}>Working Capital Loan</MenuItem>
+                                    <MenuItem value={'Product 2'}>Product 2</MenuItem>
+                                    <MenuItem value={'Product 3'}>Product 3</MenuItem>
+                                </Select>
+                            </ControlContainer>
+                        </Grid>
+
+                        <Grid item md={6}>
+                            <ControlContainer>
+                                <Label>Model:</Label>
+                                <TextField
+                                    fullWidth
+                                    variant="standard"
+                                    {...name}
+                                />
+                            </ControlContainer>
+                        </Grid>
+                    </Grid>
+
+                    <Grid container>
+                        <Grid item md={6}>
+                            <ControlContainer>
+                                <Label>Loan Range (£):</Label>
+                                <RangeEditor fieldPath={'policy.loanRange'} />
+                            </ControlContainer>
+                        </Grid>
+                        <Grid item md={6}>
+                            <ControlContainer>
+                                <Label>Term:</Label>
+                                <RangeEditor fieldPath={'policy.loanTermInMonths'} />
+                            </ControlContainer>
+                        </Grid>
+                    </Grid>
+
+                    <Grid container style={{ alignItems: 'flex-end' }}>
+                        <Grid item md={6}>
+                            <ControlContainer>
+                                <Label>Purpose:</Label>
+                                <Select
+                                    fullWidth
+                                    variant="standard"
+                                    {...purpose}
+                                >
+                                    <MenuItem value={`Purpose 1`}>Purpose 1</MenuItem>
+                                    <MenuItem value={`Purpose 2`}>Purpose 2</MenuItem>
+                                    <MenuItem value={`Purpose 3`}>Purpose 3</MenuItem>
+                                </Select>
+                            </ControlContainer>
+                        </Grid>
+                        <Grid item md={6}>
+                            <label>
+                                <Field type="radio" {...isSecured} value="true" />
+                                <span style={{ fontWeight: "bold" }}>Secured</span>
+                            </label>
+                            <label>
+                                <Field type="radio" {...isSecured} value="false" />
+                                <span style={{ fontWeight: "bold" }}>Unsecured</span>
+                            </label>
+                        </Grid>
+                    </Grid>
+
+                </div>
+            </CardContent>
+        </Card>
+
+    )
+}

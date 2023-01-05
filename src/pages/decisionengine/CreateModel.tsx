@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {render} from 'react-dom';
+import { render } from 'react-dom';
 import {
     Grid,
     Accordion,
@@ -15,15 +15,14 @@ import {
 } from "@mui/material";
 import Criteria from './components/Criteria';
 import lodash from 'lodash';
-import {Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider} from "formik";
+import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
 import Select from '@mui/material/Select';
-import {number} from 'yup';
+import { number } from 'yup';
 import MenuItem from '@mui/material/MenuItem';
-//import Policy from './components/Policy'
-import { INode, IProduct , IModel, IRange , IPolicy} from "./interfaces/CreateModelInterfaces"
+import { PolicyEditor } from './components/Policy'
+import { INode, IProduct, IModel, IRange, IPolicy } from "./interfaces/CreateModelInterfaces"
 import './CreateModel.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
-import {ShowChart} from '@mui/icons-material';
 import styled from "@emotion/styled";
 
 
@@ -47,37 +46,37 @@ const product: IProduct = {
                 {
                     name: "Market Conditions",
                     signals: [
-                        {name: "GP%vsSector"},
-                        {name: "NP%vsSector"},
-                        {name: "LeveragevsSector"},
-                        {name: "GearingvsSector"}
+                        { name: "GP%vsSector" },
+                        { name: "NP%vsSector" },
+                        { name: "LeveragevsSector" },
+                        { name: "GearingvsSector" }
                     ]
                 },
                 {
                     name: "Debt Service",
                     signals: [
-                        {name: "EBIDTA:DSC"}
+                        { name: "EBIDTA:DSC" }
                     ]
                 },
                 {
                     name: "Financial Stability",
                     signals: [
-                        {name: "%ChgTurnover"},
-                        {name: "EBIDTA%ratio"},
-                        {name: "Stressed EBIDTA:DSC"},
-                        {name: "%ChgRetainedProfits"}
+                        { name: "%ChgTurnover" },
+                        { name: "EBIDTA%ratio" },
+                        { name: "Stressed EBIDTA:DSC" },
+                        { name: "%ChgRetainedProfits" }
                     ]
                 },
                 {
                     name: "Gearing ratio",
                     signals: [
-                        {name: "Gearing"},
+                        { name: "Gearing" },
                     ]
                 },
                 {
                     name: "Leverage",
                     signals: [
-                        {name: "Leverage"},
+                        { name: "Leverage" },
                     ]
                 },
             ]
@@ -88,18 +87,16 @@ const product: IProduct = {
                 {
                     name: "Financial Capacity & Willingness to Support",
                     signals: [
-                        {name: "Sponsors Debt"},
-                        {name: "Sponsors Net Worth"},
-                        {name: "Sponsor Credit Score"},
-                        {name: "Business Interuption Insurance"},
+                        { name: "Sponsors Debt" },
+                        { name: "Sponsors Net Worth" },
+                        { name: "Sponsor Credit Score" },
+                        { name: "Business Interuption Insurance" },
                     ]
                 }
             ]
         }
     ]
 };
-
-
 
 const ControlContainer = styled.div`
 display: flex;
@@ -109,176 +106,7 @@ padding-left:5px;
 padding-right:15px;
 `;
 
-const NumberEditor = ({
-                          variant = 'standard',
-                          field,
-                          inputWidth = 'auto',
-                          placeholder
-                      }: { variant?: 'standard' | 'outlined', field: object, inputWidth?: number | string, placeholder: string }) => (
-    <TextField
-        style={{flexGrow: 1, height: 25}}
-        type={'number'}
-        size={"small"}
-        variant={variant}
-        {...field}
-        InputLabelProps={{style: {height: 25}}}
-        InputProps={{
-            placeholder,
-            style: {width: inputWidth, height: 25}
-        }}
-        inputProps={{style: {textAlign: 'center'}}}
-    />
-)
-const RangeEditor = ({
-                         isOpen = false,
-                         ...rest
-                     }: { isOpen?: boolean, fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
-    if (isOpen) {
-        return <OpenRangeEditor {...rest}/>
-    } else {
-        return <CloseRangeEditor {...rest}/>
-    }
-}
-const CloseRangeEditor = ({
-                              fieldPath,
-                              variant = 'standard',
-                              inputWidth = 'auto',
-                              openRange = false
-                          }: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
-    const [minField] = useField(`${fieldPath}.min`);
-    const [maxField] = useField(`${fieldPath}.max`);
-    return (
-        <div style={{display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1}}>
-            <NumberEditor field={minField} placeholder={'Min'} inputWidth={inputWidth} variant={variant}/>
-            <Typography>to</Typography>
-            <NumberEditor field={maxField} placeholder={'Max'} inputWidth={inputWidth} variant={variant}/>
-        </div>
-    );
-}
-
-const OpenRangeEditor = ({
-                             fieldPath,
-                             variant = 'standard',
-                             inputWidth = 'auto',
-                             openRange = false
-                         }: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
-    const [minField, , minHelper] = useField(`${fieldPath}.min`);
-    const [maxField, , maxHelper] = useField(`${fieldPath}.max`);
-    const [aboveOrBelow, setAboveOrBelow] = React.useState<string>('');
-    const setMinMax = (v: string) => {
-        setAboveOrBelow(v);
-        const min = minField.value;
-        const max = maxField.value;
-        const editableField = (aboveOrBelow === 'above') ? minHelper : maxHelper;
-        editableField.setValue(min ?? max);
-    }
-    return (
-        <div style={{display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1}}>
-            <NumberEditor field={(aboveOrBelow === 'above') ? minField : maxField} placeholder={''}
-                          inputWidth={inputWidth} variant={variant}/>
-            <Typography>or</Typography>
-            <Select value={aboveOrBelow} fullWidth variant={'standard'}
-                    onChange={(e) => setMinMax(e.target.value)}>
-                <MenuItem value={'above'}>above</MenuItem>
-                <MenuItem value={'below'}>below</MenuItem>
-            </Select>
-        </div>
-    );
-}
-const PolicyEditor = () => {
-
-    const [product, meta, helpers] = useField(`product`);//product name
-    const [name, meta8, helpers8] = useField(`name`);//name of model
-    const [loanMin, meta2, helpers2] = useField(`policy.loanRange.min`);
-    const [loanMax, meta3, helpers3] = useField(`policy.loanRange.max`);
-    const [termMin, meta4, helpers4] = useField(`policy.loanTermInMonths.min`);
-    const [termMax, meta5, helpers5] = useField(`policy.loanTermInMonths.max`);
-    const [purpose, meta6, helpers6] = useField(`policy.loanPurpose`);
-    const [isSecured, meta7, helpers7] = useField(`policy.isSecured`);
-
-    return (
-
-        <Card sx={{boxShadow: '0px 3px 6px #00000029'}}>
-            <CardContent>
-                <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
-                    <Grid container>
-                        <Grid item md={6}>
-                            <ControlContainer>
-                                <Label>Product:</Label>
-                                <Select
-                                    fullWidth
-                                    variant="standard"
-                                    {...product}
-                                >
-                                    <MenuItem value={'Working Capital Loan'}>Working Capital Loan</MenuItem>
-                                    <MenuItem value={'Product 2'}>Product 2</MenuItem>
-                                    <MenuItem value={'Product 3'}>Product 3</MenuItem>
-                                </Select>
-                            </ControlContainer>
-                        </Grid>
-
-                        <Grid item md={6}>
-                            <ControlContainer>
-                                <Label>Model:</Label>
-                                <TextField
-                                    fullWidth
-                                    variant="standard"
-                                    {...name}
-                                />
-                            </ControlContainer>
-                        </Grid>
-                    </Grid>
-
-                    <Grid container>
-                        <Grid item md={6}>
-                            <ControlContainer>
-                                <Label>Loan Range (£):</Label>
-                                <RangeEditor fieldPath={'policy.loanRange'}/>
-                            </ControlContainer>
-                        </Grid>
-                        <Grid item md={6}>
-                            <ControlContainer>
-                                <Label>Term:</Label>
-                                <RangeEditor fieldPath={'policy.loanTermInMonths'}/>
-                            </ControlContainer>
-                        </Grid>
-                    </Grid>
-
-                    <Grid container style={{alignItems: 'flex-end'}}>
-                        <Grid item md={6}>
-                            <ControlContainer>
-                                <Label>Purpose:</Label>
-                                <Select
-                                    fullWidth
-                                    variant="standard"
-                                    {...purpose}
-                                >
-                                    <MenuItem value={`Purpose 1`}>Purpose 1</MenuItem>
-                                    <MenuItem value={`Purpose 2`}>Purpose 2</MenuItem>
-                                    <MenuItem value={`Purpose 3`}>Purpose 3</MenuItem>
-                                </Select>
-                            </ControlContainer>
-                        </Grid>
-                        <Grid item md={6}>
-                            <label>
-                                <Field type="radio" {...isSecured} value="true"/>
-                                <span style={{fontWeight: "bold"}}>Secured</span>
-                            </label>
-                            <label>
-                                <Field type="radio" {...isSecured} value="false"/>
-                                <span style={{fontWeight: "bold"}}>Unsecured</span>
-                            </label>
-                        </Grid>
-                    </Grid>
-
-                </div>
-            </CardContent>
-        </Card>
-
-    )
-}
-
-function HealthIndicator({node}: { node: INode }) {
+function HealthIndicator({ node }: { node: INode }) {
     if (!(node.signals || node.subFactors)) {
         return <></>
     }
@@ -293,12 +121,12 @@ function HealthIndicator({node}: { node: INode }) {
 }
 
 const WeightEditor = ({
-                          node,
-                          path,
-                          type,
-                          level,
-                          ...rest
-                      }: { node: INode, path: string, type: string, level: number, [key: string]: any }) => {
+    node,
+    path,
+    type,
+    level,
+    ...rest
+}: { node: INode, path: string, type: string, level: number, [key: string]: any }) => {
     const [field, meta, helpers] = useField(`${path}.weight`);
 
     const inc = () => {
@@ -326,7 +154,7 @@ const WeightEditor = ({
     const font = `normal normal bold ${level === 1 ? 12 : 10}px Verdana`
     const width = level == 1 ? 600 : level == 2 ? 440 : 250;
     return (
-        <Box sx={{margin: 2, display: 'flex', gap: 3, height}} className={type === 'white' ? 'signal-box' : ''}>
+        <Box sx={{ margin: 2, display: 'flex', gap: 3, height }} className={type === 'white' ? 'signal-box' : ''}>
             <Paper
                 style={{
                     width,
@@ -338,47 +166,124 @@ const WeightEditor = ({
                     borderRadius: 8,
                     ...colors[type]
                 }}>
-                <Typography style={{flexGrow: 1, font}}>{node.name}</Typography>
-                <HealthIndicator node={node}/>
+                <Typography style={{ flexGrow: 1, font }}>{node.name}</Typography>
+                <HealthIndicator node={node} />
             </Paper>
 
 
-            <div style={{display: 'flex', gap: 2}} onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', gap: 2 }} onClick={e => e.stopPropagation()}>
                 <Button variant="contained"
-                        style={{borderRadius: 8, minWidth: "unset", backgroundColor: '#434DB0', aspectRatio: 1}}
-                        size="small" onClick={dec}> - </Button>
-                <TextField sx={{"& fieldset": {border: 'none'}}} type={'number'}
-                           inputProps={{
-                               min: 0,
-                               max: 100,
-                               style: {
-                                   textAlign: 'center'
-                               }
-                           }}
-                           variant="outlined" size="small" {...field}
-                           style={{width: 50, backgroundColor: "rgba(0, 0, 0, 0.06)"}}/>
+                    style={{ borderRadius: 8, minWidth: "unset", backgroundColor: '#434DB0', aspectRatio: 1 }}
+                    size="small" onClick={dec}> - </Button>
+                <TextField sx={{ "& fieldset": { border: 'none' } }} type={'number'}
+                    inputProps={{
+                        min: 0,
+                        max: 100,
+                        style: {
+                            textAlign: 'center'
+                        }
+                    }}
+                    variant="outlined" size="small" {...field}
+                    style={{ width: 50, backgroundColor: "rgba(0, 0, 0, 0.06)" }} />
                 <Button variant="contained"
-                        style={{borderRadius: 8, minWidth: "unset", backgroundColor: '#434DB0', aspectRatio: 1}}
-                        size="small" onClick={inc}> + </Button>
+                    style={{ borderRadius: 8, minWidth: "unset", backgroundColor: '#434DB0', aspectRatio: 1 }}
+                    size="small" onClick={inc}> + </Button>
             </div>
 
         </Box>
     )
 }
+const CloseRangeEditor = ({
+    fieldPath,
+    variant = 'standard',
+    inputWidth = 'auto',
+    openRange = false
+}: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
+    const [minField] = useField(`${fieldPath}.min`);
+    const [maxField] = useField(`${fieldPath}.max`);
+    return (
+        <div style={{ display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1 }}>
+            <NumberEditor field={minField} placeholder={'Min'} inputWidth={inputWidth} variant={variant} />
+            <Typography>to</Typography>
+            <NumberEditor field={maxField} placeholder={'Max'} inputWidth={inputWidth} variant={variant} />
+        </div>
+    );
+}
+const NumberEditor = ({
+    variant = 'standard',
+    field,
+    inputWidth = 'auto',
+    placeholder
+}: { variant?: 'standard' | 'outlined', field: object, inputWidth?: number | string, placeholder: string }) => (
+    <TextField
+        style={{ flexGrow: 1, height: 25 }}
+        type={'number'}
+        size={"small"}
+        variant={variant}
+        {...field}
+        InputLabelProps={{ style: { height: 25 } }}
+        InputProps={{
+            placeholder,
+            style: { width: inputWidth, height: 25 }
+        }}
+        inputProps={{ style: { textAlign: 'center' } }}
+    />
+)
 
-const CriteriaEditor = ({node, path, ...rest}: { node: INode, path: string, [key: string]: any }) => {
+const OpenRangeEditor = ({
+    fieldPath,
+    variant = 'standard',
+    inputWidth = 'auto',
+    openRange = false
+}: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
+    const [minField, , minHelper] = useField(`${fieldPath}.min`);
+    const [maxField, , maxHelper] = useField(`${fieldPath}.max`);
+    const [aboveOrBelow, setAboveOrBelow] = React.useState<string>('');
+    const setMinMax = (v: string) => {
+        setAboveOrBelow(v);
+        const min = minField.value;
+        const max = maxField.value;
+        const editableField = (aboveOrBelow === 'above') ? minHelper : maxHelper;
+        editableField.setValue(min ?? max);
+    }
+    return (
+        <div style={{ display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1 }}>
+            <NumberEditor field={(aboveOrBelow === 'above') ? minField : maxField} placeholder={''}
+                inputWidth={inputWidth} variant={variant} />
+            <Typography>or</Typography>
+            <Select value={aboveOrBelow} fullWidth variant={'standard'}
+                onChange={(e) => setMinMax(e.target.value)}>
+                <MenuItem value={'above'}>above</MenuItem>
+                <MenuItem value={'below'}>below</MenuItem>
+            </Select>
+        </div>
+    );
+}
+
+const RangeEditor = ({
+    isOpen = false,
+    ...rest
+}: { isOpen?: boolean, fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
+    if (isOpen) {
+        return <OpenRangeEditor {...rest} />
+    } else {
+        return <CloseRangeEditor {...rest} />
+    }
+}
+
+const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [key: string]: any }) => {
     const ranges = ["strong", "good", "satisfactory", "week"];
     const colors = ['#078F08', '#9DD566', '#FEC401', '#FB0102'];
     return (
-        <Card variant={"outlined"} style={{borderColor: '#434DB0'}}>
+        <Card variant={"outlined"} style={{ borderColor: '#434DB0' }}>
             <CardContent>
-                <Typography style={{textAlign: 'center', fontWeight: 'bold', textDecoration: 'underline', padding: 10}}>
+                <Typography style={{ textAlign: 'center', fontWeight: 'bold', textDecoration: 'underline', padding: 10 }}>
                     Edit Criteria - {node.name}
                 </Typography>
-                <div style={{display: 'flex', flexDirection: 'column', gap: 10}}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     {ranges.map((rangeName, i) => (
                         <ControlContainer key={i}>
-                            <Label style={{width: 80, textAlign: 'right', color: colors[i]}}>{rangeName}</Label>
+                            <Label style={{ width: 80, textAlign: 'right', color: colors[i] }}>{rangeName}</Label>
                             <RangeEditor
                                 // isOpen={i==0 || i==3}
                                 fieldPath={`${path}.criteria.${rangeName}`}
@@ -403,7 +308,7 @@ const CriteriaBar = () => {
     )
 }
 
-const NodeEditor: React.FC<{ node: INode, path: string, level: number }> = ({node, path, level}) => {
+const NodeEditor: React.FC<{ node: INode, path: string, level: number }> = ({ node, path, level }) => {
     const [expanded, setExpanded] = React.useState<boolean>(false);
     const toggleExpanded = () => setExpanded(!expanded);
 
@@ -421,7 +326,7 @@ const NodeEditor: React.FC<{ node: INode, path: string, level: number }> = ({nod
     const [selectedSignal, setSelectedSignal] = React.useState<number>(-1);
     return (
         <Accordion expanded={expanded} onChange={toggleExpanded} sx={{}}>
-            <AccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{fontSize: '0.9rem',}}/>} sx={{
+            <AccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', }} />} sx={{
                 flexDirection: 'row-reverse',
                 '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
                     transform: 'rotate(90deg)',
@@ -434,34 +339,34 @@ const NodeEditor: React.FC<{ node: INode, path: string, level: number }> = ({nod
                 },
             }}
             >
-                <WeightEditor node={node} path={`${path}`} type={expanded ? 'blue' : 'gray'} level={level}/>
+                <WeightEditor node={node} path={`${path}`} type={expanded ? 'blue' : 'gray'} level={level} />
             </AccordionSummary>
 
             <AccordionDetails>
-                <div style={{paddingLeft: level * 25}}>
+                <div style={{ paddingLeft: level * 25 }}>
                     {node.subFactors && (
                         <div>
                             {node.subFactors.map((sf, i) => (
-                                <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`} level={level + 1}/>
+                                <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`} level={level + 1} />
                             ))}
                         </div>
                     )}
                     {node.signals && (
-                        <div style={{display: "flex", gap: 20}}>
+                        <div style={{ display: "flex", gap: 20 }}>
                             <div>
                                 {node.signals.map((sig, i) => (
-                                    <div key={i} style={{display: 'flex', alignItems: 'baseline'}}>
-                                        <WeightEditor node={sig} style={{marginBottom: 10}} level={level + 1}
-                                                      path={`${path}.signals[${i}]`} type={'white'}/>
+                                    <div key={i} style={{ display: 'flex', alignItems: 'baseline' }}>
+                                        <WeightEditor node={sig} style={{ marginBottom: 10 }} level={level + 1}
+                                            path={`${path}.signals[${i}]`} type={'white'} />
                                         <div onClick={() => setSelectedSignal(selectedSignal === i ? -1 : i)}>
-                                            <CriteriaBar/>
+                                            <CriteriaBar />
                                         </div>
                                     </div>
                                 ))}
                             </div>
                             {selectedSignal >= 0 && (
                                 <CriteriaEditor node={node.signals[selectedSignal]}
-                                                path={`${path}.signals[${selectedSignal}]`}/>
+                                    path={`${path}.signals[${selectedSignal}]`} />
                             )}
                         </div>
                     )}
@@ -478,8 +383,8 @@ function getEmptyModel(p: IProduct): IModel {
         product: '',
         policy: {
             name: '',//policyname
-            loanRange: {min: '', max: ''},
-            loanTermInMonths: {min: '', max: ''},
+            loanRange: { min: '', max: '' },
+            loanTermInMonths: { min: '', max: '' },
             loanPurpose: [],
             isSecured: false,
         },
@@ -493,10 +398,10 @@ function getEmptyModel(p: IProduct): IModel {
                     name: sig.name,
                     weight: '0',
                     criteria: {
-                        strong: {min: '', max: ''},
-                        good: {min: '', max: ''},
-                        satisfactory: {min: '', max: ''},
-                        weak: {min: '', max: ''},
+                        strong: { min: '', max: '' },
+                        good: { min: '', max: '' },
+                        satisfactory: { min: '', max: '' },
+                        weak: { min: '', max: '' },
                     }
                 }))
             }))
@@ -526,16 +431,16 @@ function CreateModel() {
                 return (
                     <Form>
                         <Typography
-                            style={{paddingBottom: 20, fontFamily: 'Verdana', fontWeight: 'bold', fontSize: '1.1rem'}}>Create
+                            style={{ paddingBottom: 20, fontFamily: 'Verdana', fontWeight: 'bold', fontSize: '1.1rem' }}>Create
                             Model</Typography>
 
-                        <PolicyEditor/>
+                        <PolicyEditor />
 
-                        <button type="submit" style={{margin: '10px'}}>Submit</button>
-                        <Card sx={{boxShadow: '0px 3px 6px #00000029'}}>
+                        <button type="submit" style={{ margin: '10px' }}>Submit</button>
+                        <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
                             <CardContent>
                                 {formik.values.factors.map((f, i) => (
-                                    <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1}/>
+                                    <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} />
                                 ))}
                             </CardContent>
                         </Card>
