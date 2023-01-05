@@ -321,11 +321,11 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
     const [weakmax, meta8, helpers8] = useField(`${path}.criteria.weak.max`);
 
     return (
-        <Grid container style={{ flexGrow: 1 }}>
+        <Grid container style={{ flexGrow: 1 , marginLeft: '25px'}}>
             <Grid item md={12}>
                 <Card style={{ border: '2px solid blue', padding: '0px' }}>
-                    <CardContent style={{ padding: '5px', margin: '5px' }}>
-                        <Typography style={{ textAlign: 'center', font: 'normal normal bold 11px Verdana', textDecoration: 'underline', marginBottom: '7px' }} variant="h6" gutterBottom>
+                    <CardContent style={{ padding: '5px', margin: '10px' }}>
+                        <Typography style={{ textAlign: 'center', font: 'normal normal bold 11px Verdana', textDecoration: 'underline', marginBottom: '10px' }} variant="h6" gutterBottom>
                             Edit Criteria - {node.name}
                         </Typography>
 
@@ -336,14 +336,14 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
                             <TextField disabled={true} size="small" inputProps={{
                                 style: {
-                                    paddingLeft: '2px',
-                                    paddingRight: '2px',
+                                    paddingLeft: '4px',
+                                    paddingRight: '4px',
                                     textAlign: 'center',
-                                    width: '40px',
+                                    width: '60px',
                                     fontSize: '11px'
                                 }
                             }}
-                                sx={{ "& .MuiOutlinedInput-input": { padding: "1px" } }}
+                                sx={{ "& .MuiOutlinedInput-input": { padding: "2px" } }}
                                 {...goodmax} />
 
                             <Typography > or </Typography>
@@ -355,9 +355,8 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                                     variant="outlined"
                                     inputProps={{
                                         style: {
-                                            padding: '0px',
                                             textAlign: 'center',
-                                            width: '40px',
+                                            width: '80px',
                                         }
                                     }}
                                     sx={{
@@ -382,14 +381,14 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
                             <TextField disabled={true} size="small" inputProps={{
                                 style: {
-                                    paddingLeft: '2px',
-                                    paddingRight: '2px',
+                                    paddingLeft: '4px',
+                                    paddingRight: '4px',
                                     textAlign: 'center',
-                                    width: '40px',
+                                    width: '60px',
                                     fontSize: '11px'
                                 }
                             }}
-                                sx={{ "& .MuiOutlinedInput-input": { padding: "1px" } }}
+                                sx={{ "& .MuiOutlinedInput-input": { padding: "2px" } }}
                                 {...satisfactorymax} />
 
                             <Typography> to </Typography>
@@ -397,14 +396,14 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                             <Grid item md={3}>
                                 <TextField size="small" inputProps={{
                                     style: {
-                                        paddingLeft: '2px',
-                                        paddingRight: '2px',
+                                        paddingLeft: '4px',
+                                        paddingRight: '4px',
                                         textAlign: 'center',
-                                        width: '40px',
+                                        width: '60px',
                                         fontSize: '11px'
                                     }
                                 }}
-                                    sx={{ "& .MuiOutlinedInput-input": { padding: "1px" } }}
+                                    sx={{ "& .MuiOutlinedInput-input": { padding: "2px" } }}
                                     {...goodmax} />
                             </Grid>
 
@@ -418,14 +417,14 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
                             <TextField size="small" disabled={true} inputProps={{
                                 style: {
-                                    paddingLeft: '2px',
-                                    paddingRight: '2px',
+                                    paddingLeft: '4px',
+                                    paddingRight: '4px',
                                     textAlign: 'center',
-                                    width: '40px',
+                                    width: '60px',
                                     fontSize: '11px'
                                 }
                             }}
-                                sx={{ "& .MuiOutlinedInput-input": { padding: "1px" } }}
+                                sx={{ "& .MuiOutlinedInput-input": { padding: "2px" } }}
                                 {...weakmin} />
 
                             <Typography > to </Typography>
@@ -433,14 +432,14 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                             <Grid item md={3}>
                                 <TextField size="small" inputProps={{
                                     style: {
-                                        paddingLeft: '2px',
-                                        paddingRight: '2px',
+                                        paddingLeft: '4px',
+                                        paddingRight: '4px',
                                         textAlign: 'center',
-                                        width: '40px',
+                                        width: '60px',
                                         fontSize: '11px'
                                     }
                                 }}
-                                    sx={{ "& .MuiOutlinedInput-input": { padding: "1px" } }}
+                                    sx={{ "& .MuiOutlinedInput-input": { padding: "2px" } }}
                                     {...satisfactorymax} />
                             </Grid>
 
@@ -452,14 +451,14 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
 
                             <TextField size="small" inputProps={{
                                 style: {
-                                    paddingLeft: '2px',
-                                    paddingRight: '2px',
+                                    paddingLeft: '4px',
+                                    paddingRight: '4px',
                                     textAlign: 'center',
-                                    width: '40px',
+                                    width: '60px',
                                     fontSize: '11px'
                                 }
                             }}
-                                sx={{ "& .MuiOutlinedInput-input": { padding: "1px" } }}
+                                sx={{ "& .MuiOutlinedInput-input": { padding: "2px" } }}
 
                                 {...weakmin} />
 
@@ -473,7 +472,7 @@ const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [k
                                         style: {
                                             padding: '0px',
                                             textAlign: 'center',
-                                            width: '40px',
+                                            width: '80px',
                                         }
                                     }}
                                     sx={{
@@ -534,7 +533,7 @@ const NodeEditor: React.FC<{ node: INode, path: string, level: number }> = ({ no
 
             <AccordionDetails>
                 <Grid container>
-                    <Grid item xs={8} style={{ paddingLeft: 20 }}>
+                    <Grid item xs={10} style={{ paddingLeft: 20 }}>
                         {node.subFactors?.map((sf, i) => (
                             <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`} level={level + 1} />
                         ))}
@@ -542,7 +541,7 @@ const NodeEditor: React.FC<{ node: INode, path: string, level: number }> = ({ no
                             <div style={{ display: "flex" }}>
                                 <div>
                                     {node.signals.map((sig, i) => (
-                                        <div key={i} style={{ display: 'flex' }}>
+                                        <div key={i} style={{ display: 'flex'}}>
                                             <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} type={'white'} />
                                             <SettingsIcon style={{ marginTop: '15px', cursor: 'pointer' }} onClick={() => setSelectedSignal(selectedSignal === i ? -1 : i)} />
                                         </div>
