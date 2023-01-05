@@ -13,6 +13,7 @@ import Slider from '@mui/material/Slider';
 //import Policy from './components/Policy'
 import './styles/CreateModel.css';
 
+import { INode, IProduct , IModel, IRange , IPolicy} from "./interfaces/CreateModelInterfaces"
 // import './styles.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import styled from "@emotion/styled";
@@ -21,37 +22,11 @@ import styled from "@emotion/styled";
 const Label = styled(Typography)`
     font-weight: bold
 `;
-export interface IProduct {
-    name: string,
-    factors: {
-        name: string,
-        subFactors: {
-            name: string,
-            signals: {
-                name: string
-            }[]
-        }[]
-    }[]
-}
 
 const Range = {
     min: '',
     max: ''
 }
-
-interface IRange {
-    min: number | string,
-    max: number | string
-}
-
-export interface IPolicy {
-    name: string,
-    loanRange: IRange,
-    loanTermInMonths: IRange,
-    loanPurpose: [],
-    isSecured: boolean
-}
-
 
 const Criterias = {
     type: {
@@ -63,24 +38,6 @@ const Criterias = {
     // required: true
 };
 
-export interface IModel {
-    name: string,
-    product: string,
-    policy: IPolicy,
-    factors: {
-        name: string,
-        weight: number | string,
-        subFactors: {
-            name: string,
-            weight: number | string,
-            signals: {
-                name: string
-                weight: number | string,
-
-            }[]
-        }[]
-    }[]
-}
 
 
 const product: IProduct = {
@@ -156,13 +113,6 @@ const product: IProduct = {
         }
     ]
 };
-
-interface INode {
-    name: string,
-    subFactors?: INode[],
-    signals?: INode[],
-    weight: number | string,
-}
 
 const ControlContainer = styled.div`
 display: flex;
