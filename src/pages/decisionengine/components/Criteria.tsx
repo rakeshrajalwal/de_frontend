@@ -37,7 +37,7 @@ const Label = styled(Typography)`
 `;
 
 export const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [key: string]: any }) => {
-    const ranges = ["strong", "good", "satisfactory", "week"];
+    const ranges = ["strong", "good", "satisfactory", "weak"];
     const colors = ['#078F08', '#9DD566', '#FEC401', '#FB0102'];
     return (
         <Card variant={"outlined"} style={{ borderColor: '#434DB0' }}>
