@@ -1,27 +1,37 @@
 import * as React from 'react';
-import { render } from 'react-dom';
-import { Grid, Accordion, AccordionDetails, CardContent, Card, AccordionSummary, Box, Paper, TextField, Typography, Button } from "@mui/material";
+import {render} from 'react-dom';
+import {
+    Grid,
+    Accordion,
+    AccordionDetails,
+    CardContent,
+    Card,
+    AccordionSummary,
+    Box,
+    Paper,
+    TextField,
+    Typography,
+    Button
+} from "@mui/material";
 import Criteria from './components/Criteria';
 import lodash from 'lodash';
-import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
+import {Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider} from "formik";
 import Select from '@mui/material/Select';
-import { number } from 'yup';
+import {number} from 'yup';
 import MenuItem from '@mui/material/MenuItem';
 import SettingsIcon from '@mui/icons-material/Settings';
-import styles from "./styles/styles.module.css"
 import Slider from '@mui/material/Slider';
-import LinearScaleIcon from '@mui/icons-material/LinearScale';
 //import Policy from './components/Policy'
-import './styles/CreateModel.css';
-
 import { INode, IProduct , IModel, IRange , IPolicy} from "./interfaces/CreateModelInterfaces"
-// import './styles.css';
+import './styles/CreateModel.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import {ShowChart} from '@mui/icons-material';
 import styled from "@emotion/styled";
 
 
 const Label = styled(Typography)`
-    font-weight: bold
+    font-weight: bold;
+    text-transform: capitalize;
 `;
 
 const Range = {
@@ -29,91 +39,69 @@ const Range = {
     max: ''
 }
 
-const Criterias = {
-    type: {
-        strong: Range,
-        good: Range,
-        satisfactory: Range,
-        weak: Range
-    },
-    // required: true
-};
-
-
 
 const product: IProduct = {
     name: "Working Capital Loan",
     factors: [
         {
-            "name": "Financial Strength",
-            "subFactors": [
+            name: "Financial Strength",
+            subFactors: [
                 {
-                    "name": "Market Conditions ",
-                    "signals": [
-                        { "name": "GP%vsSector" },
-                        { "name": "NP%vsSector" },
-                        { "name": "LeverageVsSector" },
-                        { "name": "GearingVsSector" }
+                    name: "Market Conditions",
+                    signals: [
+                        {name: "GP%vsSector"},
+                        {name: "NP%vsSector"},
+                        {name: "LeveragevsSector"},
+                        {name: "GearingvsSector"}
                     ]
                 },
                 {
-                    "name": "Debt Service",
-                    "signals": [
-                        { "name": "EBIDTA:DSC" }
+                    name: "Debt Service",
+                    signals: [
+                        {name: "EBIDTA:DSC"}
                     ]
                 },
                 {
-                    "name": "Financial Stability",
-                    "signals": [
-                        { "name": "%ChgTurnover" },
-                        { "name": "EBIDTA%ratio" },
-                        { "name": "Stressed EBIDTA:DSC" },
-                        { "name": "%ChgRetainedProfits" }
+                    name: "Financial Stability",
+                    signals: [
+                        {name: "%ChgTurnover"},
+                        {name: "EBIDTA%ratio"},
+                        {name: "Stressed EBIDTA:DSC"},
+                        {name: "%ChgRetainedProfits"}
                     ]
                 },
                 {
-                    "name": "Gearing ratio",
-                    "signals": [
-                        { "name": "Gearing" }
+                    name: "Gearing ratio",
+                    signals: [
+                        {name: "Gearing"},
                     ]
                 },
                 {
-                    "name": "Leverage",
-                    "signals": [
-                        { "name": "Leverage" }
+                    name: "Leverage",
+                    signals: [
+                        {name: "Leverage"},
                     ]
-                }
+                },
             ]
         },
         {
-            "name": "Strength of Business Owner/Guarantor & Security Package",
-            "subFactors": [
+            name: "Strength of Business Owner/Guarantor & Security Package",
+            subFactors: [
                 {
-                    "name": "Financial Capacity & Willingness to Support",
-                    "signals": [
-                        { "name": "Sponsors Debt" },
-                        { "name": "Sponsors Net Worth" },
-                        { "name": "Sponsor Credit Score" },
-                        { "name": "Business Interuption Insurance" }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Transaction Characteristics ",
-            "subFactors": [
-                {
-                    "name": "Term of Loan vs. Purpose",
-                    "signals": [
-                        {
-                            "name": "TermvsPurpose"
-                        }
+                    name: "Financial Capacity & Willingness to Support",
+                    signals: [
+                        {name: "Sponsors Debt"},
+                        {name: "Sponsors Net Worth"},
+                        {name: "Sponsor Credit Score"},
+                        {name: "Business Interuption Insurance"},
                     ]
                 }
             ]
         }
     ]
 };
+
+
 
 const ControlContainer = styled.div`
 display: flex;
@@ -123,27 +111,82 @@ padding-left:5px;
 padding-right:15px;
 `;
 
-const RangeEditor = ({ minField, maxField }: { minField: object, maxField: object }) => (
-    <div style={{ display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1 }}>
-        <TextField style={{ flexGrow: 1 }} type={'number'}
-            variant="standard"
-            {...minField}
-            inputProps={{
-                placeholder: "Min",
-                style: { textAlign: 'center' }
-            }}
-        />
-        <Typography>to</Typography>
-        <TextField style={{ flexGrow: 1 }} type={'number'}
-            variant="standard"
-            {...maxField}
-            inputProps={{
-                placeholder: "Max",
-                style: { textAlign: 'center' }
-            }}
-        />
-    </div>
+const NumberEditor = ({
+                          variant = 'standard',
+                          field,
+                          inputWidth = 'auto',
+                          placeholder
+                      }: { variant?: 'standard' | 'outlined', field: object, inputWidth?: number | string, placeholder: string }) => (
+    <TextField
+        style={{flexGrow: 1, height: 25}}
+        type={'number'}
+        size={"small"}
+        variant={variant}
+        {...field}
+        InputLabelProps={{style: {height: 25}}}
+        InputProps={{
+            placeholder,
+            style: {width: inputWidth, height: 25}
+        }}
+        inputProps={{style: {textAlign: 'center'}}}
+    />
 )
+const RangeEditor = ({
+                         isOpen = false,
+                         ...rest
+                     }: { isOpen?: boolean, fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
+    if (isOpen) {
+        return <OpenRangeEditor {...rest}/>
+    } else {
+        return <CloseRangeEditor {...rest}/>
+    }
+}
+const CloseRangeEditor = ({
+                              fieldPath,
+                              variant = 'standard',
+                              inputWidth = 'auto',
+                              openRange = false
+                          }: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
+    const [minField] = useField(`${fieldPath}.min`);
+    const [maxField] = useField(`${fieldPath}.max`);
+    return (
+        <div style={{display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1}}>
+            <NumberEditor field={minField} placeholder={'Min'} inputWidth={inputWidth} variant={variant}/>
+            <Typography>to</Typography>
+            <NumberEditor field={maxField} placeholder={'Max'} inputWidth={inputWidth} variant={variant}/>
+        </div>
+    );
+}
+
+const OpenRangeEditor = ({
+                             fieldPath,
+                             variant = 'standard',
+                             inputWidth = 'auto',
+                             openRange = false
+                         }: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
+    const [minField, , minHelper] = useField(`${fieldPath}.min`);
+    const [maxField, , maxHelper] = useField(`${fieldPath}.max`);
+    const [aboveOrBelow, setAboveOrBelow] = React.useState<string>('');
+    const setMinMax = (v: string) => {
+        setAboveOrBelow(v);
+        const min = minField.value;
+        const max = maxField.value;
+        const editableField = (aboveOrBelow === 'above') ? minHelper : maxHelper;
+        editableField.setValue(min ?? max);
+    }
+    return (
+        <div style={{display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1}}>
+            <NumberEditor field={(aboveOrBelow === 'above') ? minField : maxField} placeholder={''}
+                          inputWidth={inputWidth} variant={variant}/>
+            <Typography>or</Typography>
+            <Select value={aboveOrBelow} fullWidth variant={'standard'}
+                    onChange={(e) => setMinMax(e.target.value)}>
+                <MenuItem value={'above'}>above</MenuItem>
+                <MenuItem value={'below'}>below</MenuItem>
+            </Select>
+        </div>
+    );
+}
 const PolicyEditor = () => {
 
     const [product, meta, helpers] = useField(`product`);//product name
@@ -157,9 +200,9 @@ const PolicyEditor = () => {
 
     return (
 
-        <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
+        <Card sx={{boxShadow: '0px 3px 6px #00000029'}}>
             <CardContent>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
                     <Grid container>
                         <Grid item md={6}>
                             <ControlContainer>
@@ -189,26 +232,25 @@ const PolicyEditor = () => {
                     </Grid>
 
                     <Grid container>
-                        <Grid item md={6} >
+                        <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Loan Range (£):</Label>
-                                <RangeEditor minField={loanMin} maxField={loanMax} />
+                                <RangeEditor fieldPath={'policy.loanRange'}/>
                             </ControlContainer>
                         </Grid>
-                        <Grid item md={6} >
+                        <Grid item md={6}>
                             <ControlContainer>
-                                <Label>Term (months):</Label>
-                                <RangeEditor minField={termMin} maxField={termMax} />
+                                <Label>Term:</Label>
+                                <RangeEditor fieldPath={'policy.loanTermInMonths'}/>
                             </ControlContainer>
                         </Grid>
                     </Grid>
 
-                    <Grid container style={{ alignItems: 'flex-end' }}>
-                        <Grid item md={6} >
+                    <Grid container style={{alignItems: 'flex-end'}}>
+                        <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Purpose:</Label>
                                 <Select
-                                    multiple
                                     fullWidth
                                     variant="standard"
                                     {...purpose}
@@ -219,14 +261,14 @@ const PolicyEditor = () => {
                                 </Select>
                             </ControlContainer>
                         </Grid>
-                        <Grid item md={6} >
+                        <Grid item md={6}>
                             <label>
-                                <Field type="radio" {...isSecured} value="true" />
-                                <span style={{ fontWeight: "bold" }}>Secured</span>
+                                <Field type="radio" {...isSecured} value="true"/>
+                                <span style={{fontWeight: "bold"}}>Secured</span>
                             </label>
                             <label>
-                                <Field type="radio" {...isSecured} value="false" />
-                                <span style={{ fontWeight: "bold" }}>Unsecured</span>
+                                <Field type="radio" {...isSecured} value="false"/>
+                                <span style={{fontWeight: "bold"}}>Unsecured</span>
                             </label>
                         </Grid>
                     </Grid>
@@ -238,7 +280,7 @@ const PolicyEditor = () => {
     )
 }
 
-function HealthIndicator({ node }: { node: INode }) {
+function HealthIndicator({node}: { node: INode }) {
     if (!(node.signals || node.subFactors)) {
         return <></>
     }
@@ -252,7 +294,13 @@ function HealthIndicator({ node }: { node: INode }) {
     }}></div>;
 }
 
-const WeightEditor = ({ node, path, type, ...rest }: { node: INode, path: string, type: string, [key: string]: any }) => {
+const WeightEditor = ({
+                          node,
+                          path,
+                          type,
+                          level,
+                          ...rest
+                      }: { node: INode, path: string, type: string, level: number, [key: string]: any }) => {
     const [field, meta, helpers] = useField(`${path}.weight`);
 
     const inc = () => {
@@ -276,229 +324,88 @@ const WeightEditor = ({ node, path, type, ...rest }: { node: INode, path: string
         }
     }
 
+    const height = level === 1 ? 40 : level === 2 ? 30 : 35;
+    const font = `normal normal bold ${level === 1 ? 12 : 10}px Verdana`
+    const width = level == 1 ? 600 : level == 2 ? 440 : 250;
     return (
-        <Box sx={{ flexGrow: 1, margin: 2 }} className={type === 'white' ? 'signal-box' : ''}>
-            <div style={{ display: 'flex', gap: 10 }}>
-                <Paper
-                    style={{
-                        flexGrow: 1,
-                        fontWeight: "bold",
-                        padding: "10px 20px",
-                        display: "flex",
-                        alignItems: 'center',
-                        borderRadius: 8,
-                        ...colors[type]
-                    }}>
-                    <Typography style={{ flexGrow: 1, font: 'normal normal bold 12px Verdana' }}>{node.name}</Typography>
-                    <HealthIndicator node={node} />
-                </Paper>
+        <Box sx={{margin: 2, display: 'flex', gap: 3, height}} className={type === 'white' ? 'signal-box' : ''}>
+            <Paper
+                style={{
+                    width,
+                    flexGrow: 1,
+                    fontWeight: "bold",
+                    padding: "10px 20px",
+                    display: "flex",
+                    alignItems: 'center',
+                    borderRadius: 8,
+                    ...colors[type]
+                }}>
+                <Typography style={{flexGrow: 1, font}}>{node.name}</Typography>
+                <HealthIndicator node={node}/>
+            </Paper>
 
-                <div style={{ display: 'flex', gap: 2 }} onClick={e => e.stopPropagation()}>
-                    <Button variant="contained" style={{ borderRadius: 8, width: 39.5, minWidth: "unset", backgroundColor: '#434DB0' }} size="small" onClick={dec} > - </Button>
-                    <TextField sx={{ "& fieldset": { border: 'none' } }} type={'number'}
-                        inputProps={{
-                            min: 0,
-                            max: 100,
-                            style: {
-                                textAlign: 'center'
-                            }
-                        }}
-                        variant="outlined" size="small" {...field} style={{ width: 50, height: 39.5, backgroundColor: "rgba(0, 0, 0, 0.06)" }} />
-                    <Button variant="contained" style={{ borderRadius: 8, width: 39.5, minWidth: "unset", backgroundColor: '#434DB0' }} size="small" onClick={inc} > + </Button>
-                </div>
+
+            <div style={{display: 'flex', gap: 2}} onClick={e => e.stopPropagation()}>
+                <Button variant="contained"
+                        style={{borderRadius: 8, minWidth: "unset", backgroundColor: '#434DB0', aspectRatio: 1}}
+                        size="small" onClick={dec}> - </Button>
+                <TextField sx={{"& fieldset": {border: 'none'}}} type={'number'}
+                           inputProps={{
+                               min: 0,
+                               max: 100,
+                               style: {
+                                   textAlign: 'center'
+                               }
+                           }}
+                           variant="outlined" size="small" {...field}
+                           style={{width: 50, backgroundColor: "rgba(0, 0, 0, 0.06)"}}/>
+                <Button variant="contained"
+                        style={{borderRadius: 8, minWidth: "unset", backgroundColor: '#434DB0', aspectRatio: 1}}
+                        size="small" onClick={inc}> + </Button>
             </div>
-        </Box >
+
+        </Box>
     )
 }
 
-const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [key: string]: any }) => {
-    const [strongmin, meta, helpers] = useField(`${path}.criteria.strong.min`);
-    const [strongmax, meta2, helpers2] = useField(`${path}.criteria.strong.max`);
-    const [goodmin, meta3, helpers3] = useField(`${path}.criteria.good.min`);
-    const [goodmax, meta4, helpers4] = useField(`${path}.criteria.good.max`);
-    const [satisfactorymin, meta5, helpers5] = useField(`${path}.criteria.satisfactory.min`);
-    const [satisfactorymax, meta6, helpers6] = useField(`${path}.criteria.satisfactory.max`);
-    const [weakmin, meta7, helpers7] = useField(`${path}.criteria.weak.min`);
-    const [weakmax, meta8, helpers8] = useField(`${path}.criteria.weak.max`);
-
+const CriteriaEditor = ({node, path, ...rest}: { node: INode, path: string, [key: string]: any }) => {
+    const ranges = ["strong", "good", "satisfactory", "week"];
+    const colors = ['#078F08', '#9DD566', '#FEC401', '#FB0102'];
     return (
-        <Grid container style={{ flexGrow: 1 , marginLeft: '25px'}}>
-            <Grid item md={12}>
-                <Card style={{ border: '2px solid blue', padding: '0px' }}>
-                    <CardContent style={{ padding: '5px', margin: '10px' }}>
-                        <Typography style={{ textAlign: 'center', font: 'normal normal bold 11px Verdana', textDecoration: 'underline', marginBottom: '10px' }} variant="h6" gutterBottom>
-                            Edit Criteria - {node.name}
-                        </Typography>
-
-                        {/* strong */}
-                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", marginBottom: '5px' }}>
-
-                            <Grid item md={3}> <Typography style={{ font: 'normal normal bold 11px Verdana', fontWeight: "bold", color: "#009300" }}>Strong</Typography></Grid>
-
-                            <TextField disabled={true} size="small" inputProps={{
-                                style: {
-                                    paddingLeft: '4px',
-                                    paddingRight: '4px',
-                                    textAlign: 'center',
-                                    width: '60px',
-                                    fontSize: '11px'
-                                }
-                            }}
-                                sx={{ "& .MuiOutlinedInput-input": { padding: "2px" } }}
-                                {...goodmax} />
-
-                            <Typography > or </Typography>
-
-                            <Grid item md={3}>
-                                <Select
-                                    size='small'
-                                    defaultValue={'above'}
-                                    variant="outlined"
-                                    inputProps={{
-                                        style: {
-                                            textAlign: 'center',
-                                            width: '80px',
-                                        }
-                                    }}
-                                    sx={{
-                                        "& .MuiSelect-outlined": {
-                                            padding: "1px 21px 1px 3px",
-                                            fontSize: '11px',
-                                        }
-                                    }}
-
-                                    {...strongmax}
-                                >
-                                    <MenuItem value={`above`}>above</MenuItem>
-                                    <MenuItem value={`below`}>below</MenuItem>
-                                </Select>
-                            </Grid>
-
-                        </Grid>
-
-                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", marginBottom: '5px' }}>
-
-                            <Grid item md={3}> <Typography style={{ font: 'normal normal bold 11px Verdana', fontWeight: "bold", color: "#9DD566" }}>Good</Typography></Grid>
-
-                            <TextField disabled={true} size="small" inputProps={{
-                                style: {
-                                    paddingLeft: '4px',
-                                    paddingRight: '4px',
-                                    textAlign: 'center',
-                                    width: '60px',
-                                    fontSize: '11px'
-                                }
-                            }}
-                                sx={{ "& .MuiOutlinedInput-input": { padding: "2px" } }}
-                                {...satisfactorymax} />
-
-                            <Typography> to </Typography>
-
-                            <Grid item md={3}>
-                                <TextField size="small" inputProps={{
-                                    style: {
-                                        paddingLeft: '4px',
-                                        paddingRight: '4px',
-                                        textAlign: 'center',
-                                        width: '60px',
-                                        fontSize: '11px'
-                                    }
-                                }}
-                                    sx={{ "& .MuiOutlinedInput-input": { padding: "2px" } }}
-                                    {...goodmax} />
-                            </Grid>
-
-                        </Grid>
-
-                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", marginBottom: '5px' }}>
-
-                            <Grid item md={3}> <Typography
-                                sx={{ wordWrap: 'break-word' }}
-                                style={{ font: 'normal normal bold 11px Verdana', fontWeight: "bold", color: "#FCC200" }}>Satisfactory</Typography></Grid>
-
-                            <TextField size="small" disabled={true} inputProps={{
-                                style: {
-                                    paddingLeft: '4px',
-                                    paddingRight: '4px',
-                                    textAlign: 'center',
-                                    width: '60px',
-                                    fontSize: '11px'
-                                }
-                            }}
-                                sx={{ "& .MuiOutlinedInput-input": { padding: "2px" } }}
-                                {...weakmin} />
-
-                            <Typography > to </Typography>
-
-                            <Grid item md={3}>
-                                <TextField size="small" inputProps={{
-                                    style: {
-                                        paddingLeft: '4px',
-                                        paddingRight: '4px',
-                                        textAlign: 'center',
-                                        width: '60px',
-                                        fontSize: '11px'
-                                    }
-                                }}
-                                    sx={{ "& .MuiOutlinedInput-input": { padding: "2px" } }}
-                                    {...satisfactorymax} />
-                            </Grid>
-
-                        </Grid>
-
-                        <Grid style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", marginBottom: '5px' }}>
-
-                            <Grid item md={3}>  <Typography style={{ font: 'normal normal bold 11px Verdana', fontWeight: "bold", color: "#FA0102" }}>Weak</Typography> </Grid>
-
-                            <TextField size="small" inputProps={{
-                                style: {
-                                    paddingLeft: '4px',
-                                    paddingRight: '4px',
-                                    textAlign: 'center',
-                                    width: '60px',
-                                    fontSize: '11px'
-                                }
-                            }}
-                                sx={{ "& .MuiOutlinedInput-input": { padding: "2px" } }}
-
-                                {...weakmin} />
-
-                            <Typography > or </Typography>
-
-                            <Grid item md={3} >
-                                <Select
-                                    size='small'
-                                    defaultValue={'below'}
-                                    variant="outlined" inputProps={{
-                                        style: {
-                                            padding: '0px',
-                                            textAlign: 'center',
-                                            width: '80px',
-                                        }
-                                    }}
-                                    sx={{
-                                        "& .MuiSelect-outlined": {
-                                            padding: "1px 21px 1px 3px",
-                                            fontSize: '11px',
-                                        }
-                                    }}
-                                    {...weakmax}
-                                >
-                                    <MenuItem value={`above`}>above</MenuItem>
-                                    <MenuItem value={`below`}>below</MenuItem>
-                                </Select>
-                            </Grid>
-
-                        </Grid>
-
-                    </CardContent>
-                </Card>
-            </Grid>
-        </Grid >
+        <Card variant={"outlined"} style={{borderColor: '#434DB0'}}>
+            <CardContent>
+                <Typography style={{textAlign: 'center', fontWeight: 'bold', textDecoration: 'underline', padding: 10}}>
+                    Edit Criteria - {node.name}
+                </Typography>
+                <div style={{display: 'flex', flexDirection: 'column', gap: 10}}>
+                    {ranges.map((rangeName, i) => (
+                        <ControlContainer key={i}>
+                            <Label style={{width: 80, textAlign: 'right', color: colors[i]}}>{rangeName}</Label>
+                            <RangeEditor
+                                // isOpen={i==0 || i==3}
+                                fieldPath={`${path}.criteria.${rangeName}`}
+                                variant={'outlined'}
+                                inputWidth={50}
+                            />
+                        </ControlContainer>
+                    ))}
+                </div>
+            </CardContent>
+        </Card>
     )
 }
 
-const NodeEditor: React.FC<{ node: INode, path: string, level: number }> = ({ node, path, level }) => {
+const CriteriaBar = () => {
+    return (
+        <div className='criteria-bar'>
+            {[-5, 5, 15].map((v, i) => (
+                <div key={i} className="criteria-value">{v}</div>
+            ))}
+        </div>
+    )
+}
+
+const NodeEditor: React.FC<{ node: INode, path: string, level: number }> = ({node, path, level}) => {
     const [expanded, setExpanded] = React.useState<boolean>(false);
     const toggleExpanded = () => setExpanded(!expanded);
 
@@ -515,8 +422,8 @@ const NodeEditor: React.FC<{ node: INode, path: string, level: number }> = ({ no
 
     const [selectedSignal, setSelectedSignal] = React.useState<number>(-1);
     return (
-        <Accordion expanded={expanded} onChange={toggleExpanded} sx={{}} >
-            <AccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', }} />} sx={{
+        <Accordion expanded={expanded} onChange={toggleExpanded} sx={{}}>
+            <AccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{fontSize: '0.9rem',}}/>} sx={{
                 flexDirection: 'row-reverse',
                 '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
                     transform: 'rotate(90deg)',
@@ -529,35 +436,40 @@ const NodeEditor: React.FC<{ node: INode, path: string, level: number }> = ({ no
                 },
             }}
             >
-                <WeightEditor node={node} path={`${path}`} type={expanded ? 'blue' : 'gray'} />
+                <WeightEditor node={node} path={`${path}`} type={expanded ? 'blue' : 'gray'} level={level}/>
             </AccordionSummary>
 
             <AccordionDetails>
-                <Grid container>
-                    <Grid item xs={10} style={{ paddingLeft: 20 }}>
-                        {node.subFactors?.map((sf, i) => (
-                            <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`} level={level + 1} />
-                        ))}
-                        {node.signals && (
-                            <div style={{ display: "flex" }}>
-                                <div>
-                                    {node.signals.map((sig, i) => (
-                                        <div key={i} style={{ display: 'flex'}}>
-                                            <WeightEditor node={sig} style={{ marginBottom: 10 }} path={`${path}.signals[${i}]`} type={'white'} />
-                                            <SettingsIcon  style={{ marginTop: '15px', cursor: 'pointer'}} onClick={() => setSelectedSignal(selectedSignal === i ? -1 : i)} />
+                <div style={{paddingLeft: level * 25}}>
+                    {node.subFactors && (
+                        <div>
+                            {node.subFactors.map((sf, i) => (
+                                <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`} level={level + 1}/>
+                            ))}
+                        </div>
+                    )}
+                    {node.signals && (
+                        <div style={{display: "flex", gap: 20}}>
+                            <div>
+                                {node.signals.map((sig, i) => (
+                                    <div key={i} style={{display: 'flex', alignItems: 'baseline'}}>
+                                        <WeightEditor node={sig} style={{marginBottom: 10}} level={level + 1}
+                                                      path={`${path}.signals[${i}]`} type={'white'}/>
+                                        <div onClick={() => setSelectedSignal(selectedSignal === i ? -1 : i)}>
+                                            <CriteriaBar/>
                                         </div>
-                                    ))}
-                                </div>
-                                {selectedSignal >= 0 && (
-                                    <CriteriaEditor node={node.signals[selectedSignal]} path={`${path}.signals[${selectedSignal}]`} />
-                                )}
+                                    </div>
+                                ))}
                             </div>
-                        )}
-
-                    </Grid>
-                </Grid>
+                            {selectedSignal >= 0 && (
+                                <CriteriaEditor node={node.signals[selectedSignal]}
+                                                path={`${path}.signals[${selectedSignal}]`}/>
+                            )}
+                        </div>
+                    )}
+                </div>
             </AccordionDetails>
-        </Accordion >
+        </Accordion>
     )
 
 }
@@ -568,22 +480,26 @@ function getEmptyModel(p: IProduct): IModel {
         product: '',
         policy: {
             name: '',//policyname
-            loanRange: { min: '', max: '' },
-            loanTermInMonths: { min: '', max: '' },
+            loanRange: {min: '', max: ''},
+            loanTermInMonths: {min: '', max: ''},
             loanPurpose: [],
             isSecured: false,
         },
         factors: p.factors.map(f => ({
             name: f.name,
-            weight: '',
+            weight: '0',
             subFactors: f.subFactors.map(sf => ({
                 name: sf.name,
-                weight: '',
+                weight: '0',
                 signals: sf.signals.map(sig => ({
                     name: sig.name,
-                    weight: '',
-                    criteria: Criterias.type
-
+                    weight: '0',
+                    criteria: {
+                        strong: {min: '', max: ''},
+                        good: {min: '', max: ''},
+                        satisfactory: {min: '', max: ''},
+                        weak: {min: '', max: ''},
+                    }
                 }))
             }))
         }))
@@ -611,17 +527,17 @@ function CreateModel() {
                 const v = formik.values;
                 return (
                     <Form>
-                        <div style={{ marginBottom: '5px', marginTop: '30px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Typography style={{ paddingBottom: 20, fontFamily: 'Verdana', fontWeight: 'bold', fontSize: '1.1rem' }}>Create Model</Typography>
-                            <Button disabled={!formik.isValid} type="submit" style={{ margin: '10px', backgroundColor: '#434DB0', color: '#fff', float: 'right' }} size="large">Submit</Button>
-                        </div>
+                        <Typography
+                            style={{paddingBottom: 20, fontFamily: 'Verdana', fontWeight: 'bold', fontSize: '1.1rem'}}>Create
+                            Model</Typography>
 
-                        <PolicyEditor />
+                        <PolicyEditor/>
 
-                        <Card sx={{ boxShadow: '0px 3px 6px #00000029', marginTop: '10px' }}>
+                        <button type="submit" style={{margin: '10px'}}>Submit</button>
+                        <Card sx={{boxShadow: '0px 3px 6px #00000029'}}>
                             <CardContent>
                                 {formik.values.factors.map((f, i) => (
-                                    <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} />
+                                    <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1}/>
                                 ))}
                             </CardContent>
                         </Card>
