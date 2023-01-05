@@ -13,7 +13,7 @@ import {
     Typography,
     Button
 } from "@mui/material";
-import Criteria from './components/Criteria';
+import { CriteriaEditor } from './components/Criteria';
 import lodash from 'lodash';
 import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
 import Select from '@mui/material/Select';
@@ -271,32 +271,6 @@ const RangeEditor = ({
     }
 }
 
-const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [key: string]: any }) => {
-    const ranges = ["strong", "good", "satisfactory", "week"];
-    const colors = ['#078F08', '#9DD566', '#FEC401', '#FB0102'];
-    return (
-        <Card variant={"outlined"} style={{ borderColor: '#434DB0' }}>
-            <CardContent>
-                <Typography style={{ textAlign: 'center', fontWeight: 'bold', textDecoration: 'underline', padding: 10 }}>
-                    Edit Criteria - {node.name}
-                </Typography>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    {ranges.map((rangeName, i) => (
-                        <ControlContainer key={i}>
-                            <Label style={{ width: 80, textAlign: 'right', color: colors[i] }}>{rangeName}</Label>
-                            <RangeEditor
-                                // isOpen={i==0 || i==3}
-                                fieldPath={`${path}.criteria.${rangeName}`}
-                                variant={'outlined'}
-                                inputWidth={50}
-                            />
-                        </ControlContainer>
-                    ))}
-                </div>
-            </CardContent>
-        </Card>
-    )
-}
 
 const CriteriaBar = () => {
     return (

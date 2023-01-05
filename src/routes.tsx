@@ -39,7 +39,6 @@ import Landing from "./pages/presentation/Landing";
 // Protected routes
 import ProtectedPage from "./pages/protected/ProtectedPage";
 import Page404 from "./pages/auth/Page404";
-import Criteria from "./pages/decisionengine/components/Criteria";
 
 //const SaaS = async(() => import("./pages/dashboards/SaaS"));
 
