@@ -617,13 +617,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -1243,13 +1243,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -1869,13 +1869,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -2495,13 +2495,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -3120,13 +3120,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -3745,13 +3745,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -4370,13 +4370,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -4995,13 +4995,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -5620,13 +5620,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -6245,13 +6245,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -6870,13 +6870,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -7495,13 +7495,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -8120,13 +8120,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -8745,13 +8745,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -9370,13 +9370,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -9995,13 +9995,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -10620,13 +10620,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -11245,13 +11245,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -11870,13 +11870,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -12495,13 +12495,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -13120,13 +13120,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -13746,13 +13746,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -14372,13 +14372,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -14998,13 +14998,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -15624,13 +15624,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -16250,13 +16250,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -16876,13 +16876,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -17502,13 +17502,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -18128,13 +18128,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -18754,13 +18754,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -19380,13 +19380,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -20006,13 +20006,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -20632,13 +20632,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -21258,13 +21258,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -21884,13 +21884,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -22510,13 +22510,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -23136,13 +23136,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -23762,13 +23762,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -24388,13 +24388,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -25015,13 +25015,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -25642,13 +25642,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -26269,13 +26269,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -26896,13 +26896,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -27523,13 +27523,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -28150,13 +28150,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -28777,13 +28777,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -29404,13 +29404,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -30031,13 +30031,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -30658,13 +30658,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -31285,13 +31285,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -31912,13 +31912,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -32539,13 +32539,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -33166,13 +33166,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -33793,13 +33793,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -34420,13 +34420,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -35047,13 +35047,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -35674,13 +35674,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -36301,13 +36301,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -36928,13 +36928,13 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   },
   {
     "policy": {
@@ -37555,12 +37555,12 @@
       }
     ],
     "__v": 0,
-    "is_active": true,
+    "isActive": true,
     "status": "approved",
     "runs": 234,
-    "last_run_by": "ncino",
-    "last_run_on": "15/12/22 11:45:23",
-    "created_by": "Chris",
-    "created_on": "10/12/22 11:45:12"
+    "lastRunBy": "ncino",
+    "lastRunOn": "15/12/22 11:45:23",
+    "createdBy": "Chris",
+    "createdOn": "10/12/22 11:45:12"
   }
 ]

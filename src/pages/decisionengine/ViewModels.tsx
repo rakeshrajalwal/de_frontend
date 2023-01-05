@@ -250,7 +250,7 @@ const columns: GridColDef[] = [
     align: "center",
   },
   {
-    field: "last_run_by",
+    field: "lastRunBy",
     headerName: "Last Run",
     description: "Last Run",
     // width: 75,
@@ -261,17 +261,17 @@ const columns: GridColDef[] = [
       return (
         <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', fontSize: '1.6ex' }}>
           <div>
-            {params.row.last_run_by}
+            {params.row.lastRunBy}
           </div>
           <div style={{ fontSize: '1.4ex' }}>
-            {params.row.last_run_on}
+            {params.row.lastRunOn}
           </div>
         </div>
       );
     },
   },
   {
-    field: "created_by",
+    field: "createdBy",
     headerName: "Created By",
     description: "Created By",
     // width: 120,
@@ -282,23 +282,23 @@ const columns: GridColDef[] = [
       return (
         <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', fontSize: '1.6ex' }}>
           <div>
-            {params.row.created_by}
+            {params.row.createdBy}
           </div>
           <div style={{ fontSize: '1.4ex' }}>
-            {params.row.created_on}
+            {params.row.createdOn}
           </div>
         </div>
       );
     },
   },
   {
-    field: "is_active",
+    field: "isActive",
     headerName: "",
     // width: 100,
     flex: 5,
     align: "center",
     renderCell: (params) => {
-      if (params.row.is_active) {
+      if (params.row.isActive) {
         return (
           <Chip
             label="Active"
@@ -396,17 +396,17 @@ function ViewModels() {
               justifyContent: 'left',
             }}
           >
-            <IconButton aria-label='Approved' size='small'>
+            <IconButton disabled aria-label='Approved' size='small'>
               <CheckCircleIcon style={{ color: 'green', fontSize: '1.8ex' }} />
             </IconButton>
             <p>Approved </p>
 
-            <IconButton aria-label='Rejected' size='small'>
+            <IconButton disabled aria-label='Rejected' size='small'>
               <CancelIcon style={{ color: 'red', fontSize: '1.8ex' }} />
             </IconButton>
             <p>Rejected </p>
 
-            <IconButton aria-label='In-Review' size='small'>
+            <IconButton disabled aria-label='In-Review' size='small'>
               <AccessTime style={{ color: 'orange', fontSize: '1.8ex' }} />
             </IconButton>
             <p>In-Review </p>
