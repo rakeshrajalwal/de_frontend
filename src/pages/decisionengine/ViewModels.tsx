@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { Helmet } from "react-helmet-async";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -14,71 +15,7 @@ import { spacing } from "@mui/system";
 import AccessTime from "@mui/icons-material/AccessTime";
 import modelsJson from "./getmodels.json";
 import lodash from "lodash";
-
-export interface IProduct {
-  name: string;
-  factors: {
-    name: string;
-    subFactors: {
-      name: string;
-      signals: {
-        name: string;
-      }[];
-    }[];
-  }[];
-}
-
-export interface IRange {
-  min: number | string;
-  max: number | string;
-  _id: string;
-}
-
-export interface ICriteria {
-  weak: IRange;
-  satisfactory: IRange;
-  good: IRange;
-  strong: IRange;
-}
-
-export interface IPolicy {
-  name: string;
-  loanRange: IRange;
-  loanTermInMonths: IRange;
-  loanPurpose: string[];
-  isSecured: boolean;
-}
-
-export interface IModel {
-  __v: number | string;
-  _id: string;
-  name: string;
-  product: string;
-  isActive: boolean;
-  status: string;
-  lastRunBy: string;
-  lastRunOn: string;
-  createdBy: string;
-  createdOn: string;
-  policy: IPolicy;
-  factors: {
-    _id: string;
-    name: string;
-    weight: number | string;
-    subFactors: {
-      _id: string;
-      name: string;
-      weight: number | string;
-      signals: {
-        _id: string;
-        name: string;
-        weight: number | string;
-        criteria: ICriteria;
-        overallWeight: number | string;
-      }[];
-    }[];
-  }[];
-}
+import { INode, IProduct, IModel, IRange, IPolicy } from "./interfaces/ModelInterface";
 
 const Chip = styled(MuiChip)(spacing);
 
@@ -171,7 +108,7 @@ const columns: GridColDef[] = [
     headerAlign: "center",
   },
   {
-    field: "status",
+    field: "approvalStatus",
     headerName: "",
     flex: 0.2,
     headerAlign: "center",
@@ -246,7 +183,7 @@ const columns: GridColDef[] = [
     valueFormatter: ({ value }) => value ? "Yes" : "No",
   },
   {
-    field: "runs",
+    field: "runCount",
     headerName: "Runs",
     description: "Runs",
     // width: 75,
@@ -255,14 +192,14 @@ const columns: GridColDef[] = [
     align: "center",
   },
   {
-    field: "lastRunBy",
+    field: "lastRun",
     headerName: "Last Run",
     description: "Last Run",
     // width: 75,
     flex: 7,
     headerAlign: "center",
     align: "center",
-    valueGetter: ({ row: { lastRunBy, lastRunOn } }) => [lastRunBy, lastRunOn],
+    valueGetter: ({ row: { lastRun } }) => [lastRun.source, lastRun.runAt],
     renderCell: MultiStringCell,
   },
   {
@@ -326,6 +263,7 @@ function ModelDataGrid() {
 }
 
 function ViewModels() {
+  const navigate = useNavigate();
   return (
     <React.Fragment>
       <Helmet title='Models' />
@@ -356,6 +294,7 @@ function ViewModels() {
               variant='contained'
               color='primary'
               style={{ backgroundColor: '#434DB0' }}
+              onClick={() => { navigate("/model/create"); }}
             >
               Create Model
             </Button>
