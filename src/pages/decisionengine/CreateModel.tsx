@@ -29,68 +29,68 @@ const product: IProduct = {
     name: "Working Capital Loan",
     factors: [
         {
-            "name": "Financial Strength",
-            "subFactors": [
+            name: "Financial Strength",
+            subFactors: [
                 {
-                    "name": "Market Conditions ",
-                    "signals": [
-                        { "name": "GP%vsSector" },
-                        { "name": "NP%vsSector" },
-                        { "name": "LeverageVsSector" },
-                        { "name": "GearingVsSector" }
+                    name: "Market Conditions ",
+                    signals: [
+                        { name: "GP%vsSector" },
+                        { name: "NP%vsSector" },
+                        { name: "LeverageVsSector" },
+                        { name: "GearingVsSector" }
                     ]
                 },
                 {
-                    "name": "Debt Service",
-                    "signals": [
-                        { "name": "EBIDTA:DSC" }
+                    name: "Debt Service",
+                    signals: [
+                        { name: "EBIDTA:DSC" }
                     ]
                 },
                 {
-                    "name": "Financial Stability",
-                    "signals": [
-                        { "name": "%ChgTurnover" },
-                        { "name": "EBIDTA%ratio" },
-                        { "name": "Stressed EBIDTA:DSC" },
-                        { "name": "%ChgRetainedProfits" }
+                    name: "Financial Stability",
+                    signals: [
+                        { name: "%ChgTurnover" },
+                        { name: "EBIDTA%ratio" },
+                        { name: "Stressed EBIDTA:DSC" },
+                        { name: "%ChgRetainedProfits" }
                     ]
                 },
                 {
-                    "name": "Gearing ratio",
-                    "signals": [
-                        { "name": "Gearing" }
+                    name: "Gearing ratio",
+                    signals: [
+                        { name: "Gearing" }
                     ]
                 },
                 {
-                    "name": "Leverage",
-                    "signals": [
-                        { "name": "Leverage" }
+                    name: "Leverage",
+                    signals: [
+                        { name: "Leverage" }
                     ]
                 }
             ]
         },
         {
-            "name": "Strength of Business Owner/Guarantor & Security Package",
-            "subFactors": [
+            name: "Strength of Business Owner/Guarantor & Security Package",
+            subFactors: [
                 {
-                    "name": "Financial Capacity & Willingness to Support",
-                    "signals": [
-                        { "name": "Sponsors Debt" },
-                        { "name": "Sponsors Net Worth" },
-                        { "name": "Sponsor Credit Score" },
-                        { "name": "Business Interuption Insurance" }
+                    name: "Financial Capacity & Willingness to Support",
+                    signals: [
+                        { name: "Sponsors Debt" },
+                        { name: "Sponsors Net Worth" },
+                        { name: "Sponsor Credit Score" },
+                        { name: "Business Interuption Insurance" }
                     ]
                 }
             ]
         },
         {
-            "name": "Transaction Characteristics ",
-            "subFactors": [
+            name: "Transaction Characteristics ",
+            subFactors: [
                 {
-                    "name": "Term of Loan vs. Purpose",
-                    "signals": [
+                    name: "Term of Loan vs. Purpose",
+                    signals: [
                         {
-                            "name": "TermvsPurpose"
+                            name: "TermvsPurpose"
                         }
                     ]
                 }
