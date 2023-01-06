@@ -8,7 +8,6 @@ import {
   Paper as MuiPaper,
   Button as MuiButton,
   Typography,
-  IconButton,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
@@ -101,6 +100,7 @@ const datagridSx = {
     backgroundColor: "#D9F1FC",
   },
   "& .MuiDataGrid-columnHeaderTitle": {
+    fontFamily: "Verdana",
     fontWeight: "bold",
     letterSpacing: "0.05ex",
     opacity: 1,
@@ -110,6 +110,7 @@ const datagridSx = {
     backgroundColor: "#F3FBFE",
   },
   "& .MuiDataGrid-cellContent": {
+    fontFamily: "Verdana",
     wordWrap: "break-word !important",
     textAlign: "center",
     fontSize: "1.5ex",
@@ -227,7 +228,7 @@ const columns: GridColDef[] = [
     headerName: "Purpose",
     description: "Purpose",
     // width: 100,
-    flex: 5,
+    flex: 6,
     headerAlign: "center",
     align: "center",
     valueGetter: ({ row, field }) => lodash.get(row, field),
