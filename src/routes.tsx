@@ -103,7 +103,10 @@ const routes = [
         path: "/model/run",
         element: <RunModel />,
       },
-
+      {
+        path: "/model/run",
+        element: <RunModel />,
+      },
     ],
   },
   {
