@@ -32,9 +32,12 @@ padding-right:15px;
 export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
 
     const [product, meta, helpers] = useField(`product`);//product name
-    const [name, meta8, helpers8] = useField(`name`);//name of model
-    const [purpose, meta6, helpers6] = useField(`policy.loanPurpose`);
-    const [isSecured, meta7, helpers7] = useField(`policy.isSecured`);
+    const [name, meta2, helpers8] = useField(`name`);//name of model
+    const [purpose, meta3, helpers6] = useField(`policy.loanPurpose`);
+    const [isSecured, meta4, helpers7] = useField(`policy.isSecured`);
+
+    const  value  = isSecured.value;
+    console.log(value, "the value")
 
     const selectedProudct = lodash.find(products, { name: product.value });
     const purposes = selectedProudct?.policy.loanPurpose;
@@ -61,8 +64,8 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
                             <ControlContainer>
                                 <Label>Model:</Label>
                                 <TextField
-                                    error={meta8.error && meta8.touched ? true : false}
-                                    helperText={meta8.error && meta8.touched ? 'Required' : ''}
+                                    error={meta2.error && meta2.touched ? true : false}
+                                    helperText={meta2.error && meta2.touched ? 'Required' : ''}
                                     fullWidth
                                     variant="standard"
                                     {...name}
@@ -91,7 +94,7 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
                             <ControlContainer>
                                 <Label>Purpose:</Label>
                                 <Select
-                                    error={meta6.error && meta6.touched ? true : false}
+                                    error={meta3.error && meta3.touched ? true : false}
                                     multiple
                                     fullWidth
                                     variant="standard"
@@ -104,11 +107,11 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
                         <Grid item md={6}>
                             <ControlContainer>
                                     <label>
-                                        <Field type="radio" {...isSecured} value="true" checked={meta7.value == 'true' ? true : false}/>
+                                        <Field type="radio" {...isSecured} value={true} checked={value ? true : false}/>
                                         <span style={{ fontWeight: "bold" }}>Secured</span>
                                     </label>
                                     <label>
-                                        <Field type="radio" {...isSecured} value="false" checked={true}/>
+                                        <Field type="radio" {...isSecured} value={false} checked={!value ? true : false}/>
                                         <span style={{ fontWeight: "bold" }}>Unsecured</span>
                                     </label>
                             </ControlContainer>

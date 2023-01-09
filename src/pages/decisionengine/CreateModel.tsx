@@ -218,7 +218,7 @@ function CreateModel() {
                     loanRange: { min: '', max: '' },
                     loanTermInMonths: { min: '', max: '' },
                     loanPurpose: [],
-                    isSecured: undefined,
+                    isSecured: false,
                 },
                 factors:[]
             } as IModel}
