@@ -1,15 +1,8 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import {
-    Grid,
-    Accordion,
-    AccordionDetails,
     CardContent,
     Card,
-    AccordionSummary,
-    Box,
-    Paper,
-    TextField,
     Typography,
     Button, CardHeader
 } from "@mui/material";
@@ -20,7 +13,6 @@ import { INode, IProduct, IModel, IRange, IPolicy } from "./interfaces/ModelInte
 import './CreateModel.css';
 import styled from "@emotion/styled";
 import lodash from 'lodash';
-import formik from "../forms/Formik";
 import * as Yup from "yup";
 import {TotalWeight} from "./editors/WeightEditor";
 
