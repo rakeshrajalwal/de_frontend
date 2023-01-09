@@ -16,7 +16,6 @@ export const NumberEditor = ({error, ...textFieldProps}:TextFieldProps) => (
         {...textFieldProps}
     />
 )
-/* component that takes the min and max values in any range eg.loanrange. with all necessary validations */ 
 export const RangeEditor = ({
     fieldPath,
     oneEndOnly = false,
