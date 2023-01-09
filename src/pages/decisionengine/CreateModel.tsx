@@ -1,40 +1,29 @@
-import * as React from 'react';
-import {render} from 'react-dom';
-import {Accordion, AccordionDetails, AccordionSummary, Box, Paper, TextField} from "@mui/material";
-import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
-import lodash from 'lodash';
-import {Field, Form, Formik, useField, useFormik} from "formik";
+import {
+    CardContent,
+    Card,
+    Typography,
+    Button as MuiButton
+} from "@mui/material";
+import { Form, Formik } from "formik";
+import { PolicyEditor } from './components/Policy';
+import { NodeEditor } from './editors/NodeEditor';
+import { IProduct, IModel } from "./interfaces/ModelInterface"
+import './CreateModel.css';
+import styled from "@emotion/styled";
+import { spacing } from "@mui/system";
 
-// import './styles.css';
 
-export interface IProduct {
-    name: string,
-    factors: {
-        name: string,
-        subFactors: {
-            name: string,
-            signals: {
-                name: string
-            }[]
-        }[]
-    }[]
-}
-export interface IModel {
-    name: string,
-    factors: {
-        name: string,
-        weight: number|string,
-        subFactors: {
-            name: string,
-            weight: number|string,
-            signals: {
-                name: string
-                weight: number|string,
-            }[]
-        }[]
-    }[]
+const Label = styled(Typography)`
+    font-weight: bold;
+    text-transform: capitalize;
+`;
+
+const Range = {
+    min: '',
+    max: ''
 }
 
+const Button = styled(MuiButton)(spacing);
 
 const product: IProduct = {
     name: "Working Capital Loan",
@@ -43,41 +32,41 @@ const product: IProduct = {
             name: "Financial Strength",
             subFactors: [
                 {
-                    name: "Market Conditions",
+                    name: "Market Conditions ",
                     signals: [
-                        {name: "GP%vsSector"},
-                        {name: "NP%vsSector"},
-                        {name: "LeveragevsSector"},
-                        {name: "GearingvsSector"}
+                        { name: "GP%vsSector" },
+                        { name: "NP%vsSector" },
+                        { name: "LeverageVsSector" },
+                        { name: "GearingVsSector" }
                     ]
                 },
                 {
                     name: "Debt Service",
                     signals: [
-                        {name: "EBIDTA:DSC"}
+                        { name: "EBIDTA:DSC" }
                     ]
                 },
                 {
                     name: "Financial Stability",
                     signals: [
-                        {name: "%ChgTurnover"},
-                        {name: "EBIDTA%ratio"},
-                        {name: "Stressed EBIDTA:DSC"},
-                        {name: "%ChgRetainedProfits"}
+                        { name: "%ChgTurnover" },
+                        { name: "EBIDTA%ratio" },
+                        { name: "Stressed EBIDTA:DSC" },
+                        { name: "%ChgRetainedProfits" }
                     ]
                 },
                 {
                     name: "Gearing ratio",
                     signals: [
-                        {name: "Gearing"},
+                        { name: "Gearing" }
                     ]
                 },
                 {
                     name: "Leverage",
                     signals: [
-                        {name: "Leverage"},
+                        { name: "Leverage" }
                     ]
-                },
+                }
             ]
         },
         {
@@ -86,10 +75,23 @@ const product: IProduct = {
                 {
                     name: "Financial Capacity & Willingness to Support",
                     signals: [
-                        {name: "Sponsors Debt"},
-                        {name: "Sponsors Net Worth"},
-                        {name: "Sponsor Credit Score"},
-                        {name: "Business Interuption Insurance"},
+                        { name: "Sponsors Debt" },
+                        { name: "Sponsors Net Worth" },
+                        { name: "Sponsor Credit Score" },
+                        { name: "Business Interuption Insurance" }
+                    ]
+                }
+            ]
+        },
+        {
+            name: "Transaction Characteristics ",
+            subFactors: [
+                {
+                    name: "Term of Loan vs. Purpose",
+                    signals: [
+                        {
+                            name: "TermvsPurpose"
+                        }
                     ]
                 }
             ]
@@ -97,71 +99,39 @@ const product: IProduct = {
     ]
 };
 
-interface INode {
-    name: string;
-    subFactors?: INode[];
-    signals?: INode[];
-}
+const ControlContainer = styled.div`
+display: flex;
+gap:15px;
+align-items:baseline;
+padding-left:5px;
+padding-right:15px;
+`;
 
-
-const WeightEditor = ({node, path, ...rest}: { node: INode, path: string, [key: string]: any }) => {
-    const [field, meta, helpers] = useField(`${path}.weight`);
-    return (
-        <Box sx={{flexGrow: 1}}>
-            <Grid container spacing={5} {...rest}>
-                <Grid xs={8}>
-                    <Paper style={{
-                        backgroundColor: "#434DB0",
-                        color: "white",
-                        fontWeight: "bold",
-                        padding: 10
-                    }}>{node.name}</Paper>
-                </Grid>
-                <Grid xs={4}>
-                    <div>
-                        <TextField variant="outlined" size={"small"} {...field} />
-                    </div>
-                </Grid>
-            </Grid>
-        </Box>
-    )
-}
-const NodeEditor: React.FC<{ node: INode, path: string }> = ({node, path}) => {
-    return (
-        <Accordion>
-            <AccordionSummary>
-                <WeightEditor node={node} path={`${path}`}/>
-            </AccordionSummary>
-            <AccordionDetails>
-                <Grid container>
-                    <Grid xs={8} style={{paddingLeft: 50}}>
-                        {node.subFactors?.map((sf, i) => (
-                            <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`}/>
-                        ))}
-                        {node.signals?.map((sig, i) => (
-                            <WeightEditor key={i} node={sig} style={{marginBottom: 10}} path={`${path}.signals[${i}]`}/>
-                        ))}
-
-                    </Grid>
-                </Grid>
-            </AccordionDetails>
-        </Accordion>
-    )
-
-}
-
-function getEmptyModel(p: IProduct):IModel {
+function getEmptyModel(p: IProduct): IModel {
     return {
-        name: '',
+        name: '',//modelname
+        product: '',
+        policy: {
+            loanRange: { min: '', max: '' },
+            loanTermInMonths: { min: '', max: '' },
+            loanPurpose: [],
+            isSecured: false,
+        },
         factors: p.factors.map(f => ({
             name: f.name,
-            weight: '',
+            weight: '0',
             subFactors: f.subFactors.map(sf => ({
                 name: sf.name,
-                weight: '',
+                weight: '0',
                 signals: sf.signals.map(sig => ({
                     name: sig.name,
-                    weight: ''
+                    weight: '0',
+                    criteria: {
+                        strong: { min: '', max: '' },
+                        good: { min: '', max: '' },
+                        satisfactory: { min: '', max: '' },
+                        weak: { min: '', max: '' },
+                    }
                 }))
             }))
         }))
@@ -173,6 +143,7 @@ function CreateModel() {
         <Formik
             initialValues={getEmptyModel(product)}
             onSubmit={(values) => {
+                console.log(JSON.stringify(values, null, 2))
                 alert(JSON.stringify(values, null, 2));
             }}
         >
@@ -180,13 +151,20 @@ function CreateModel() {
                 const v = formik.values;
                 return (
                     <Form>
-                        <div className="">
-                            <div>create model</div>
-                            <button type="submit">Submit</button>
-                            {formik.values.factors.map((f, i) => (
-                                <NodeEditor key={i} node={f} path={`factors[${i}]`}/>
-                            ))}
+                        <div style={{ paddingBottom: 8, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Typography style={{ fontFamily: 'Verdana', fontWeight: 'bold', fontSize: '1.1rem' }} variant="h3" gutterBottom display='inline'>Create Model</Typography>
+                            <Button mr={1} type="submit" variant='contained' style={{ backgroundColor: '#434DB0', color: '#fff' }} size="medium">Submit</Button>
                         </div>
+
+                        <PolicyEditor />
+
+                        <Card sx={{ boxShadow: '0px 3px 6px #00000029', marginTop: '8px' }}>
+                            <CardContent>
+                                {formik.values.factors.map((f, i) => (
+                                    <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} />
+                                ))}
+                            </CardContent>
+                        </Card>
                     </Form>
                 );
             }}
@@ -194,4 +172,4 @@ function CreateModel() {
     )
 }
 
-export default CreateModel;
+export default CreateModel

@@ -38,7 +38,7 @@ const Paper = styled(MuiPaper)(spacing);
 
 const MainContent = styled(Paper)`
   flex: 1;
-  background: ${(props) => props.theme.palette.background.default};
+  background-color: #F3FBFE;
 
   @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     flex: none;
@@ -85,14 +85,14 @@ const DE: React.FC<DEType> = ({ children }) => {
         </Box>
       </Drawer>
       <AppContent>
-        <Navbar onDrawerToggle={handleDrawerToggle} />
-        <MainContent p={isLgUp ? 12 : 5}>
+        {/* <Navbar onDrawerToggle={handleDrawerToggle} /> */}
+        <MainContent p={4}>
           {children}
           <Outlet />
         </MainContent>
         <Footer />
       </AppContent>
-      
+
     </Root>
   );
 };
