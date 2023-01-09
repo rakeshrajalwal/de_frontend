@@ -16,7 +16,7 @@ import {
 import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
-import { INode, IProduct, IModel, IRange, IPolicy } from "./interfaces/CreateModelInterfaces"
+import { INode, IProduct, IModel, IRange, IPolicy } from "./interfaces/ModelInterface"
 import './CreateModel.css';
 import styled from "@emotion/styled";
 import lodash from 'lodash';

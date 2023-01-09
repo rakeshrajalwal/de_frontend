@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import {spacing} from "@mui/system";
 import {useFormikContext} from "formik";
-import {criteriaRangeNames, INode} from "../interfaces/CreateModelInterfaces";
+import {criteriaRangeNames, INode} from "../interfaces/ModelInterface";
 import {RangeEditor} from "../editors/EditorControllers"
 import CloseIcon from '@mui/icons-material/Close';
 

@@ -3,7 +3,7 @@ import {Accordion, AccordionDetails, AccordionSummary, IconButton} from "@mui/ma
 import {CriteriaEditor} from '../components/Criteria';
 import {TotalWeight, WeightEditor} from './WeightEditor';
 
-import {INode, TCriteria} from "../interfaces/CreateModelInterfaces"
+import {INode, TCriteria} from "../interfaces/ModelInterface"
 import '../CreateModel.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import EditIcon from '@mui/icons-material/Edit';
