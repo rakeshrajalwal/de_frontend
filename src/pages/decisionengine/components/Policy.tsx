@@ -2,23 +2,17 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import {
     Grid,
-    Accordion,
-    AccordionDetails,
     CardContent,
     Card,
-    AccordionSummary,
-    Box,
-    Paper,
     TextField,
-    Typography,
-    Button
+    Typography
 } from "@mui/material";
 import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
 import { RangeEditor } from '../editors/EditorControllers';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import styled from "@emotion/styled";
-import {IProduct} from "../interfaces/ModelInterface";
+import { IProduct } from "../interfaces/ModelInterface";
 import lodash from "lodash";
 
 const Label = styled(Typography)`
@@ -35,14 +29,14 @@ padding-right:15px;
 `;
 
 
-export const PolicyEditor = ({products}:{products:IProduct[]}) => {
+export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
 
     const [product, meta, helpers] = useField(`product`);//product name
     const [name, meta8, helpers8] = useField(`name`);//name of model
     const [purpose, meta6, helpers6] = useField(`policy.loanPurpose`);
     const [isSecured, meta7, helpers7] = useField(`policy.isSecured`);
 
-    const selectedProudct = lodash.find(products, {name: product.value});
+    const selectedProudct = lodash.find(products, { name: product.value });
     const purposes = selectedProudct?.policy.loanPurpose;
     return (
 
@@ -67,6 +61,8 @@ export const PolicyEditor = ({products}:{products:IProduct[]}) => {
                             <ControlContainer>
                                 <Label>Model:</Label>
                                 <TextField
+                                    error={meta8.error && meta8.touched ? true : false}
+                                    helperText={meta8.error && meta8.touched ? 'Required' : ''}
                                     fullWidth
                                     variant="standard"
                                     {...name}
@@ -79,13 +75,13 @@ export const PolicyEditor = ({products}:{products:IProduct[]}) => {
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Loan Range (£):</Label>
-                                <RangeEditor fieldPath={'policy.loanRange'} textFieldProps={{variant:'standard'}} />
+                                <RangeEditor fieldPath={'policy.loanRange'} textFieldProps={{ variant: 'standard' }} />
                             </ControlContainer>
                         </Grid>
                         <Grid item md={6}>
                             <ControlContainer>
-                                <Label>Term:</Label>
-                                <RangeEditor fieldPath={'policy.loanTermInMonths'} textFieldProps={{variant:'standard'}} />
+                                <Label>Term(months):</Label>
+                                <RangeEditor fieldPath={'policy.loanTermInMonths'} textFieldProps={{ variant: 'standard' }} />
                             </ControlContainer>
                         </Grid>
                     </Grid>
@@ -95,6 +91,7 @@ export const PolicyEditor = ({products}:{products:IProduct[]}) => {
                             <ControlContainer>
                                 <Label>Purpose:</Label>
                                 <Select
+                                    error={meta6.error && meta6.touched ? true : false}
                                     multiple
                                     fullWidth
                                     variant="standard"
@@ -105,14 +102,16 @@ export const PolicyEditor = ({products}:{products:IProduct[]}) => {
                             </ControlContainer>
                         </Grid>
                         <Grid item md={6}>
-                            <label>
-                                <Field type="radio" {...isSecured} value="true" />
-                                <span style={{ fontWeight: "bold" }}>Secured</span>
-                            </label>
-                            <label>
-                                <Field type="radio" {...isSecured} value="false" />
-                                <span style={{ fontWeight: "bold" }}>Unsecured</span>
-                            </label>
+                            <ControlContainer>
+                                    <label>
+                                        <Field type="radio" {...isSecured} value="true" checked={meta7.value == 'true' ? true : false}/>
+                                        <span style={{ fontWeight: "bold" }}>Secured</span>
+                                    </label>
+                                    <label>
+                                        <Field type="radio" {...isSecured} value="false" checked={true}/>
+                                        <span style={{ fontWeight: "bold" }}>Unsecured</span>
+                                    </label>
+                            </ControlContainer>
                         </Grid>
                     </Grid>
 

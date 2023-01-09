@@ -16,16 +16,6 @@ import lodash from 'lodash';
 import * as Yup from "yup";
 import {TotalWeight} from "./editors/WeightEditor";
 
-const Label = styled(Typography)`
-    font-weight: bold;
-    text-transform: capitalize;
-`;
-
-const Range = {
-    min: '',
-    max: ''
-}
-
 
 const product: IProduct = {
     name: "Working Capital Loan",
@@ -94,14 +84,6 @@ const product: IProduct = {
     ]
 };
 const products = [product];
-
-const ControlContainer = styled.div`
-display: flex;
-gap:15px;
-align-items:baseline;
-padding-left:5px;
-padding-right:15px;
-`;
 
 function getEmptyModel(p: IProduct): IModel {
     return {
@@ -266,7 +248,7 @@ function CreateModel() {
                         </div>}/>
                         <PolicyEditor products={products} />
 
-                        <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
+                        <Card sx={{ boxShadow: '0px 3px 6px #00000029', marginTop: '15px' }}>
                             <CardContent>
                                 {formik.values.factors?.map((f, i) => (
                                     <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} reverseSignalNames={reverseSignalNames}/>
