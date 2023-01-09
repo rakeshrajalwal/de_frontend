@@ -3,11 +3,9 @@ import styled from "@emotion/styled";
 import { Helmet } from "react-helmet-async";
 
 import {
-  Divider as MuiDivider,
   Paper as MuiPaper,
   Typography,
   IconButton,
-  Divider,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
@@ -19,9 +17,12 @@ import { data } from './data';
 const Paper = styled(MuiPaper)(spacing);
 
 const paperSx = {
+  "& MuiPaper-root": {
+    fontFamily: "Verdana",
+  },
   "& .css-1bpvgg-MuiPaper-root": {
-    padding: 10,
-  }
+    padding: "10rem",
+  },
 }
 
 const datagridSx = {
@@ -30,6 +31,9 @@ const datagridSx = {
   },
   "& .MuiDataGrid-columnHeaderTitle": {
     fontWeight: 'bold',
+  },
+  "& .MuiPaper-elevation1": {
+    backgroundColor: "#F3FBFE",
   },
   "& .MuiDataGrid-cellContent": {
     wordWrap: 'break-word !important',
@@ -43,15 +47,35 @@ const datagridSx = {
   "& .MuiDataGrid-toolbarQuickFilter": {
     border: 'solid',
   },
-  "& .MuiDataGrid-toolbarContainer":{
+  "& .MuiDataGrid-toolbarContainer": {
     backgroundColor: '#F7F9FC',
   }
 };
+
+const Icons = {
+  User: {
+    text: "DE User",
+    Icon: User
+  },
+  Monitor: {
+    text: "Source",
+    Icon: Monitor,
+  },
+  Eye: {
+    text: "Preview",
+    Icon: Eye,
+  },
+  RefreshCw: {
+    text: "Re-Run",
+    Icon: RefreshCw
+  }
+}
 
 const columns: GridColDef[] = [
   {
     field: "id",
     headerName: "ID",
+    description: "ID",
     headerAlign: 'center',
     flex: 2,
     align: 'center'
@@ -59,6 +83,7 @@ const columns: GridColDef[] = [
   {
     field: "name",
     headerName: "Name",
+    description: "Name",
     headerAlign: 'center',
     flex: 5,
     align: 'center'
@@ -66,6 +91,7 @@ const columns: GridColDef[] = [
   {
     field: "Product",
     headerName: "Product",
+    description: "Product",
     headerAlign: 'center',
     flex: 7,
     align: 'center'
@@ -73,22 +99,25 @@ const columns: GridColDef[] = [
   {
     field: "Customer",
     headerName: "Customer",
+    description: "Customer",
     headerAlign: 'center',
     flex: 7,
     align: 'center'
   },
   {
     field: "Loan Amount",
-    headerName: "Loan Amount",
+    headerName: "Loan Amount (£)",
+    description: "Loan Amount (£)",
     headerAlign: 'center',
     flex: 5,
     align: 'center'
   },
   {
     field: "Term",
-    headerName: "Term",
+    headerName: "Term (months)",
+    description: "Term (months)",
     headerAlign: 'center',
-    flex: 2,
+    flex: 4,
     align: 'center'
   },
   {
@@ -97,31 +126,31 @@ const columns: GridColDef[] = [
     headerAlign: 'center',
     flex: 6,
     renderCell: (params) => {
-      if (params.row.Result < 3) {
-        return (
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", marginLeft:'6ex' }}>
-            <strong>{params.row.Result}</strong>
-            <div style={{width:'1ex'}}></div>
-            <p style={{ color: "#64b964", border: '0.3ex solid #64b964', borderRadius: '3ex', padding: '0.35ex' }}>Strong</p>
-          </div>
-        )
+      const flag = (params.row.Result>5)?false:true
+      const x = (params.row.Result < 3) ? {
+        text: 'Strong', color: '#64b964', border: '0.3ex solid #64b964'
+      } : (params.row.Result >= 3 && params.row.Result < 5) ? {
+        text: 'Satisfactory', color: '#fecd29', border: '0.3ex solid #fecd29'
+      } : {
+        text: 'Failed',color:'',border: ''
       }
-      else if (params.row.Result >= 3 && params.row.Result <= 5) {
+      
+      if (!flag) {
         return (
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", marginLeft:'6ex' }}>
-            <strong>{params.row.Result}</strong>
-            <div style={{width:'1ex'}}></div>
-            <p style={{ color: "#fecd29", border: '0.3ex solid #fecd29', borderRadius: '3ex', padding: '0.35ex' }}>Satisfactory</p>
-          </div>
-        )
-      }
-      else if (params.row.Result > 5) {
-        return (
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", marginLeft:'6ex'}}>
-            <p>Failed</p>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center"}}>
+            <p>{x.text}</p>
             <IconButton aria-label="Info" size="small">
-              <Info style = {{fontSize:'1.8ex',}}/>
+              <Info style={{ fontSize: '1.8ex', }} />
             </IconButton></div>
+        )
+      }
+      else {
+        return (
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center"}}>
+            <strong>{params.row.Result}</strong>
+            <div style={{ width: '1ex' }}></div>
+            <p style={{ color: x.color, border: x.border, borderRadius: '3ex', padding: '0.35ex' }}>{x.text}</p>
+          </div>
         )
       }
     },
@@ -133,24 +162,13 @@ const columns: GridColDef[] = [
     headerAlign: 'center',
     flex: 7,
     renderCell: (params) => {
-      if (params.row.flag < 1) {
-        return (<div>
-          <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'row' }}>
-            <Typography mt={2}>{params.row["Run By"]}</Typography>
-            <IconButton aria-label="Monitor" size="small">
-              <Monitor/>
-            </IconButton></div>
-          <span>{params.row.time}</span>
-        </div>)
-      } else {
-        return (<div>
-          <div style={{ display: 'flex', flexDirection: 'row', textAlign: 'center' }}>
-            <Typography mt={2}>{params.row["Run By"]}</Typography>
-            <IconButton aria-label="User" size="small">
-              <User/>
-            </IconButton></div>
-          <span>{params.row.time}</span></div>)
-      }
+      const { Icon } = Icons[(params.row.flag < 1) ? 'User' : 'Monitor' as keyof typeof Icons];
+      return (<div>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'row' }}>
+          <Typography mt={2}>{params.row["Run By"]}</Typography>
+          <Icon /></div>
+        <span>{params.row.time}</span>
+      </div>)
     },
     align: 'center'
   },
@@ -160,15 +178,8 @@ const columns: GridColDef[] = [
     headerAlign: 'center',
     flex: 2,
     renderCell: (params) => {
-      if (params.row.Result >= 5) {
-        return (<IconButton aria-label="Re-Run" size="small">
-          <RefreshCw />
-        </IconButton>)
-      } else {
-        return (<IconButton aria-label="Preview" size="small">
-          <Eye />
-        </IconButton>)
-      }
+      const { Icon } = Icons[(params.row.Result >= 5) ? 'RefreshCw' : 'Eye' as keyof typeof Icons];
+      return <Icon />
     },
     align: 'center'
   },
@@ -176,16 +187,15 @@ const columns: GridColDef[] = [
 
 function RunSummariesGrid() {
   return (
-    <Paper>
+    <Paper sx = {{paperSx}}>
 
-      <div style={{ height: "25.2rem", width: "100%" }}>
+      <div style={{ height: "41.5rem", width: "100%" }}>
         <DataGrid
-          // rowsPerPageOptions={[5, 10, 25]}
           sx={datagridSx}
           rows={data}
           columns={columns}
-          pageSize={5}
-          style={{ fontFamily: 'Verdana' }}
+          pageSize={10}
+          getRowId={(row) => row.id}
           disableColumnFilter
           disableColumnSelector
           disableDensitySelector
@@ -208,40 +218,40 @@ function RunSummaries() {
   return (
     <React.Fragment>
       <Helmet title="Run Summary" />
-      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',fontSize:'1.4ex' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontSize: '1.4ex'
+        }}
+      >
         <div>
           <Typography variant="h3" gutterBottom display="inline">
             Run Summaries
           </Typography>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'right' }}>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left' }}>
-            <p>Source: </p>
-            <IconButton aria-label="Monitor" size="small">
-              <Monitor/>
-            </IconButton>
-            <div style={{width:'1ex'}}></div>
-            <p>DE User: </p>
-            <IconButton aria-label="User" size="small">
-              <User />
-            </IconButton>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left' }}>
-            <p>Preview: </p>
-            <IconButton aria-label="Preview" size="small">
-              <Eye />
-            </IconButton>
-            <div style={{width:'1ex'}}></div>
-            <p>Re-Run: </p>
-            <IconButton aria-label="ReRun" size="small">
-              <RefreshCw/>
-            </IconButton>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'right'
+          }}
+        >
+          <div style={{ display: 'flex', gap: 5 }}>
+            {Object.values(Icons).map(({ text, Icon }) => (
+              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Icon style={{ fontSize: '0.5ex' }} />
+                <p>{text}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
       <RunSummariesGrid />
-    </React.Fragment>
+    </React.Fragment >
   );
 }
 
