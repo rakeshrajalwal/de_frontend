@@ -16,14 +16,20 @@ export interface IProduct {
 
 export interface IRange {
     min: number | string,
-    max: number | string
+    max: number | string,
+    _id?: string
 }
 
 export interface IPolicy {
     loanRange: IRange,
     loanTermInMonths: IRange,
     loanPurpose: string[],
-    isSecured?: boolean
+    isSecured: boolean
+}
+
+export interface ILastRun {
+    source: string,
+    runAt: string,
 }
 
 export const criteriaRangeNames = ["strong", "good", "satisfactory", "weak"] as const
@@ -36,19 +42,36 @@ export type TCriteria = Record<CriteriaRangeName, IRange>;
 //     weak: IRange
 // }
 export interface IModel {
+    __v?: number | string,
+    _id?: string,
+    modelId?: string,
     name: string,
     product: string,
+    createdBy?: string,
+    createdAt?: string,
+    approvalStatus?: string,
+    isActive?: boolean,
+    approvedBy?: string,
+    approvedAt?: string,
+    activatedBy?: string,
+    activatedAt?: string,
+    runCount?: number,
+    lastRun?: ILastRun,
     policy: IPolicy,
     factors: {
+        _id?: string,
         name: string,
         weight: number | string,
         subFactors: {
+            _id?: string,
             name: string,
             weight: number | string,
             signals: {
+                _id?: string,
                 name: string
                 weight: number | string,
-                criteria: TCriteria
+                overallWeight?: number | string,
+                criteria?: TCriteria
             }[]
         }[]
     }[]
