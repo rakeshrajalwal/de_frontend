@@ -3,12 +3,11 @@ import {Accordion, AccordionDetails, AccordionSummary, IconButton} from "@mui/ma
 import {CriteriaEditor} from '../components/Criteria';
 import {TotalWeight, WeightEditor} from './WeightEditor';
 
-import {INode, TCriteria} from "../interfaces/ModelInterface"
+import {INode} from "../interfaces/ModelInterface"
 import '../CreateModel.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import EditIcon from '@mui/icons-material/Edit';
-import lodash from "lodash";
-import {useField, useFormik, useFormikContext} from "formik";
+import {useField, useFormikContext} from "formik";
 
 const CriteriaBar = ({path, isReverseScale}:{path:string, isReverseScale:boolean}) => {
     const [, {error, value},]  = useField(`${path}.criteria`);
@@ -35,17 +34,6 @@ export const NodeEditor: React.FC<{ node: INode, path: string, level: number, re
     if(!expanded && (isSubmitting && isValidating && !!error)) {
         setExpanded(true);
     }
-
-    const criteriaValueSlider = [
-        {
-            value: 0,
-            label: 'below',
-        },
-        {
-            value: 100,
-            label: 'above',
-        },
-    ];
 
     const [selectedSignal, setSelectedSignal] = React.useState<number>(-1);
     return (

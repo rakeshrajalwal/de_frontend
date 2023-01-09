@@ -1,12 +1,4 @@
-import * as React from 'react';
-import { render } from 'react-dom';
 import {
-    Grid,
-    Accordion,
-    AccordionDetails,
-    CardContent,
-    Card,
-    AccordionSummary,
     Box,
     Paper,
     TextField,
@@ -14,11 +6,11 @@ import {
     Button
 } from "@mui/material";
 import lodash from 'lodash';
-import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
-import { INode, IProduct, IModel, IRange, IPolicy } from "../interfaces/ModelInterface";
+import { useField } from "formik";
+import { INode } from "../interfaces/ModelInterface";
 import '../CreateModel.css';
 
-const treeWeightsOkay1 = (node: INode): boolean => true;
+//const treeWeightsOkay1 = (node: INode): boolean => true;
 const treeWeightsOkay = (node: INode): boolean => {
     const children = node.subFactors || node.signals;
     return lodash.isEmpty(children) ||
@@ -39,16 +31,18 @@ function HealthIndicator({ node }: { node: INode }) {
         backgroundColor: treeWeightsOkay(node) ? "green" : "red"
     }}></div>;
 }
-export const TotalWeight = ({level, nodes}:{level:number, nodes:INode[]}) => {
+
+/* calculates weight at each level */
+export const TotalWeight = ({ level, nodes }: { level: number, nodes: INode[] }) => {
     const height = level === 1 ? 40 : level === 2 ? 30 : 35;
     const font = `normal normal bold ${level === 1 ? 12 : 10}px Verdana`
     const width = level == 1 ? 600 : level == 2 ? 440 : 250;
 
-    const totalWeight = lodash.sumBy(nodes, ({weight}) => parseInt(weight.toString()));
+    const totalWeight = lodash.sumBy(nodes, ({ weight }) => parseInt(weight.toString()));
     return (
-        <Box sx={{ margin: 2, display: 'flex', gap: 3, height, color:totalWeight == 100 ? 'auto' : 'red'}} >
+        <Box sx={{ margin: 2, display: 'flex', gap: 3, height, color: totalWeight == 100 ? 'auto' : 'red' }} >
             <div style={{
-                width:width+40,
+                width: width + 40,
                 padding: "10px 20px",
                 textAlign: 'right',
             }}>Total</div>
@@ -59,8 +53,9 @@ export const TotalWeight = ({level, nodes}:{level:number, nodes:INode[]}) => {
                 {totalWeight}
             </div>
         </Box>
-        )
+    )
 }
+/*The textfield component that takes the user weight inputs for factor, subfactor and signal*/
 export const WeightEditor = ({
     node,
     path,
