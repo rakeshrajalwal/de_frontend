@@ -92,7 +92,7 @@ const DE: React.FC<DEType> = ({ children }) => {
         </MainContent>
         <Footer />
       </AppContent>
-      
+
     </Root>
   );
 };

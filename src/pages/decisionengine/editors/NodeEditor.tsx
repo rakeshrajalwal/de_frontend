@@ -16,7 +16,7 @@ import {
 import { CriteriaEditor } from '../components/Criteria';
 import { WeightEditor } from './WeightEditor';
 
-import { INode, IProduct, IModel, IRange, IPolicy } from "../interfaces/CreateModelInterfaces"
+import { INode, IProduct, IModel, IRange, IPolicy } from "../interfaces/ModelInterface"
 import '../CreateModel.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 

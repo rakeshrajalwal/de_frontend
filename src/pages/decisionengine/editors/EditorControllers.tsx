@@ -8,12 +8,12 @@ import {
     Divider as MuiDivider,
     FormControl as MuiFormControl,
     Grid,
-    TextField ,
+    TextField,
     Typography
 } from "@mui/material";
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import {  useField } from "formik";
+import { useField } from "formik";
 
 
 export const NumberEditor = ({

@@ -1,24 +1,16 @@
-import * as React from 'react';
-import { render } from 'react-dom';
 import {
-    Grid,
-    Accordion,
-    AccordionDetails,
     CardContent,
     Card,
-    AccordionSummary,
-    Box,
-    Paper,
-    TextField,
     Typography,
-    Button
+    Button as MuiButton
 } from "@mui/material";
-import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
+import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
-import { INode, IProduct, IModel, IRange, IPolicy } from "./interfaces/CreateModelInterfaces"
+import { IProduct, IModel } from "./interfaces/ModelInterface"
 import './CreateModel.css';
 import styled from "@emotion/styled";
+import { spacing } from "@mui/system";
 
 
 const Label = styled(Typography)`
@@ -31,6 +23,7 @@ const Range = {
     max: ''
 }
 
+const Button = styled(MuiButton)(spacing);
 
 const product: IProduct = {
     name: "Working Capital Loan",
@@ -39,12 +32,12 @@ const product: IProduct = {
             name: "Financial Strength",
             subFactors: [
                 {
-                    name: "Market Conditions",
+                    name: "Market Conditions ",
                     signals: [
                         { name: "GP%vsSector" },
                         { name: "NP%vsSector" },
-                        { name: "LeveragevsSector" },
-                        { name: "GearingvsSector" }
+                        { name: "LeverageVsSector" },
+                        { name: "GearingVsSector" }
                     ]
                 },
                 {
@@ -65,15 +58,15 @@ const product: IProduct = {
                 {
                     name: "Gearing ratio",
                     signals: [
-                        { name: "Gearing" },
+                        { name: "Gearing" }
                     ]
                 },
                 {
                     name: "Leverage",
                     signals: [
-                        { name: "Leverage" },
+                        { name: "Leverage" }
                     ]
-                },
+                }
             ]
         },
         {
@@ -85,7 +78,20 @@ const product: IProduct = {
                         { name: "Sponsors Debt" },
                         { name: "Sponsors Net Worth" },
                         { name: "Sponsor Credit Score" },
-                        { name: "Business Interuption Insurance" },
+                        { name: "Business Interuption Insurance" }
+                    ]
+                }
+            ]
+        },
+        {
+            name: "Transaction Characteristics ",
+            subFactors: [
+                {
+                    name: "Term of Loan vs. Purpose",
+                    signals: [
+                        {
+                            name: "TermvsPurpose"
+                        }
                     ]
                 }
             ]
@@ -106,7 +112,6 @@ function getEmptyModel(p: IProduct): IModel {
         name: '',//modelname
         product: '',
         policy: {
-            name: '',//policyname
             loanRange: { min: '', max: '' },
             loanTermInMonths: { min: '', max: '' },
             loanPurpose: [],
@@ -146,14 +151,14 @@ function CreateModel() {
                 const v = formik.values;
                 return (
                     <Form>
-                        <Typography
-                            style={{ paddingBottom: 20, fontFamily: 'Verdana', fontWeight: 'bold', fontSize: '1.1rem' }}>Create
-                            Model</Typography>
+                        <div style={{ paddingBottom: 8, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Typography style={{ fontFamily: 'Verdana', fontWeight: 'bold', fontSize: '1.1rem' }} variant="h3" gutterBottom display='inline'>Create Model</Typography>
+                            <Button mr={1} type="submit" variant='contained' style={{ backgroundColor: '#434DB0', color: '#fff' }} size="medium">Submit</Button>
+                        </div>
 
                         <PolicyEditor />
 
-                        <button type="submit" style={{ margin: '10px' }}>Submit</button>
-                        <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
+                        <Card sx={{ boxShadow: '0px 3px 6px #00000029', marginTop: '8px' }}>
                             <CardContent>
                                 {formik.values.factors.map((f, i) => (
                                     <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} />

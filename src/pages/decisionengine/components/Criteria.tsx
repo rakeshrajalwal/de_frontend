@@ -16,7 +16,7 @@ import { spacing } from "@mui/system";
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Formik, Form, Field, useField, useFormik, FormikProvider } from "formik";
-import { INode } from "../interfaces/CreateModelInterfaces";
+import { INode } from "../interfaces/ModelInterface";
 import { RangeEditor } from "../editors/EditorControllers"
 
 const TextField = styled(MuiTextField)<{ my?: number }>(spacing);
