@@ -1,23 +1,18 @@
-
 import styled from "@emotion/styled";
 import React from 'react'
 import {
-    Breadcrumbs as MuiBreadcrumbs,
-    Button,
     Card as MuiCard,
     CardContent,
-    Divider as MuiDivider,
-    FormControl as MuiFormControl,
-    Grid,
+    CardHeader,
+    IconButton,
     TextField as MuiTextField,
     Typography
 } from "@mui/material";
-import { spacing } from "@mui/system";
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import { Formik, Form, Field, useField, useFormik, FormikProvider } from "formik";
-import { INode } from "../interfaces/CreateModelInterfaces";
-import { RangeEditor } from "../editors/EditorControllers"
+import {spacing} from "@mui/system";
+import {useFormikContext} from "formik";
+import {criteriaRangeNames, INode} from "../interfaces/CreateModelInterfaces";
+import {RangeEditor} from "../editors/EditorControllers"
+import CloseIcon from '@mui/icons-material/Close';
 
 const TextField = styled(MuiTextField)<{ my?: number }>(spacing);
 
@@ -36,24 +31,45 @@ const Label = styled(Typography)`
     text-transform: capitalize;
 `;
 
-export const CriteriaEditor = ({ node, path, ...rest }: { node: INode, path: string, [key: string]: any }) => {
-    const ranges = ["strong", "good", "satisfactory", "weak"];
-    const colors = ['#078F08', '#9DD566', '#FEC401', '#FB0102'];
+export const CriteriaEditor = ({ node, path, isReverseScale, ...rest }: { node: INode, path: string, isReverseScale: boolean, [key: string]: any }) => {
+    let colors = ['#078F08', '#9DD566', '#FEC401', '#FB0102'];
+    let rangeNames = [...criteriaRangeNames];
+    if(isReverseScale) {
+        rangeNames = rangeNames.reverse();
+        colors = colors.reverse();
+    }
+    const {setFieldValue} = useFormikContext();
     return (
         <Card variant={"outlined"} style={{ borderColor: '#434DB0' }}>
-            <CardContent>
-                <Typography style={{ textAlign: 'center', fontWeight: 'bold', textDecoration: 'underline', padding: 10 }}>
-                    Edit Criteria - {node.name}
-                </Typography>
+            <CardHeader
+                action={<IconButton size={"small"}><CloseIcon/></IconButton>}
+                title={'Edit Criteria'}
+                subheader={node.name}
+                titleTypographyProps={{
+                    style: {
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        textDecoration: 'underline',
+                        fontSize: 'small'
+                    }
+                }}
+                subheaderTypographyProps={{style: {textAlign: 'center', fontSize: 'small'}}}
+            />
+            <CardContent sx={{padding:0}}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    {ranges.map((rangeName, i) => (
+                    {rangeNames.map((rangeName, i) => (
                         <ControlContainer key={i}>
-                            <Label style={{ width: 80, textAlign: 'right', color: colors[i] }}>{rangeName}</Label>
+                            <Label style={{ minWidth: 100, textAlign: 'right', color: colors[i] }}>{rangeName}</Label>
                             <RangeEditor
                                 // isOpen={i==0 || i==3}
                                 fieldPath={`${path}.criteria.${rangeName}`}
                                 variant={'outlined'}
-                                inputWidth={50}
+                                inputWidth={55}
+                                oneEndOnly={i>0}
+                                onChange={(e: React.ChangeEvent<any>) => {
+                                    if(i==3) return;
+                                    setFieldValue(`${path}.criteria.${rangeNames[i+1]}.max`, e.target.value)
+                                }}
                             />
                         </ControlContainer>
                     ))}

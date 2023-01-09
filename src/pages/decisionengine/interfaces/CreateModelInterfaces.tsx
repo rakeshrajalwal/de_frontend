@@ -1,11 +1,13 @@
 export interface IProduct {
     name: string,
+    policy:IPolicy,
     factors: {
         name: string,
         subFactors: {
             name: string,
             signals: {
                 name: string
+                isReverseScale?: boolean
             }[]
         }[]
     }[]
@@ -18,13 +20,21 @@ export interface IRange {
 }
 
 export interface IPolicy {
-    name: string,
     loanRange: IRange,
     loanTermInMonths: IRange,
-    loanPurpose: [],
-    isSecured: boolean
+    loanPurpose: string[],
+    isSecured?: boolean
 }
 
+export const criteriaRangeNames = ["strong", "good", "satisfactory", "weak"] as const
+type CriteriaRangeName = typeof criteriaRangeNames[number];
+export type TCriteria = Record<CriteriaRangeName, IRange>;
+// export interface ICriteria {
+//     strong: IRange,
+//     good: IRange,
+//     satisfactory: IRange,
+//     weak: IRange
+// }
 export interface IModel {
     name: string,
     product: string,
@@ -38,7 +48,7 @@ export interface IModel {
             signals: {
                 name: string
                 weight: number | string,
-
+                criteria: TCriteria
             }[]
         }[]
     }[]
@@ -49,4 +59,5 @@ export interface INode {
     subFactors?: INode[],
     signals?: INode[],
     weight: number | string,
+    criteria?: TCriteria
 }

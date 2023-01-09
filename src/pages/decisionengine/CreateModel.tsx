@@ -11,7 +11,7 @@ import {
     Paper,
     TextField,
     Typography,
-    Button
+    Button, CardHeader
 } from "@mui/material";
 import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
 import { PolicyEditor } from './components/Policy';
@@ -19,7 +19,9 @@ import { NodeEditor } from './editors/NodeEditor';
 import { INode, IProduct, IModel, IRange, IPolicy } from "./interfaces/CreateModelInterfaces"
 import './CreateModel.css';
 import styled from "@emotion/styled";
-
+import lodash from 'lodash';
+import formik from "../forms/Formik";
+import * as Yup from "yup";
 
 const Label = styled(Typography)`
     font-weight: bold;
@@ -34,6 +36,12 @@ const Range = {
 
 const product: IProduct = {
     name: "Working Capital Loan",
+    policy: {
+        loanRange: { min: 1e3, max: 1e6 },
+        loanTermInMonths: { min: 6, max: 60 },
+        loanPurpose: ['Cashflow', 'Memberships', 'Acquisition'],
+        isSecured: false,
+    },
     factors: [
         {
             name: "Financial Strength",
@@ -43,8 +51,8 @@ const product: IProduct = {
                     signals: [
                         { name: "GP%vsSector" },
                         { name: "NP%vsSector" },
-                        { name: "LeveragevsSector" },
-                        { name: "GearingvsSector" }
+                        { name: "LeveragevsSector", isReverseScale:true },
+                        { name: "GearingvsSector", isReverseScale:true }
                     ]
                 },
                 {
@@ -65,13 +73,13 @@ const product: IProduct = {
                 {
                     name: "Gearing ratio",
                     signals: [
-                        { name: "Gearing" },
+                        { name: "Gearing", isReverseScale:true },
                     ]
                 },
                 {
                     name: "Leverage",
                     signals: [
-                        { name: "Leverage" },
+                        { name: "Leverage", isReverseScale:true },
                     ]
                 },
             ]
@@ -92,6 +100,7 @@ const product: IProduct = {
         }
     ]
 };
+const products = [product];
 
 const ControlContainer = styled.div`
 display: flex;
@@ -106,7 +115,6 @@ function getEmptyModel(p: IProduct): IModel {
         name: '',//modelname
         product: '',
         policy: {
-            name: '',//policyname
             loanRange: { min: '', max: '' },
             loanTermInMonths: { min: '', max: '' },
             loanPurpose: [],
@@ -133,30 +141,139 @@ function getEmptyModel(p: IProduct): IModel {
     }
 }
 
+function randomSplit(total:number, count:number):number[] {
+    if(count == 1) return [total];
+    let part = Math.floor(Math.random()*total);
+    return [part, ...randomSplit(total-part, count-1)]
+}
+
+
+function getRandomModel(p:IProduct):IModel {
+    return {
+        name: "m1",
+        product: p.name,
+        policy: {
+            loanRange: { min: 100000, max: 500000 },
+            loanTermInMonths: { min: 12, max: 24 },
+            loanPurpose: [lodash.shuffle(p.policy.loanPurpose)[0]],
+            isSecured: false,
+        },
+        factors: randomSplit(100, p.factors.length).map((weight, i) => {
+            const factor = p.factors[i];
+            return {
+                name: factor.name,
+                weight,
+                subFactors: randomSplit(100, factor.subFactors.length).map((weight, i) => {
+                    const subFactor = factor.subFactors[i];
+                    return {
+                        name: subFactor.name,
+                        weight,
+                        signals: randomSplit(100, subFactor.signals.length).map((weight, i) => {
+                            return {
+                                name: subFactor.signals[i].name,
+                                weight,
+                                criteria: subFactor.signals[i].isReverseScale ? {
+                                    weak: {min: 200, max:''},
+                                    satisfactory: {min:100, max:200},
+                                    good: {min:10, max:100},
+                                    strong: {min: '', max:10}
+                                } : {
+                                    strong: {min: 200, max:''},
+                                    good: {min:100, max:200},
+                                    satisfactory: {min:10, max:100},
+                                    weak: {min: '', max:10}
+
+                                }
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    };
+}
+
+
+let rangeSchema = Yup.object().shape({
+    min: Yup.number().required('Required').positive("Should be positive"),
+    max: Yup.number().required('Required').positive("Should be positive").integer()
+        .when('min', (min,schema) => Yup.number().min(min, "Max should be greater than Min")),
+}).required();
+const validationSchema = Yup.object().shape({
+    name: Yup.string().required(),
+    product: Yup.string().required(),
+    policy: Yup.object().shape({
+        loanRange: rangeSchema,
+        loanTermInMonths: rangeSchema,
+        loanPurpose: Yup.string().required()
+    }),
+    factors: Yup.array().of(Yup.object().shape({
+        name: Yup.string().required(),
+        weight: Yup.number().required().positive().max(100),
+        subFactors: Yup.array().of(Yup.object().shape({
+            name: Yup.string().required(),
+            weight: Yup.number().required().positive().max(100),
+            signals: Yup.array().of(Yup.object().shape({
+                name: Yup.string().required(),
+                weight: Yup.number().required().positive().max(100),
+                criteria: Yup.object().shape({
+                    strong: rangeSchema,
+                    good: rangeSchema,
+                    satisfactory: rangeSchema,
+                    weak: rangeSchema,
+                })
+            })).test('sum', 'Sum should be 100', (a) => lodash.sumBy(a, 'weight') === 100)
+        })).test('sum', 'Sum should be 100', (a) => lodash.sumBy(a, 'weight') === 100)
+    })).test('sum', 'Sum should be 100', (a) => lodash.sumBy(a, 'weight') === 100)
+});
+
 function CreateModel() {
+    const [product, setProduct] = React.useState<IProduct>();
+    let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
+    const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
     return (
         <Formik
-            initialValues={getEmptyModel(product)}
+            initialValues={{
+                name: "",
+                product:'',
+                policy: {
+                    loanRange: { min: '', max: '' },
+                    loanTermInMonths: { min: '', max: '' },
+                    loanPurpose: [],
+                    isSecured: undefined,
+                },
+                factors:[]
+            } as IModel}
+            validationSchema={validationSchema}
+            validateOnBlur={false}
+            validateOnChange={validateOnChange}
             onSubmit={(values) => {
                 console.log(JSON.stringify(values, null, 2))
                 alert(JSON.stringify(values, null, 2));
+                setValidateOnChange(true)
             }}
         >
             {formik => {
+                React.useEffect(() => {
+                    const product = lodash.find(products, {name:formik.values.product});
+                    setProduct(product);
+                    if(product) {
+                        formik.setFieldValue("factors", getEmptyModel(product).factors)
+                    }
+                }, [formik.values.product]);
                 const v = formik.values;
                 return (
                     <Form>
-                        <Typography
-                            style={{ paddingBottom: 20, fontFamily: 'Verdana', fontWeight: 'bold', fontSize: '1.1rem' }}>Create
-                            Model</Typography>
+                        <CardHeader title={"Create Model"} titleTypographyProps={{variant:"h3"}} action={<div>
+                            <Button type="submit" variant={"contained"}>Preview</Button>
+                            <Button onClick={() => formik.setValues(getRandomModel(product!))}>Populate</Button>
+                        </div>}/>
+                        <PolicyEditor products={products} />
 
-                        <PolicyEditor />
-
-                        <button type="submit" style={{ margin: '10px' }}>Submit</button>
                         <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
                             <CardContent>
-                                {formik.values.factors.map((f, i) => (
-                                    <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} />
+                                {formik.values.factors?.map((f, i) => (
+                                    <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} reverseSignalNames={reverseSignalNames}/>
                                 ))}
                             </CardContent>
                         </Card>

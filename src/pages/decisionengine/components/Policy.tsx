@@ -18,6 +18,8 @@ import { RangeEditor } from '../editors/EditorControllers';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import styled from "@emotion/styled";
+import {IProduct} from "../interfaces/CreateModelInterfaces";
+import lodash from "lodash";
 
 const Label = styled(Typography)`
     font-weight: bold;
@@ -33,17 +35,15 @@ padding-right:15px;
 `;
 
 
-export const PolicyEditor = () => {
+export const PolicyEditor = ({products}:{products:IProduct[]}) => {
 
     const [product, meta, helpers] = useField(`product`);//product name
     const [name, meta8, helpers8] = useField(`name`);//name of model
-    const [loanMin, meta2, helpers2] = useField(`policy.loanRange.min`);
-    const [loanMax, meta3, helpers3] = useField(`policy.loanRange.max`);
-    const [termMin, meta4, helpers4] = useField(`policy.loanTermInMonths.min`);
-    const [termMax, meta5, helpers5] = useField(`policy.loanTermInMonths.max`);
     const [purpose, meta6, helpers6] = useField(`policy.loanPurpose`);
     const [isSecured, meta7, helpers7] = useField(`policy.isSecured`);
 
+    const selectedProudct = lodash.find(products, {name: product.value});
+    const purposes = selectedProudct?.policy.loanPurpose;
     return (
 
         <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
@@ -58,9 +58,7 @@ export const PolicyEditor = () => {
                                     variant="standard"
                                     {...product}
                                 >
-                                    <MenuItem value={'Working Capital Loan'}>Working Capital Loan</MenuItem>
-                                    <MenuItem value={'Product 2'}>Product 2</MenuItem>
-                                    <MenuItem value={'Product 3'}>Product 3</MenuItem>
+                                    {products.map(p => <MenuItem key={p.name} value={p.name}>{p.name}</MenuItem>)}
                                 </Select>
                             </ControlContainer>
                         </Grid>
@@ -102,9 +100,7 @@ export const PolicyEditor = () => {
                                     variant="standard"
                                     {...purpose}
                                 >
-                                    <MenuItem value={`Purpose 1`}>Purpose 1</MenuItem>
-                                    <MenuItem value={`Purpose 2`}>Purpose 2</MenuItem>
-                                    <MenuItem value={`Purpose 3`}>Purpose 3</MenuItem>
+                                    {purposes?.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
                                 </Select>
                             </ControlContainer>
                         </Grid>

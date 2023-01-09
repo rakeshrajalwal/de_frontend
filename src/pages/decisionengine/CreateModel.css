@@ -29,11 +29,15 @@ input[type=number]::-webkit-outer-spin-button {
     display: flex;
     width: 150px;
     border-bottom: 5px solid;
-    /*border-image:   linear-gradient(to right, grey 25%, yellow 25%, yellow 50%,red 50%, red 75%, teal 75%) 5;*/
+    padding-left: 18.75px;
+    border-image:   linear-gradient(to left, #078F08 25%, #9DD566 25%, #9DD566 50%, #FEC401 50%, #FEC401 75%, #FB0102 75%) 5;
+}
+
+.criteria-bar.reverse {
     border-image:   linear-gradient(to right, #078F08 25%, #9DD566 25%, #9DD566 50%, #FEC401 50%, #FEC401 75%, #FB0102 75%) 5;
 }
 
 .criteria-value {
-    width: 25%;
-    text-align: right;
+    width: 37.5px;
+    text-align: center;
 }
