@@ -24,7 +24,7 @@ export interface IPolicy {
     loanRange: IRange,
     loanTermInMonths: IRange,
     loanPurpose: string[],
-    isSecured: boolean
+    isSecured: any
 }
 
 export interface ILastRun {
