@@ -31,7 +31,7 @@ const Label = styled(Typography)`
     text-transform: capitalize;
 `;
 
-export const CriteriaEditor = ({ node, path, isReverseScale, ...rest }: { node: INode, path: string, isReverseScale: boolean, [key: string]: any }) => {
+export const CriteriaEditor = ({ node, path, isReverseScale, close}: { node: INode, path: string, isReverseScale: boolean, close: () => void }) => {
     let colors = ['#078F08', '#9DD566', '#FEC401', '#FB0102'];
     let rangeNames = [...criteriaRangeNames];
     if(isReverseScale) {
@@ -42,7 +42,7 @@ export const CriteriaEditor = ({ node, path, isReverseScale, ...rest }: { node: 
     return (
         <Card variant={"outlined"} style={{ borderColor: '#434DB0' }}>
             <CardHeader
-                action={<IconButton size={"small"}><CloseIcon/></IconButton>}
+                action={<IconButton size={"small"} onClick={close}><CloseIcon/></IconButton>}
                 title={'Edit Criteria'}
                 subheader={node.name}
                 titleTypographyProps={{

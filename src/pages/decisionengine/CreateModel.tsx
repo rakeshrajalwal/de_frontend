@@ -22,6 +22,7 @@ import styled from "@emotion/styled";
 import lodash from 'lodash';
 import formik from "../forms/Formik";
 import * as Yup from "yup";
+import {TotalWeight} from "./editors/WeightEditor";
 
 const Label = styled(Typography)`
     font-weight: bold;
@@ -257,7 +258,6 @@ function CreateModel() {
             }}
         >
             {formik => {
-                console.log(formik.errors);
                 React.useEffect(() => {
                     const product = lodash.find(products, {name:formik.values.product});
                     setProduct(product);
@@ -279,6 +279,7 @@ function CreateModel() {
                                 {formik.values.factors?.map((f, i) => (
                                     <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} reverseSignalNames={reverseSignalNames}/>
                                 ))}
+                                <TotalWeight level={1}  nodes={formik.values.factors}/>
                             </CardContent>
                         </Card>
                     </Form>

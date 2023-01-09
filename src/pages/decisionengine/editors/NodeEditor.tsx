@@ -1,22 +1,27 @@
 import * as React from 'react';
 import {Accordion, AccordionDetails, AccordionSummary, IconButton} from "@mui/material";
 import {CriteriaEditor} from '../components/Criteria';
-import {WeightEditor} from './WeightEditor';
+import {TotalWeight, WeightEditor} from './WeightEditor';
 
 import {INode, TCriteria} from "../interfaces/CreateModelInterfaces"
 import '../CreateModel.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import EditIcon from '@mui/icons-material/Edit';
+import lodash from "lodash";
+import {useField, useFormik, useFormikContext} from "formik";
 
-const CriteriaBar = ({criteria, isReverseScale}:{criteria:TCriteria, isReverseScale:boolean}) => {
-    const {strong, good, satisfactory, weak} = criteria;
+const CriteriaBar = ({path, isReverseScale}:{path:string, isReverseScale:boolean}) => {
+    const [, {error, value},]  = useField(`${path}.criteria`);
+    const {strong, good, satisfactory, weak} = value;
     const boundaries = isReverseScale ? [good.min, satisfactory.min, weak.min] :  [satisfactory.min, good.min, strong.min];
 
     return (
-        <div className={`criteria-bar ${isReverseScale ? 'reverse' : ''}`}>
-            {boundaries.map((v, i) => (
-                <div key={i} className="criteria-value">{v}</div>
-            ))}
+        <div style={{border: !!error ? "1px solid red": ""}}>
+            <div className={`criteria-bar ${isReverseScale ? 'reverse' : ''}`}>
+                {boundaries.map((v, i) => (
+                    <div key={i} className="criteria-value">{v}</div>
+                ))}
+            </div>
         </div>
     )
 }
@@ -24,6 +29,12 @@ const CriteriaBar = ({criteria, isReverseScale}:{criteria:TCriteria, isReverseSc
 export const NodeEditor: React.FC<{ node: INode, path: string, level: number, reverseSignalNames:string[] }> = ({ node, path, level, reverseSignalNames }) => {
     const [expanded, setExpanded] = React.useState<boolean>(false);
     const toggleExpanded = () => setExpanded(!expanded);
+    const [, {error}, ] = useField(path);
+    const {isValidating, isSubmitting} = useFormikContext();
+
+    if(!expanded && (isSubmitting && isValidating && !!error)) {
+        setExpanded(true);
+    }
 
     const criteriaValueSlider = [
         {
@@ -38,7 +49,7 @@ export const NodeEditor: React.FC<{ node: INode, path: string, level: number, re
 
     const [selectedSignal, setSelectedSignal] = React.useState<number>(-1);
     return (
-        <Accordion expanded={expanded} onChange={toggleExpanded} sx={{}}>
+        <Accordion expanded={expanded} onChange={toggleExpanded}>
             <AccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', }} />} sx={{
                 flexDirection: 'row-reverse',
                 '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
@@ -62,6 +73,7 @@ export const NodeEditor: React.FC<{ node: INode, path: string, level: number, re
                             {node.subFactors.map((sf, i) => (
                                 <NodeEditor key={i} node={sf} path={`${path}.subFactors[${i}]`} level={level + 1} reverseSignalNames={reverseSignalNames}/>
                             ))}
+                            <TotalWeight level={level+1}  nodes={node.subFactors}/>
                         </div>
                     )}
                     {node.signals && (
@@ -72,17 +84,19 @@ export const NodeEditor: React.FC<{ node: INode, path: string, level: number, re
                                         <WeightEditor node={sig} style={{ marginBottom: 10 }} level={level + 1}
                                             path={`${path}.signals[${i}]`} type={'white'} />
                                         <div style={{display:"flex", gap:2}}>
-                                            <CriteriaBar criteria={sig.criteria!} isReverseScale={reverseSignalNames.includes(sig.name)}/>
+                                            <CriteriaBar path={`${path}.signals[${i}]`} isReverseScale={reverseSignalNames.includes(sig.name)}/>
                                             <IconButton size={'small'} color="primary" onClick={() => setSelectedSignal(selectedSignal === i ? -1 : i)}>
                                                 <EditIcon fontSize="inherit" />
                                             </IconButton>
                                         </div>
                                     </div>
                                 ))}
+                                <TotalWeight level={level+1}  nodes={node.signals}/>
                             </div>
                             {selectedSignal >= 0 && (
                                 <CriteriaEditor node={node.signals[selectedSignal]}
                                                 isReverseScale={reverseSignalNames.includes(node.signals[selectedSignal].name)}
+                                                close={() => setSelectedSignal(-1)}
                                     path={`${path}.signals[${selectedSignal}]`} />
                             )}
                         </div>

@@ -39,7 +39,28 @@ function HealthIndicator({ node }: { node: INode }) {
         backgroundColor: treeWeightsOkay(node) ? "green" : "red"
     }}></div>;
 }
+export const TotalWeight = ({level, nodes}:{level:number, nodes:INode[]}) => {
+    const height = level === 1 ? 40 : level === 2 ? 30 : 35;
+    const font = `normal normal bold ${level === 1 ? 12 : 10}px Verdana`
+    const width = level == 1 ? 600 : level == 2 ? 440 : 250;
 
+    const totalWeight = lodash.sumBy(nodes, ({weight}) => parseInt(weight.toString()));
+    return (
+        <Box sx={{ margin: 2, display: 'flex', gap: 3, height, color:totalWeight == 100 ? 'auto' : 'red'}} >
+            <div style={{
+                width:width+40,
+                padding: "10px 20px",
+                textAlign: 'right',
+            }}>Total</div>
+            <div style={{
+                padding: "10px 20px",
+                textAlign: 'center',
+            }}>
+                {totalWeight}
+            </div>
+        </Box>
+        )
+}
 export const WeightEditor = ({
     node,
     path,
