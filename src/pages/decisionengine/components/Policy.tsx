@@ -18,7 +18,7 @@ import { RangeEditor } from '../editors/EditorControllers';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import styled from "@emotion/styled";
-import {IProduct} from "../interfaces/CreateModelInterfaces";
+import {IProduct} from "../interfaces/ModelInterface";
 import lodash from "lodash";
 
 const Label = styled(Typography)`
