@@ -173,15 +173,15 @@ function getRandomModel(p:IProduct):IModel {
                                 name: subFactor.signals[i].name,
                                 weight,
                                 criteria: subFactor.signals[i].isReverseScale ? {
-                                    weak: {min: 200, max:''},
+                                    weak: {min: 200, max:300},
                                     satisfactory: {min:100, max:200},
                                     good: {min:10, max:100},
-                                    strong: {min: '', max:10}
+                                    strong: {min: 0, max:10}
                                 } : {
-                                    strong: {min: 200, max:''},
+                                    strong: {min: 200, max:300},
                                     good: {min:100, max:200},
                                     satisfactory: {min:10, max:100},
-                                    weak: {min: '', max:10}
+                                    weak: {min: 0, max:10}
 
                                 }
                             }
@@ -194,28 +194,31 @@ function getRandomModel(p:IProduct):IModel {
 }
 
 
-let rangeSchema = Yup.object().shape({
-    min: Yup.number().required('Required').positive("Should be positive"),
-    max: Yup.number().required('Required').positive("Should be positive").integer()
-        .when('min', (min,schema) => Yup.number().min(min, "Max should be greater than Min")),
+const positiveInteger = Yup.number().required('Required').positive("Should be positive").integer('Should be integer');
+let positiveIntRangeSchema = Yup.object().shape({
+    min: positiveInteger.when('max', (max,schema) => schema.max(max, "Invalid range")),
+    max: positiveInteger
 }).required();
+let rangeSchema = Yup.object().shape({
+    min: Yup.number().required('Required').when('max', (max,schema) => schema.max(max, "Invalid range")),
+    max: Yup.number().required('Required')
+}).required();
+
+const requiredString = Yup.string().required('Required');
 const validationSchema = Yup.object().shape({
-    name: Yup.string().required(),
-    product: Yup.string().required(),
+    name: requiredString,
+    product: requiredString,
     policy: Yup.object().shape({
-        loanRange: rangeSchema,
-        loanTermInMonths: rangeSchema,
-        loanPurpose: Yup.string().required()
+        loanRange: positiveIntRangeSchema,
+        loanTermInMonths: positiveIntRangeSchema,
+        loanPurpose: Yup.array().of(Yup.string().required()).required().min(1)
     }),
     factors: Yup.array().of(Yup.object().shape({
-        name: Yup.string().required(),
-        weight: Yup.number().required().positive().max(100),
+        weight: Yup.number().required().min(0).max(100),
         subFactors: Yup.array().of(Yup.object().shape({
-            name: Yup.string().required(),
-            weight: Yup.number().required().positive().max(100),
+            weight: Yup.number().required().min(0).max(100),
             signals: Yup.array().of(Yup.object().shape({
-                name: Yup.string().required(),
-                weight: Yup.number().required().positive().max(100),
+                weight: Yup.number().required().min(0).max(100),
                 criteria: Yup.object().shape({
                     strong: rangeSchema,
                     good: rangeSchema,
@@ -246,7 +249,7 @@ function CreateModel() {
             } as IModel}
             validationSchema={validationSchema}
             validateOnBlur={false}
-            validateOnChange={validateOnChange}
+            validateOnChange={true}
             onSubmit={(values) => {
                 console.log(JSON.stringify(values, null, 2))
                 alert(JSON.stringify(values, null, 2));
@@ -254,6 +257,7 @@ function CreateModel() {
             }}
         >
             {formik => {
+                console.log(formik.errors);
                 React.useEffect(() => {
                     const product = lodash.find(products, {name:formik.values.product});
                     setProduct(product);

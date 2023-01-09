@@ -63,8 +63,7 @@ export const CriteriaEditor = ({ node, path, isReverseScale, ...rest }: { node: 
                             <RangeEditor
                                 // isOpen={i==0 || i==3}
                                 fieldPath={`${path}.criteria.${rangeName}`}
-                                variant={'outlined'}
-                                inputWidth={55}
+                                textFieldProps={{variant:'standard', style:{width:55}}}
                                 oneEndOnly={i>0}
                                 onChange={(e: React.ChangeEvent<any>) => {
                                     if(i==3) return;

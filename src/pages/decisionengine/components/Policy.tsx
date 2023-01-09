@@ -79,13 +79,13 @@ export const PolicyEditor = ({products}:{products:IProduct[]}) => {
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Loan Range (£):</Label>
-                                <RangeEditor fieldPath={'policy.loanRange'} />
+                                <RangeEditor fieldPath={'policy.loanRange'} textFieldProps={{variant:'standard'}} />
                             </ControlContainer>
                         </Grid>
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Term:</Label>
-                                <RangeEditor fieldPath={'policy.loanTermInMonths'} />
+                                <RangeEditor fieldPath={'policy.loanTermInMonths'} textFieldProps={{variant:'standard'}} />
                             </ControlContainer>
                         </Grid>
                     </Grid>
