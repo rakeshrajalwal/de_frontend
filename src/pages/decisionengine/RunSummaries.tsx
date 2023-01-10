@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from "@emotion/styled";
 import { Helmet } from "react-helmet-async";
-
 import {
   Paper as MuiPaper,
   Typography,
@@ -10,47 +9,10 @@ import {
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
 import { Info, User, Monitor, Eye, RefreshCw } from "react-feather";
-
-
 import { data } from './data';
+import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
 
 const Paper = styled(MuiPaper)(spacing);
-
-const paperSx = {
-  "& MuiPaper-root": {
-    fontFamily: "Verdana",
-  },
-  "& .css-1bpvgg-MuiPaper-root": {
-    padding: "10rem",
-  },
-}
-
-const datagridSx = {
-  "& .MuiDataGrid-columnHeaders": {
-    backgroundColor: "#D9F1FC",
-  },
-  "& .MuiDataGrid-columnHeaderTitle": {
-    fontWeight: 'bold',
-  },
-  "& .MuiPaper-elevation1": {
-    backgroundColor: "#F3FBFE",
-  },
-  "& .MuiDataGrid-cellContent": {
-    wordWrap: 'break-word !important',
-    textAlign: 'center',
-    fontSize: '1.9ex',
-    justifyContent: 'center',
-  },
-  "& .MuiDataGrid-cell": {
-    whiteSpace: "normal !important",
-  },
-  "& .MuiDataGrid-toolbarQuickFilter": {
-    border: 'solid',
-  },
-  "& .MuiDataGrid-toolbarContainer": {
-    backgroundColor: '#F7F9FC',
-  }
-};
 
 const Icons = {
   User: {
@@ -126,18 +88,18 @@ const columns: GridColDef[] = [
     headerAlign: 'center',
     flex: 6,
     renderCell: (params) => {
-      const flag = (params.row.Result>5)?false:true
+      const flag = (params.row.Result > 5) ? false : true
       const x = (params.row.Result < 3) ? {
         text: 'Strong', color: '#64b964', border: '0.3ex solid #64b964'
       } : (params.row.Result >= 3 && params.row.Result < 5) ? {
         text: 'Satisfactory', color: '#fecd29', border: '0.3ex solid #fecd29'
       } : {
-        text: 'Failed',color:'',border: ''
+        text: 'Failed', color: '', border: ''
       }
-      
+
       if (!flag) {
         return (
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center"}}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
             <p>{x.text}</p>
             <IconButton aria-label="Info" size="small">
               <Info style={{ fontSize: '1.8ex', }} />
@@ -146,7 +108,7 @@ const columns: GridColDef[] = [
       }
       else {
         return (
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center"}}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
             <strong>{params.row.Result}</strong>
             <div style={{ width: '1ex' }}></div>
             <p style={{ color: x.color, border: x.border, borderRadius: '3ex', padding: '0.35ex' }}>{x.text}</p>
@@ -187,7 +149,7 @@ const columns: GridColDef[] = [
 
 function RunSummariesGrid() {
   return (
-    <Paper sx = {{paperSx}}>
+    <Paper sx={{ paperSx }}>
 
       <div style={{ height: "41.5rem", width: "100%" }}>
         <DataGrid
