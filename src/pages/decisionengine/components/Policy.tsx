@@ -28,7 +28,6 @@ padding-left:5px;
 padding-right:15px;
 `;
 
-
 export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
 
     const [product, meta, helpers] = useField(`product`);//product name
@@ -37,7 +36,6 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
     const [isSecured, meta4, helpers7] = useField(`policy.isSecured`);
 
     const  value  = isSecured.value;
-    console.log(value, "the value")
 
     const selectedProudct = lodash.find(products, { name: product.value });
     const purposes = selectedProudct?.policy.loanPurpose;

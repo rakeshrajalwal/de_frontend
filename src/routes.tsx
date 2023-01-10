@@ -93,7 +93,11 @@ const routes = [
     children: [
       {
         path: "/model/create",
-        element: <CreateModel />,
+        element: <CreateModel createmodel={true} />,
+      },
+      {
+        path: "/model/:id/edit",
+        element: <CreateModel createmodel={false} />,
       },
       {
         path: "/model/view",
@@ -103,10 +107,7 @@ const routes = [
         path: "/model/run",
         element: <RunModel />,
       },
-      {
-        path: "/model/run",
-        element: <RunModel />,
-      },
+      
     ],
   },
   {

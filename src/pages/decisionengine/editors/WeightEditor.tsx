@@ -6,8 +6,8 @@ import {
     Button
 } from "@mui/material";
 import lodash from 'lodash';
-import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
-import { INode, IProduct, IModel, IRange, IPolicy } from "../interfaces/ModelInterface";
+import { Field, Form, Formik, useField, useFormik } from "formik";
+import { INode } from "../interfaces/ModelInterface";
 import '../CreateModel.css';
 
 //const treeWeightsOkay1 = (node: INode): boolean => true;
@@ -32,28 +32,42 @@ function HealthIndicator({ node }: { node: INode }) {
     }}></div>;
 }
 
+const ColoredLine = ({ color }: { color: string }) => (
+    <hr
+        style={{
+            color: color,
+            backgroundColor: color,
+            height: 3
+        }}
+    />
+);
+
 /* calculates weight at each level */
-export const TotalWeight = ({level, nodes}:{level:number, nodes:INode[]}) => {
+export const TotalWeight = ({ level, nodes }: { level: number, nodes: INode[] }) => {
     const height = level === 1 ? 40 : level === 2 ? 30 : 35;
     const font = `normal normal bold ${level === 1 ? 12 : 10}px Verdana`
     const width = level == 1 ? 600 : level == 2 ? 440 : 250;
 
-    const totalWeight = lodash.sumBy(nodes, ({weight}) => parseInt(weight.toString()));
+    const totalWeight = lodash.sumBy(nodes, ({ weight }) => parseInt(weight.toString()));
     return (
-        <Box sx={{ margin: 2, display: 'flex', gap: 3, height, color:totalWeight == 100 ? 'auto' : 'red'}} >
+        <Box sx={{ margin: 2, display: 'flex', gap: 3, height, color: totalWeight == 100 ? 'green' : 'red' }} >
             <div style={{
-                width:width+40,
-                padding: "10px 20px",
-                textAlign: 'right',
-            }}>Total</div>
-            <div style={{
-                padding: "10px 20px",
-                textAlign: 'center',
+                width: width + 150,
+                // padding: "10px 20px",
             }}>
-                {totalWeight}
+                <ColoredLine color={totalWeight == 100 ? 'green' : 'red'} />
+
+                <div style={{ display: 'flex', justifyContent : 'space-between', gap: 10 }}>
+                    <Typography style={{ fontFamily: 'verdana', fontSize: 14, fontWeight: 500 }} >
+                        Total
+                    </Typography>
+                    <Typography style={{ fontFamily: 'verdana', fontSize: 14, fontWeight: 500 }} >
+                        {totalWeight}
+                    </Typography>
+                </div>
             </div>
         </Box>
-        )
+    )
 }
 export const WeightEditor = ({
     node,

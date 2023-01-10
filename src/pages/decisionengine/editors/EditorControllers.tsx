@@ -1,32 +1,36 @@
 import React from 'react'
-import {TextField, TextFieldProps, Typography} from "@mui/material";
-import {useField} from "formik";
+import { TextField, TextFieldProps, Typography } from "@mui/material";
+import { useField } from "formik";
 
 interface NumberEditorProps {
-    inputWidth: number|string,
+    inputWidth: number | string,
 }
-export const NumberEditor = ({error, ...textFieldProps}:TextFieldProps) => (
-    <TextField
-        fullWidth
-        type={'number'}
-        size={"small"}
-        error={!!error}
-        helperText={error}
-        inputProps={{ style: { textAlign: 'center' } }}
-        {...textFieldProps}
-    />
+export const NumberEditor = ({ error, ...textFieldProps }: TextFieldProps) => (
+   // const [value, setValue] = React.useState<number>();
+    //return (
+        <TextField
+            fullWidth
+            type={'number'}
+            size={"small"}
+            error={!!error}
+            helperText={error}
+            inputProps={{ style: { textAlign: 'center' } }}
+            {...textFieldProps}
+        />
+        //)
 )
-/* component that takes the min and max values in any range eg.loanrange. with all necessary validations */ 
+
+/* component that takes the min and max values in any range eg.loanrange. with all necessary validations */
 export const RangeEditor = ({
     fieldPath,
     oneEndOnly = false,
-    onChange = () => {},
+    onChange = () => { },
     textFieldProps
-}: { textFieldProps?:TextFieldProps, oneEndOnly?:boolean, fieldPath: string, openRange?: boolean, onChange?:(e: React.ChangeEvent<any>) => void }) => {
-    const  [minField, minMeta, helper] = useField(`${fieldPath}.min`);
+}: { textFieldProps?: TextFieldProps, oneEndOnly?: boolean, fieldPath: string, openRange?: boolean, onChange?: (e: React.ChangeEvent<any>) => void }) => {
+    const [minField, minMeta, helper] = useField(`${fieldPath}.min`);
     const [maxField, maxMeta] = useField(`${fieldPath}.max`);
     return (
-        <div style={{display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1}}>
+        <div style={{ display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1 }}>
             <NumberEditor
                 {...textFieldProps}
                 placeholder={'Min'}
