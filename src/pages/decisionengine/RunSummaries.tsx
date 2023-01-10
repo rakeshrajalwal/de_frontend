@@ -156,16 +156,17 @@ function RunSummariesGrid() {
   return (
     <Paper sx={{ paperSx }}>
 
-      <div style={{ height: "41.46rem", width: "100%" }}>
+      <div style={{ height: "25.2rem", width: "100%" }}>
         <DataGrid
           sx={datagridSx}
           rows={data}
           columns={columns}
-          pageSize={10}
+          pageSize={5}
           getRowId={(row) => row.id}
           disableColumnFilter
           disableColumnSelector
           disableDensitySelector
+          hideFooterSelectedRowCount
           components={{ Toolbar: GridToolbar }}
           componentsProps={{
             toolbar: {
