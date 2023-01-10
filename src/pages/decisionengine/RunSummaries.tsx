@@ -8,7 +8,12 @@ import {
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
-import { Info, User, Monitor, Eye, RefreshCw } from "react-feather";
+import PersonIcon from '@mui/icons-material/Person';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import DesktopWindowsOutlinedIcon from '@mui/icons-material/DesktopWindowsOutlined';
+import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+import CachedRoundedIcon from '@mui/icons-material/CachedRounded';
+
 import { data } from './data';
 import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
 
@@ -17,19 +22,19 @@ const Paper = styled(MuiPaper)(spacing);
 const Icons = {
   User: {
     text: "DE User",
-    Icon: User
+    Icon: PersonIcon
   },
   Monitor: {
     text: "Source",
-    Icon: Monitor,
+    Icon: DesktopWindowsOutlinedIcon,
   },
   Eye: {
     text: "Preview",
-    Icon: Eye,
+    Icon: RemoveRedEyeOutlinedIcon,
   },
   RefreshCw: {
     text: "Re-Run",
-    Icon: RefreshCw
+    Icon: CachedRoundedIcon
   }
 }
 
@@ -102,7 +107,7 @@ const columns: GridColDef[] = [
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
             <p>{x.text}</p>
             <IconButton aria-label="Info" size="small">
-              <Info style={{ fontSize: '1.8ex', }} />
+              <InfoOutlinedIcon />
             </IconButton></div>
         )
       }
@@ -126,7 +131,7 @@ const columns: GridColDef[] = [
     renderCell: (params) => {
       const { Icon } = Icons[(params.row.flag < 1) ? 'User' : 'Monitor' as keyof typeof Icons];
       return (<div>
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'row' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
           <Typography mt={2}>{params.row["Run By"]}</Typography>
           <Icon /></div>
         <span>{params.row.time}</span>
@@ -151,7 +156,7 @@ function RunSummariesGrid() {
   return (
     <Paper sx={{ paperSx }}>
 
-      <div style={{ height: "41.5rem", width: "100%" }}>
+      <div style={{ height: "41.46rem", width: "100%" }}>
         <DataGrid
           sx={datagridSx}
           rows={data}
@@ -204,7 +209,7 @@ function RunSummaries() {
           <div style={{ display: 'flex', gap: 5 }}>
             {Object.values(Icons).map(({ text, Icon }) => (
               <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Icon style={{ fontSize: '0.5ex' }} />
+                <Icon style={{ fontSize: '2.5ex' }} />
                 <p>{text}</p>
               </div>
             ))}
