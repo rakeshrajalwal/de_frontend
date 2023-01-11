@@ -9,6 +9,7 @@ import {
   Paper as MuiPaper,
   Button as MuiButton,
   Typography,
+  CardHeader,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
@@ -219,12 +220,7 @@ function ViewModels() {
           fontSize: '1.4ex',
         }}
       >
-        <div>
-          <Typography variant='h3' gutterBottom display='inline'>
-            Models
-          </Typography>
-        </div>
-        <div
+        <CardHeader title="Models" style={{ width: "100%" }} titleTypographyProps={{ variant: "h3" }} action={<div
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -250,7 +246,8 @@ function ViewModels() {
               </div>
             ))}
           </div>
-        </div>
+        </div>} />
+
       </div>
 
       <ModelDataGrid />

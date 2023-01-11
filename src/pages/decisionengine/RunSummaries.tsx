@@ -5,6 +5,8 @@ import {
   Paper as MuiPaper,
   Typography,
   IconButton,
+  Chip,
+  CardHeader,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
@@ -13,7 +15,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import DesktopWindowsOutlinedIcon from '@mui/icons-material/DesktopWindowsOutlined';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CachedRoundedIcon from '@mui/icons-material/CachedRounded';
-
+import Tooltip from "@mui/material/Tooltip";
 import { data } from './data';
 import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
 
@@ -95,9 +97,9 @@ const columns: GridColDef[] = [
     renderCell: (params) => {
       const flag = (params.row.Result > 5) ? false : true
       const x = (params.row.Result < 3) ? {
-        text: 'Strong', color: '#64b964', border: '0.3ex solid #64b964'
+        text: 'Strong', color: '#64b964',
       } : (params.row.Result >= 3 && params.row.Result < 5) ? {
-        text: 'Satisfactory', color: '#fecd29', border: '0.3ex solid #fecd29'
+        text: 'Satisfactory', color: '#fecd29',
       } : {
         text: 'Failed', color: '', border: ''
       }
@@ -105,18 +107,20 @@ const columns: GridColDef[] = [
       if (!flag) {
         return (
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
-            <p>{x.text}</p>
-            <IconButton aria-label="Info" size="small">
-              <InfoOutlinedIcon />
-            </IconButton></div>
+            <p style={{ fontFamily: 'Verdana' }}>{x.text}</p>
+            <Tooltip title="measures not available" placement='right'>
+              <IconButton aria-label="Info" size="small">
+                <InfoOutlinedIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
         )
       }
       else {
         return (
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
-            <strong>{params.row.Result}</strong>
-            <div style={{ width: '1ex' }}></div>
-            <p style={{ color: x.color, border: x.border, borderRadius: '3ex', padding: '0.35ex' }}>{x.text}</p>
+            <strong style={{ fontFamily: 'Verdana', paddingRight: '1ex', }}>{params.row.Result}</strong>
+            <Chip label={x.text} color="primary" variant="outlined" size="small" style={{ borderRadius: '2.2ex', color: x.color, borderColor: x.color, fontFamily: 'Verdana' }}></Chip>
           </div>
         )
       }
@@ -132,9 +136,9 @@ const columns: GridColDef[] = [
       const { Icon } = Icons[(params.row.flag < 1) ? 'User' : 'Monitor' as keyof typeof Icons];
       return (<div>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
-          <Typography mt={2}>{params.row["Run By"]}</Typography>
-          <Icon /></div>
-        <span>{params.row.time}</span>
+          <Typography mt={2} style={{ paddingRight: '1.2ex', fontFamily: 'Verdana' }} >{params.row["Run By"]}</Typography>
+          <Icon style={{ fontSize: '2.7ex' }} /></div>
+        <div style={{ fontFamily: 'Verdana', fontSize: '1.4ex' }}>{params.row.time}</div>
       </div>)
     },
     align: 'center'
@@ -195,12 +199,7 @@ function RunSummaries() {
           fontSize: '1.4ex'
         }}
       >
-        <div>
-          <Typography variant="h3" gutterBottom display="inline">
-            Run Summaries
-          </Typography>
-        </div>
-        <div
+        <CardHeader title="Run Summaries" titleTypographyProps={{ variant: "h3" }} style={{ width: "100%", fontFamily: "Verdana" }} action={<div
           style={{
             display: 'flex',
             flexDirection: 'row',
@@ -209,13 +208,14 @@ function RunSummaries() {
         >
           <div style={{ display: 'flex', gap: 5 }}>
             {Object.values(Icons).map(({ text, Icon }) => (
-              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Icon style={{ fontSize: '2.5ex' }} />
-                <p>{text}</p>
+              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: '2.5ex', fontStyle: 'Verdana', margin: '5px' }}>
+                <Icon />
+                <p style={{ fontSize: '2ex' }}>{text}</p>
               </div>
             ))}
           </div>
-        </div>
+        </div>} />
+
       </div>
 
       <RunSummariesGrid />
