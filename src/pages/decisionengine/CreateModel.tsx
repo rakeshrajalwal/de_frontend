@@ -141,12 +141,13 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
     const navigate = useNavigate();
     const backendUrl: string = (process.env.REACT_APP_BACKEND_URL as string)
 
-    const [product, setProduct] = React.useState<IProduct>();
-    const [products, setProducts] = React.useState<IProduct[]>([]);
-    const [createModel, setCreateModel] = React.useState<boolean>(createmodel);
-    const [openSuccessNotfication, setOpenSuccessNotfication] = React.useState<boolean>(false);
-    const [openErrorNotfication, setOpenErrorNotfication] = React.useState<boolean>(false);
-    const [createModelError, setcreateModelError] = React.useState<string>('');
+    const [product, setProduct] = React.useState<IProduct>();// to populate a select products  factors etc.
+    const [products, setProducts] = React.useState<IProduct[]>([]);// to populate all the products
+    const [createModel, setCreateModel] = React.useState<boolean>(createmodel);// used in judging create or edit model
+    const [openSuccessNotfication, setOpenSuccessNotfication] = React.useState<boolean>(false);// notification for success model creation
+    const [openErrorNotfication, setOpenErrorNotfication] = React.useState<boolean>(false);//notification for error in model creation
+    const [createModelError, setcreateModelError] = React.useState<string>('');// set the error from api response
+    const [canSubmit, setCanSubmit] = React.useState<boolean>(false);//enabling or disabling submit button
 
     let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
@@ -216,7 +217,8 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
                 return (
                     <Form>
                         <CardHeader title={createmodel ? "Create Model" : "Edit Model"} titleTypographyProps={{ variant: "h3" }} action={<div>
-                            <Button type="submit" variant={"contained"}>Submit</Button>
+                            <Button type="submit" variant={"contained"} style={{ marginRight: '10px' }}>Validate</Button>
+                            <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? false : true}>Submit</Button>
                             <Button onClick={() => formik.setValues(getRandomModel(product!))}>Populate</Button>
                         </div>} />
                         <PolicyEditor products={products} />
@@ -232,7 +234,7 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
                         </Card>
                         <Snackbar
                             open={openSuccessNotfication}
-                            anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+                            anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
                             autoHideDuration={1500}
                             onClose={handleNotificationClose}
                             message="model is created successfully"
@@ -244,7 +246,7 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
                         />
                         <Snackbar
                             open={openErrorNotfication}
-                            anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+                            anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
                             autoHideDuration={1500}
                             onClose={handleNotificationClose}
                             message={createModelError}
