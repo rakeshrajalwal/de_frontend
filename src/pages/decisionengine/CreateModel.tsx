@@ -16,8 +16,11 @@ import styled from "@emotion/styled";
 import lodash from 'lodash';
 import * as Yup from "yup";
 import { TotalWeight } from "./editors/WeightEditor";
+import { useNavigate } from "react-router-dom";
+import Snackbar from '@mui/material/Snackbar';
 const axios = require('axios');
-
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 function getEmptyModel(p: IProduct): IModel {
     return {
@@ -138,10 +141,17 @@ const validationSchema = Yup.object().shape({
 });
 
 const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
+    const navigate = useNavigate();
+    const backendUrl: string = (process.env.REACT_APP_BACKEND_URL as string)
 
     const [product, setProduct] = React.useState<IProduct>();
     const [products, setProducts] = React.useState<IProduct[]>([]);
     const [createtModel, setCreateModel] = React.useState<boolean>(createmodel);
+    const [open, setOpen] = React.useState<boolean>(false);
+    const handleClose = () => {
+        setOpen(false);
+        navigate("/model/view");
+    };
 
     let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
@@ -151,10 +161,9 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
         var customConfig = {
             headers: { 'Content-Type': 'application/json' }
         };
-        await axios.post('http://localhost:8000/models/create_model', value, customConfig)
+        await axios.post(`${backendUrl}/models/create_model`, value, customConfig)
             .then((response: any) => {
-                console.log(response.data, " the model is created");
-                //redirect to view all models screen
+                setOpen(true);
             }).catch((e: any) => console.log(e, " the model creation error"));
     }
 
@@ -176,12 +185,12 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
             validateOnChange={true}
             onSubmit={(values) => {
                 submitModel(values);
-                setValidateOnChange(true)
+                setValidateOnChange(true);
             }}
         >
             {formik => {
                 React.useEffect(() => {
-                    axios.get('http://localhost:8000/products/all').
+                    axios.get(`${backendUrl}/products/all`).
                         then((response: any) => {
                             setProducts(response.data)
                         }).catch((e: any) => { console.log(e, "the error") });
@@ -209,6 +218,18 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
                                 <TotalWeight level={1} nodes={formik.values.factors} />
                             </CardContent>
                         </Card>
+                        <Snackbar
+                            open={open}
+                            anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+                            autoHideDuration={2000}
+                            onClose={handleClose}
+                            message="model is created successfully"
+                            ContentProps={{
+                                sx: {
+                                    background: "red"
+                                }
+                            }}
+                        />
                     </Form>
                 );
             }}
