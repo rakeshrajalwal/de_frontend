@@ -5,9 +5,9 @@ import {
     CardContent,
     Card,
     Typography,
-    Button, CardHeader
+    Button, CardHeader, Snackbar
 } from "@mui/material";
-import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
+import { Field, Form, Formik, useField, useFormik } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
 import { INode, IProduct, IModel, IRange, IPolicy } from "./interfaces/ModelInterface"
@@ -17,11 +17,7 @@ import lodash from 'lodash';
 import * as Yup from "yup";
 import { TotalWeight } from "./editors/WeightEditor";
 import { useNavigate } from "react-router-dom";
-import Snackbar from '@mui/material/Snackbar';
 const axios = require('axios');
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import { create } from 'jss';
 
 function getEmptyModel(p: IProduct): IModel {
     return {
@@ -150,7 +146,7 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
     const [createModel, setCreateModel] = React.useState<boolean>(createmodel);
     const [openSuccessNotfication, setOpenSuccessNotfication] = React.useState<boolean>(false);
     const [openErrorNotfication, setOpenErrorNotfication] = React.useState<boolean>(false);
-    const [createModelError,setcreateModelError] = React.useState<string>('');
+    const [createModelError, setcreateModelError] = React.useState<string>('');
 
     let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
@@ -206,7 +202,10 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
                     axios.get(`${backendUrl}/products/all`).
                         then((response: any) => {
                             setProducts(response.data)
-                        }).catch((e: any) => { console.log(e, "the error") });
+                        }).catch((e: any) => {
+                            setcreateModelError(JSON.stringify(e.message));
+                            setOpenErrorNotfication(true);
+                        });
                     const product = lodash.find(products, { name: formik.values.product });
                     setProduct(product);
                     if (product) {
@@ -217,7 +216,7 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
                 return (
                     <Form>
                         <CardHeader title={createmodel ? "Create Model" : "Edit Model"} titleTypographyProps={{ variant: "h3" }} action={<div>
-                            <Button type="submit" variant={"contained"}>Preview</Button>
+                            <Button type="submit" variant={"contained"}>Submit</Button>
                             <Button onClick={() => formik.setValues(getRandomModel(product!))}>Populate</Button>
                         </div>} />
                         <PolicyEditor products={products} />
@@ -228,7 +227,7 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
                                     <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} reverseSignalNames={reverseSignalNames} />
                                 ))}
 
-                                <TotalWeight level={1} nodes={formik.values.factors} />
+                                {product && <TotalWeight level={1} nodes={formik.values.factors} />}
                             </CardContent>
                         </Card>
                         <Snackbar

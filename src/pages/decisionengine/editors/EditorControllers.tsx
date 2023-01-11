@@ -6,8 +6,6 @@ interface NumberEditorProps {
     inputWidth: number | string,
 }
 export const NumberEditor = ({ error, ...textFieldProps }: TextFieldProps) => (
-   // const [value, setValue] = React.useState<number>();
-    //return (
         <TextField
             fullWidth
             type={'number'}
@@ -17,7 +15,6 @@ export const NumberEditor = ({ error, ...textFieldProps }: TextFieldProps) => (
             inputProps={{ style: { textAlign: 'center' } }}
             {...textFieldProps}
         />
-        //)
 )
 
 /* component that takes the min and max values in any range eg.loanrange. with all necessary validations */
