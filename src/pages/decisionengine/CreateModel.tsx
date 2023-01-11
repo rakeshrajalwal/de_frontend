@@ -21,6 +21,7 @@ import Snackbar from '@mui/material/Snackbar';
 const axios = require('axios');
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { create } from 'jss';
 
 function getEmptyModel(p: IProduct): IModel {
     return {
@@ -146,25 +147,37 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
 
     const [product, setProduct] = React.useState<IProduct>();
     const [products, setProducts] = React.useState<IProduct[]>([]);
-    const [createtModel, setCreateModel] = React.useState<boolean>(createmodel);
-    const [open, setOpen] = React.useState<boolean>(false);
-    const handleClose = () => {
-        setOpen(false);
-        navigate("/model/view");
-    };
+    const [createModel, setCreateModel] = React.useState<boolean>(createmodel);
+    const [openSuccessNotfication, setOpenSuccessNotfication] = React.useState<boolean>(false);
+    const [openErrorNotfication, setOpenErrorNotfication] = React.useState<boolean>(false);
+    const [createModelError,setcreateModelError] = React.useState<string>('');
 
     let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
-    const { id } = useParams();
+    const { id } = useParams();// can be used in edit model
+
+    const handleNotificationClose = () => {
+        if (openSuccessNotfication) {
+            setOpenSuccessNotfication(false);
+            navigate("/model/view");// navigating to view models screen on successful creation
+        }
+        if (openErrorNotfication) {
+            setOpenErrorNotfication(false); // showing error popup
+        }
+    };
+
     async function submitModel(values: IModel) {
         var value = JSON.stringify(values, null, 2);
         var customConfig = {
             headers: { 'Content-Type': 'application/json' }
         };
         await axios.post(`${backendUrl}/models/create_model`, value, customConfig)
-            .then((response: any) => {
-                setOpen(true);
-            }).catch((e: any) => console.log(e, " the model creation error"));
+            .then((response: IModel) => {
+                setOpenSuccessNotfication(true);
+            }).catch((e: any) => {
+                setcreateModelError(JSON.stringify(e.message));
+                setOpenErrorNotfication(true);
+            });
     }
 
     return (
@@ -219,11 +232,23 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
                             </CardContent>
                         </Card>
                         <Snackbar
-                            open={open}
+                            open={openSuccessNotfication}
                             anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-                            autoHideDuration={2000}
-                            onClose={handleClose}
+                            autoHideDuration={1500}
+                            onClose={handleNotificationClose}
                             message="model is created successfully"
+                            ContentProps={{
+                                sx: {
+                                    background: "green"
+                                }
+                            }}
+                        />
+                        <Snackbar
+                            open={openErrorNotfication}
+                            anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+                            autoHideDuration={1500}
+                            onClose={handleNotificationClose}
+                            message={createModelError}
                             ContentProps={{
                                 sx: {
                                     background: "red"
