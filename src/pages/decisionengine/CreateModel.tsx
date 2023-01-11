@@ -217,7 +217,8 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
                 return (
                     <Form>
                         <CardHeader title={createmodel ? "Create Model" : "Edit Model"} titleTypographyProps={{ variant: "h3" }} action={<div>
-                            <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? true : false} style={{ marginRight: '10px', backgroundColor : formik.isValid && formik.dirty ? 'green' : 'blue' }}>Validate</Button>
+                            <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? true : false} 
+                            style={{ marginRight: '10px', backgroundColor : formik.isValid && formik.dirty ? 'green' : 'blue', color :  formik.isValid && formik.dirty ? 'white' : 'white' }}>Validate</Button>
                             <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? false : true}>Submit</Button>
                             <Button onClick={() => formik.setValues(getRandomModel(product!))}>Populate</Button>
                         </div>} />
