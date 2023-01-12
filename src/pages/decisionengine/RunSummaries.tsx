@@ -16,7 +16,7 @@ import DesktopWindowsOutlinedIcon from '@mui/icons-material/DesktopWindowsOutlin
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CachedRoundedIcon from '@mui/icons-material/CachedRounded';
 import Tooltip from "@mui/material/Tooltip";
-import { data } from './data';
+import runSummariesJson from './runsummaries.json';
 import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
 
 const Paper = styled(MuiPaper)(spacing);
@@ -41,16 +41,16 @@ const Icons = {
 }
 
 const columns: GridColDef[] = [
+  // {
+  //   field: "_id",
+  //   headerName: "ID",
+  //   description: "ID",
+  //   headerAlign: 'center',
+  //   flex: 2,
+  //   align: 'center'
+  // },
   {
-    field: "id",
-    headerName: "ID",
-    description: "ID",
-    headerAlign: 'center',
-    flex: 2,
-    align: 'center'
-  },
-  {
-    field: "name",
+    field: "model.name",
     headerName: "Name",
     description: "Name",
     headerAlign: 'center',
@@ -58,7 +58,7 @@ const columns: GridColDef[] = [
     align: 'center'
   },
   {
-    field: "Product",
+    field: "loanDetails.product",
     headerName: "Product",
     description: "Product",
     headerAlign: 'center',
@@ -66,7 +66,7 @@ const columns: GridColDef[] = [
     align: 'center'
   },
   {
-    field: "Customer",
+    field: "loanDetails.customer.name",
     headerName: "Customer",
     description: "Customer",
     headerAlign: 'center',
@@ -74,7 +74,7 @@ const columns: GridColDef[] = [
     align: 'center'
   },
   {
-    field: "Loan Amount",
+    field: "loanDetails.amount",
     headerName: "Loan Amount (£)",
     description: "Loan Amount (£)",
     headerAlign: 'center',
@@ -82,7 +82,7 @@ const columns: GridColDef[] = [
     align: 'center'
   },
   {
-    field: "Term",
+    field: "loanDetails.term",
     headerName: "Term (months)",
     description: "Term (months)",
     headerAlign: 'center',
@@ -90,25 +90,35 @@ const columns: GridColDef[] = [
     align: 'center'
   },
   {
-    field: "Result",
+    field: "score",
     headerName: "Result",
     headerAlign: 'center',
     flex: 6,
+    align: 'center',
     renderCell: (params) => {
-      const flag = (params.row.Result > 5) ? false : true
-      const x = (params.row.Result < 3) ? {
-        text: 'Strong', color: '#64b964',
-      } : (params.row.Result >= 3 && params.row.Result < 5) ? {
-        text: 'Satisfactory', color: '#fecd29',
+      const status_params = (params.row.score >= 7.5 && params.row.score < 10) ? {
+        text: 'Strong', color: '#078F08',
+      } : (params.row.score >= 5 && params.row.score < 7.5) ? {
+        text: 'Good', color: '#9DD566',
+      } : (params.row.score >= 2.5 && params.row.score < 5) ? {
+        text: 'Satisfactory', color: '#FEC401',
       } : {
-        text: 'Failed', color: '', border: ''
+        text: 'Weak', color: '#FB0102',
       }
 
-      if (!flag) {
+      if (params.row.status == "success") {
+        return (
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "left" }}>
+            <strong style={{ fontFamily: 'Verdana', paddingRight: '1ex', }}>{params.row.score}</strong>
+            <Chip label={status_params.text} color="primary" variant="outlined" size="small" style={{ borderRadius: '2.2ex', color: status_params.color, borderColor: status_params.color, fontFamily: 'Verdana' }}></Chip>
+          </div>
+        )
+      }
+      else {
         return (
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
-            <p style={{ fontFamily: 'Verdana' }}>{x.text}</p>
-            <Tooltip title="measures not available" placement='right'>
+            <p style={{ fontFamily: 'Verdana' }}>{params.row.status}</p>
+            <Tooltip title={params.row.failedOperations.error} placement='right'>
               <IconButton aria-label="Info" size="small">
                 <InfoOutlinedIcon />
               </IconButton>
@@ -116,43 +126,37 @@ const columns: GridColDef[] = [
           </div>
         )
       }
-      else {
-        return (
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
-            <strong style={{ fontFamily: 'Verdana', paddingRight: '1ex', }}>{params.row.Result}</strong>
-            <Chip label={x.text} color="primary" variant="outlined" size="small" style={{ borderRadius: '2.2ex', color: x.color, borderColor: x.color, fontFamily: 'Verdana' }}></Chip>
-          </div>
-        )
-      }
     },
-    align: 'center'
   },
   {
-    field: "time",
+    field: "runBy",
     headerName: "Run By",
     headerAlign: 'center',
     flex: 7,
+    align: 'center',
     renderCell: (params) => {
-      const { Icon } = Icons[(params.row.flag < 1) ? 'User' : 'Monitor' as keyof typeof Icons];
+      const { Icon } = Icons[params.row.source == "DE" ? 'User' : 'Monitor' as keyof typeof Icons];
       return (<div>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
-          <Typography mt={2} style={{ paddingRight: '1.2ex', fontFamily: 'Verdana' }} >{params.row["Run By"]}</Typography>
-          <Icon style={{ fontSize: '2.7ex' }} /></div>
-        <div style={{ fontFamily: 'Verdana', fontSize: '1.4ex' }}>{params.row.time}</div>
+          <Typography mt={2} style={{ paddingRight: '1.2ex', fontFamily: 'Verdana' }} >{params.row.runBy}</Typography>
+          <Tooltip title={params.row.source} placement='right'>
+            <Icon style={{ fontSize: '2.7ex' }} />
+          </Tooltip>
+        </div>
+        <div style={{ fontFamily: 'Verdana', fontSize: '1.4ex' }}>{params.row.runAt}</div>
       </div>)
     },
-    align: 'center'
   },
   {
-    field: "flag",
+    field: "status",
     headerName: "",
     headerAlign: 'center',
     flex: 2,
+    align: 'center',
     renderCell: (params) => {
-      const { Icon } = Icons[(params.row.Result >= 5) ? 'RefreshCw' : 'Eye' as keyof typeof Icons];
+      const { Icon } = Icons[(params.row.status == "success") ? 'Eye' : 'RefreshCw' as keyof typeof Icons];
       return <Icon />
     },
-    align: 'center'
   },
 ];
 
@@ -163,10 +167,10 @@ function RunSummariesGrid() {
       <div style={{ height: "25.2rem", width: "100%" }}>
         <DataGrid
           sx={datagridSx}
-          rows={data}
+          rows={runSummariesJson}
           columns={columns}
           pageSize={5}
-          getRowId={(row) => row.id}
+          getRowId={(row) => row._id}
           disableColumnFilter
           disableColumnSelector
           disableDensitySelector
