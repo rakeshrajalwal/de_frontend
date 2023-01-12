@@ -18,6 +18,7 @@ import CachedRoundedIcon from '@mui/icons-material/CachedRounded';
 import Tooltip from "@mui/material/Tooltip";
 import runSummariesJson from './runsummaries.json';
 import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
+import lodash from "lodash";
 
 const Paper = styled(MuiPaper)(spacing);
 
@@ -55,7 +56,9 @@ const columns: GridColDef[] = [
     description: "Name",
     headerAlign: 'center',
     flex: 5,
-    align: 'center'
+    align: 'center',
+    valueGetter: ({ row, field }) => lodash.get(row, field),
+    valueFormatter: ({ value }) => value,
   },
   {
     field: "loanDetails.product",
@@ -63,7 +66,9 @@ const columns: GridColDef[] = [
     description: "Product",
     headerAlign: 'center',
     flex: 7,
-    align: 'center'
+    align: 'center',
+    valueGetter: ({ row, field }) => lodash.get(row, field),
+    valueFormatter: ({ value }) => value,
   },
   {
     field: "loanDetails.customer.name",
@@ -71,7 +76,9 @@ const columns: GridColDef[] = [
     description: "Customer",
     headerAlign: 'center',
     flex: 7,
-    align: 'center'
+    align: 'center',
+    valueGetter: ({ row, field }) => lodash.get(row, field),
+    valueFormatter: ({ value }) => value,
   },
   {
     field: "loanDetails.amount",
@@ -79,7 +86,9 @@ const columns: GridColDef[] = [
     description: "Loan Amount (£)",
     headerAlign: 'center',
     flex: 5,
-    align: 'center'
+    align: 'center',
+    valueGetter: ({ row, field }) => lodash.get(row, field),
+    valueFormatter: ({ value }) => value,
   },
   {
     field: "loanDetails.term",
@@ -87,7 +96,9 @@ const columns: GridColDef[] = [
     description: "Term (months)",
     headerAlign: 'center',
     flex: 4,
-    align: 'center'
+    align: 'center',
+    valueGetter: ({ row, field }) => lodash.get(row, field),
+    valueFormatter: ({ value }) => value,
   },
   {
     field: "score",
