@@ -4,6 +4,12 @@ import {
     Typography,
     Button as MuiButton,
     Paper as MuiPaper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
@@ -265,31 +271,40 @@ function getEmptyModel(p: IProduct): IModel {
 
 function ModelDataGrid() {
     return (
-        <Paper sx={paperSx}>
-            <div style={{ height: '25.2rem', width: '100%' }}>
-                <DataGrid
-                    sx={datagridSx}
-                    // rowsPerPageOptions={[5, 10, 25]}
-                    rows={oneModel}
-                    columns={columns}
-                    pageSize={5}
-                    getRowId={(row) => row.factors.subFactors.signals._id}
-                    disableColumnFilter
-                    disableColumnSelector
-                    disableDensitySelector
-                    hideFooterSelectedRowCount
-                    components={{ Toolbar: GridToolbar }}
-                    componentsProps={{
-                        toolbar: {
-                            csvOptions: { disableToolbarButton: true },
-                            printOptions: { disableToolbarButton: true },
-                            showQuickFilter: true,
-                            quickFilterProps: { debounceMs: 500 },
-                        },
-                    }}
-                />
-            </div>
-        </Paper>
+        <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Factor</TableCell>
+                        <TableCell align="right">Weight</TableCell>
+                        <TableCell align="right">Sub-Factor</TableCell>
+                        <TableCell align="right">Weight</TableCell>
+                        <TableCell align="right">Signal</TableCell>
+                        <TableCell align="right">Weight</TableCell>
+                        <TableCell align="right">Overall Weight</TableCell>
+                        <TableCell align="right">Criteria</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {oneModel.factors.map((factor) => (
+                        <TableRow
+                            key={factor.name}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            <TableCell component="th" scope="row" rowSpan={factor.subFactors.length}>
+                                {factor.name}
+                            </TableCell>
+                            <TableCell align="right" rowSpan={factor.subFactors.length}>{factor.weight}</TableCell>
+                            {factor.subFactors.map((subFactor) => (
+                                <TableCell align="right">{subFactor.name}</TableCell>
+                                <TableCell align="right">{subFactor.weight}</TableCell>
+                            ))}
+
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
 }
 
