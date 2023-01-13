@@ -9,6 +9,7 @@ import {
   Paper as MuiPaper,
   Button as MuiButton,
   Typography,
+  CardHeader,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
@@ -16,70 +17,13 @@ import AccessTime from "@mui/icons-material/AccessTime";
 import modelsJson from "./getmodels.json";
 import lodash from "lodash";
 import { INode, IProduct, IModel, IRange, IPolicy } from "./interfaces/ModelInterface";
+import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
 
 const Chip = styled(MuiChip)(spacing);
 
 const Button = styled(MuiButton)(spacing);
 
 const Paper = styled(MuiPaper)(spacing);
-
-const paperSx = {
-  "& MuiPaper-root": {
-    fontFamily: "Verdana",
-  },
-  "& .css-1bpvgg-MuiPaper-root": {
-    padding: "10rem",
-  },
-};
-
-const datagridSx = {
-  "& .MuiDataGrid-columnHeaders": {
-    backgroundColor: "#D9F1FC",
-  },
-  "& .MuiDataGrid-columnHeaderTitle": {
-    fontFamily: "Verdana",
-    fontWeight: "bold",
-    letterSpacing: "0.05ex",
-    opacity: 1,
-    color: "#1B2430",
-  },
-  "& .MuiPaper-elevation1": {
-    backgroundColor: "#F3FBFE",
-  },
-  "& .MuiDataGrid-cellContent": {
-    fontFamily: "Verdana",
-    wordWrap: "break-word !important",
-    textAlign: "center",
-    fontSize: "1.5ex",
-    justifyContent: "center",
-    color: "#1B2430",
-    letterSpacing: "0.05ex",
-    opacity: 1,
-  },
-  "& .MuiDataGrid-cell": {
-    whiteSpace: "normal !important",
-  },
-  "& .MuiDataGrid-toolbarQuickFilter": {
-    border: "solid",
-  },
-  "& .MuiChip-label": {
-    textAlign: "center",
-    fontSize: "1.5ex",
-  },
-  "& .MuiDataGrid-toolbarContainer": {
-    backgroundColor: "#F7F9FC",
-  },
-};
-
-const MultiStringCell = ({ value }: { value?: string[] }) => (
-  <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', fontSize: '1.6ex' }}>
-    {value?.map((text, i) => (
-      <div key={i} style={{ fontSize: `${i == 0 ? 1.6 : 1.4}ex` }}>
-        {text}
-      </div>
-    ))}
-  </div>
-)
 
 const statusIcons = {
   approved: {
@@ -276,12 +220,7 @@ function ViewModels() {
           fontSize: '1.4ex',
         }}
       >
-        <div>
-          <Typography variant='h3' gutterBottom display='inline'>
-            Models
-          </Typography>
-        </div>
-        <div
+        <CardHeader title="Models" style={{ width: "100%" }} titleTypographyProps={{ variant: "h3" }} action={<div
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -307,7 +246,8 @@ function ViewModels() {
               </div>
             ))}
           </div>
-        </div>
+        </div>} />
+
       </div>
 
       <ModelDataGrid />
