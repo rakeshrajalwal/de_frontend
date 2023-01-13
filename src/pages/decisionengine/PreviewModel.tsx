@@ -14,8 +14,8 @@ import {
 import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
-import { IProduct, IModel } from "./interfaces/ModelInterface";
-import './CreateModel.css';
+import { IProduct, IModel, IFactor, ISubFactor, IPreviewModel } from "./interfaces/ModelInterface";
+import './styles/CreateModel.css';
 import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
@@ -269,6 +269,71 @@ function getEmptyModel(p: IProduct): IModel {
     }
 }
 
+function getFactorRowSpan(factor_name: string) {
+    let signal_count = 0;
+    let factor = oneModel.factors.find((factor) => factor.name == factor_name);
+    if (factor) {
+        factor.subFactors.map((subFactor) => {
+            signal_count += subFactor.signals.length;
+        })
+    }
+    console.log('factor_name: ', factor_name, '\t signal_count: ', signal_count);
+    return signal_count;
+}
+
+function getSubFactorRowSpan(factor_name: string, sub_factor_name: string) {
+    let signal_count = 0;
+    let factor = oneModel.factors.find((factor) => factor.name == factor_name);
+    if (factor) {
+        let sub_factor = factor.subFactors.find((subFactor) => subFactor.name == sub_factor_name);
+        if (sub_factor) {
+            signal_count = sub_factor.signals.length;
+        }
+    }
+    console.log('factor_name: ', factor_name, '\t sub_factor_name: ', sub_factor_name, '\t signal_count: ', signal_count);
+    return signal_count;
+}
+
+function getEmptyPreviewModel() {
+    return {
+        name: "",
+        weight: "",
+        overallWeight: "",
+        factorName: "",
+        factorWeight: "",
+        subFactorName: "",
+        subFactorWeight: "",
+        criteria: {
+            strong: { min: '', max: '' },
+            good: { min: '', max: '' },
+            satisfactory: { min: '', max: '' },
+            weak: { min: '', max: '' },
+        }
+    }
+}
+
+function convertToFlatSignals(factors: IFactor[]) {
+    let flat_signals: IPreviewModel[] = [];
+    factors.map((factor, factorIndex) => {
+        factor.subFactors.map((subFactor, subFactorIndex) => {
+            subFactor.signals.map((signal, signalIndex) => {
+                let current_signal: IPreviewModel = getEmptyPreviewModel();
+                current_signal.name = signal.name;
+                current_signal.weight = signal.weight;
+                // current_signal.overallWeight = signal.overallWeight;
+                current_signal.factorName = factor.name;
+                current_signal.factorWeight = factor.weight;
+                current_signal.subFactorName = subFactor.name;
+                current_signal.subFactorWeight = subFactor.weight;
+                // current_signal.criteria = signal.criteria;
+                flat_signals.push(current_signal);
+            })
+        })
+    })
+    console.log('flat_signals length: ', flat_signals.length, '\t flat_signals: ', flat_signals);
+    return flat_signals;
+}
+
 function ModelDataGrid() {
     return (
         <TableContainer component={Paper}>
@@ -286,25 +351,24 @@ function ModelDataGrid() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {oneModel.factors.map((factor) => (
+                    {convertToFlatSignals(oneModel.factors).map((signal) => (
                         <TableRow
-                            key={factor.name}
+                            key={signal.name}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                            <TableCell component="th" scope="row" rowSpan={factor.subFactors.length}>
-                                {factor.name}
+                            <TableCell rowSpan={getFactorRowSpan(signal.factorName)}>
+                                {signal.factorName}
                             </TableCell>
-                            <TableCell align="right" rowSpan={factor.subFactors.length}>{factor.weight}</TableCell>
-                            {factor.subFactors.map((subFactor) => (
-                                <TableCell align="right">{subFactor.name}</TableCell>
-                                <TableCell align="right">{subFactor.weight}</TableCell>
-                            ))}
-
+                            <TableCell align="right" rowSpan={getFactorRowSpan(signal.factorName)}>{signal.factorWeight}</TableCell>
+                            <TableCell align="right" rowSpan={getSubFactorRowSpan(signal.factorName, signal.subFactorName)}>{signal.subFactorName}</TableCell>
+                            <TableCell align="right" rowSpan={getSubFactorRowSpan(signal.factorName, signal.subFactorName)}>{signal.subFactorWeight}</TableCell>
+                            <TableCell align="right">{signal.name}</TableCell>
+                            <TableCell align="right">{signal.weight}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
-        </TableContainer>
+        </TableContainer >
     );
 }
 
@@ -328,6 +392,7 @@ function PreviewModel() {
 
                         <PolicyEditor />
 
+                        <ModelDataGrid />
                     </Form>
                 );
             }}

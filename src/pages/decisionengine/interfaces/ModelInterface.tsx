@@ -54,23 +54,41 @@ export interface IModel {
     runCount?: number,
     lastRun?: ILastRun,
     policy: IPolicy,
-    factors: {
-        _id?: string,
-        name: string,
-        weight: number | string,
-        subFactors: {
-            _id?: string,
-            name: string,
-            weight: number | string,
-            signals: {
-                _id?: string,
-                name: string
-                weight: number | string,
-                overallWeight?: number | string,
-                criteria?: ICriteria,
-            }[]
-        }[]
-    }[]
+    factors: IFactor[],
+}
+
+export interface IFactor {
+    _id?: string,
+    name: string,
+    weight: number | string,
+    subFactors: ISubFactor[],
+}
+
+export interface ISubFactor {
+    _id?: string,
+    name: string,
+    weight: number | string,
+    signals: ISignal[],
+}
+
+export interface ISignal {
+    _id?: string,
+    name: string,
+    weight: number | string,
+    overallWeight?: number | string,
+    criteria?: ICriteria,
+}
+
+
+export interface IPreviewModel {
+    name: string,
+    weight: number | string,
+    overallWeight: number | string,
+    factorName: string,
+    factorWeight: number | string,
+    subFactorName: string,
+    subFactorWeight: number | string,
+    criteria: ICriteria,
 }
 
 export interface INode {
