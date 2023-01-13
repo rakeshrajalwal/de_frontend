@@ -251,21 +251,21 @@ const CreateModel = () => {
                         setValidateOnChange(true);
                 }, [])
                 React.useEffect(() => {
-                    // axios.get(`${backendUrl}/products/all`).
-                    //     then((response: any) => {
-                    //         setProducts(response.data)
-                    //     }).catch((e: any) => {
-                    //         setcreateModelError(JSON.stringify(e.message));
-                    //         setOpenErrorNotfication(true);
-                    //     });
+                    axios.get(`${backendUrl}/products/all`).
+                        then((response: any) => {
+                            setProducts(response.data)
+                        }).catch((e: any) => {
+                            setcreateModelError(JSON.stringify(e.message));
+                            setOpenErrorNotfication(true);
+                        });
 
-                    //     //         setProducts(response.data)
-                    //     //     }).catch((e: any) => {
-                    //     //         setcreateModelError(JSON.stringify(e.message));
-                    //     //         setOpenErrorNotfication(true);
+                        //         setProducts(response.data)
+                        //     }).catch((e: any) => {
+                        //         setcreateModelError(JSON.stringify(e.message));
+                        //         setOpenErrorNotfication(true);
 
                     // data ? setProducts(data);
-                    const { data, error, isLoading } = useGetAllProductsQuery('');
+                   // const { data, error, isLoading } = useGetAllProductsQuery('');
                     //setProducts(data)
                     console.log(products, " the products");
                     const product = lodash.find(products, { name: formik.values.product });
