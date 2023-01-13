@@ -68,24 +68,21 @@ function RunModel() {
           purpose: [],
           company_name: ''
         },
-        // manual_inputs: [{
-        //   sponsors_net_worth: '',
-        // },
-        //   { personal_guranteer: '', },
-        //   {
-        //   insurance: ''
-        // }],
-        manual_inputs: [{
-          name: 'sponsors_networth', value: ''
+        manual_inputs2: [{
+          name: 'abc', value: ''
         },
         {
-          name: 'sponsors_networth 2', value: ''
+          name: 'abc 2', value: ''
         },
         {
-          name: 'sponsors_networth 3', value: ''
+          name: 'abc 3', value: ''
         },
         ],
-
+        manual_inputs: {
+          sponsors_networth: '',
+          sponsors_networth_2: '',
+          sponsors_networth_3: '',
+        }
       }}
       onSubmit={(values) => {
         console.log(JSON.stringify(values, null, 2))
@@ -182,9 +179,14 @@ function RunModel() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
                   <Grid container style={{ padding: '30px' }}>
-                    {formik.values.manual_inputs.map((f, i) => (
-                      <CustomTextField fieldname={f.name} path={`manual_inputs[${i}].value`} />
+                    {formik.values.manual_inputs2.map((f, i) => (
+                      <CustomTextField fieldname={f.name} path={`manual_inputs2[${i}].value`} />
                     ))}
+                    {Object.entries(formik.values.manual_inputs).map(([key, val], i) => (
+                      <CustomTextField fieldname={`${key}`} path={`manual_inputs[${key}]`} />
+                    ))}
+
+
                     /</Grid>
                 </div>
               </CardContent>
