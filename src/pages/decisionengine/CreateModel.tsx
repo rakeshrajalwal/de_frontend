@@ -214,7 +214,7 @@ const CreateModel = () => {
             .unwrap()
             .then(() => {
                 setOpenSuccessNotfication(true);
-                navigate("/model/view");// navigating to view models screen on successful creation
+               // navigating to view models screen on successful creation
              })
             .then((error) => {
                     console.log(error)
