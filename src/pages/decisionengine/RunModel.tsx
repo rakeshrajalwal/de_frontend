@@ -82,7 +82,7 @@ function RunModel() {
           name: 'sponsors_networth 2', value: ''
         },
         {
-          name: 'sponsors_networth 2', value: ''
+          name: 'sponsors_networth 3', value: ''
         },
         ],
 
@@ -179,10 +179,14 @@ function RunModel() {
                   <Divider />
                 </div>
 
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
-                {formik.values.manual_inputs.map((f, i) => (
-                  <CustomTextField fieldname={f.name} path={`manual_inputs[${i}].value`} />
-                ))}
+                  <Grid container style={{ padding: '30px' }}>
+                    {formik.values.manual_inputs.map((f, i) => (
+                      <CustomTextField fieldname={f.name} path={`manual_inputs[${i}].value`} />
+                    ))}
+                    /</Grid>
+                </div>
               </CardContent>
 
             </Card>
