@@ -14,12 +14,13 @@ import {
 import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
-import { IProduct, IModel, IFactor, ISubFactor, IPreviewModel } from "./interfaces/ModelInterface";
+import { IProduct, IModel, IFactor, ISubFactor, IPreviewModel, INode } from "./interfaces/ModelInterface";
 import './styles/CreateModel.css';
 import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import modelsJson from "./getmodels.json";
+import lodash from 'lodash';
 
 const Paper = styled(MuiPaper)(spacing);
 const Button = styled(MuiButton)(spacing);
@@ -335,6 +336,15 @@ function convertToFlatSignals(factors: IFactor[]) {
 }
 
 function ModelDataGrid() {
+    const flatSignals = oneModel.factors.flatMap(factor => 
+        factor.subFactors.flatMap(subFactor => 
+            subFactor.signals.flatMap(signal => ({factor, subFactor, signal}))))
+
+    const rowSpanOfNode = (n:INode) {
+        if(n.signals) return n.signals.length;
+        return lodash.sumBy(n.subFactors, sf => sf.signals!.length);
+    }
+    
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -351,6 +361,17 @@ function ModelDataGrid() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    {flatSignals.map(({factor, subFactor, signal}, i) => (
+                        <TableRow key={i}>
+                            {(i == 0 || factor !== flatSignals[i-1].factor) && (
+                                <TableCell rowSpan={rowSpanOfNode(factor)}>{factor.name}</TableCell>
+                            )}
+                            {(i == 0 || subFactor !== flatSignals[i-1].subFactor) && (
+                            <TableCell rowSpan={rowSpanOfNode(subFactor)}>{subFactor.name}</TableCell>
+                            )}
+                            <TableCell>{signal.name}</TableCell>
+                        </TableRow>
+                    ))}
                     {convertToFlatSignals(oneModel.factors).map((signal) => (
                         <TableRow
                             key={signal.name}
@@ -400,4 +421,3 @@ function PreviewModel() {
     )
 }
 
-export default PreviewModel;
