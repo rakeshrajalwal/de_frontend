@@ -20,7 +20,7 @@ function ProtectedPage() {
         This page is only visible by authenticated users.
       </Alert>
 
-      <CreateModel createmodel={true}/>
+      <CreateModel />
       <ViewModels />
       <RunModel />
       <RunSummaries />

@@ -1,33 +1,34 @@
 import * as React from 'react';
 // import { render } from 'react-dom';
 import { useParams } from 'react-router';
+import { useCreateModelMutation, useGetProductsMutation, useGetAllProductsQuery } from '../../redux/de';
 import {
     CardContent,
     Card,
     Typography,
     Button, CardHeader, Snackbar
 } from "@mui/material";
-import { Field, Form, Formik, useField, useFormik } from "formik";
+import { Form, Formik, useField, useFormik } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
-import { INode, IProduct, IModel, IRange, IPolicy } from "./interfaces/ModelInterface"
+import { INode, IProduct, IModel, IPolicy } from "./interfaces/ModelInterface"
 import './CreateModel.css';
-import styled from "@emotion/styled";
 import lodash from 'lodash';
 import * as Yup from "yup";
 import { TotalWeight } from "./editors/WeightEditor";
 import { useNavigate } from "react-router-dom";
 const axios = require('axios');
+import { useEffect } from 'preact/hooks';
 
 function getEmptyModel(p: IProduct): IModel {
     return {
         name: '',//modelname
         product: '',
         policy: {
-            loanRange: { min: '', max: '' },
+            loanRange: { min: p.policy.loanRange.min, max: '' },
             loanTermInMonths: { min: '', max: '' },
             loanPurpose: [],
-            isSecured: false,
+            isSecured: p.policy.isSecured,
         },
         factors: p.factors.map(f => ({
             name: f.name,
@@ -47,6 +48,20 @@ function getEmptyModel(p: IProduct): IModel {
                 }))
             }))
         }))
+    }
+}
+
+function populatePolicyFromProduct(p: any): any {
+    return {
+        name: '',
+        product: '',
+        policy: {
+            loanRange: { min: p.policy.loanRange.min, max: p.policy.loanRange.max },
+            loanTermInMonths: { min: '', max: '' },
+            loanPurpose: [],
+            isSecured: p.policy.isSecured,
+        },
+        factors: []
     }
 }
 
@@ -137,22 +152,41 @@ const validationSchema = Yup.object().shape({
     })).test('sum', 'Sum should be 100', (a) => lodash.sumBy(a, 'weight') === 100)
 });
 
-const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
+const CreateModel = () => {
     const navigate = useNavigate();
     const backendUrl: string = (process.env.REACT_APP_BACKEND_URL as string)
-
-    const [product, setProduct] = React.useState<IProduct>();// to populate a select products  factors etc.
+   // const { data, error, isLoading } = useGetAllProductsQuery('');
+    const [product, setProduct] = React.useState<IProduct>();// to populate a select products features etc.
     const [products, setProducts] = React.useState<IProduct[]>([]);// to populate all the products
-    const [createModel, setCreateModel] = React.useState<boolean>(createmodel);// used in judging create or edit model
     const [openSuccessNotfication, setOpenSuccessNotfication] = React.useState<boolean>(false);// notification for success model creation
     const [openErrorNotfication, setOpenErrorNotfication] = React.useState<boolean>(false);//notification for error in model creation
     const [createModelError, setcreateModelError] = React.useState<string>('');// set the error from api response
-    const [canSubmit, setCanSubmit] = React.useState<boolean>(false);//enabling or disabling submit button
 
     let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
-    const { id } = useParams();// can be used in edit model
+    const [addNewModel, response] = useCreateModelMutation();
+   
+    // console.log(data, " the products data");
 
+    // const [get, response] = useCreateModelMutation();
+    const [getAllProducts] = useGetProductsMutation();
+
+    // Then you can call with await
+    //  getAllProducts.unwrap().then((fulfilled) => setProducts(fulfilled))
+    //     .catch((rejected) => console.error(rejected));
+
+    // Or with standard promise
+    // getAllProducts()
+    //     .unwrap()
+    //     .then((fulfilled) => console.log(fulfilled))
+    //     .catch((rejected) => console.error(rejected));
+
+    // React.useEffect(() => {
+    //     setProducts(data);
+    // }, [data])
+
+
+    //handles notification popups after submitting
     const handleNotificationClose = () => {
         if (openSuccessNotfication) {
             setOpenSuccessNotfication(false);
@@ -163,18 +197,29 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
         }
     };
 
+    // function that sends the create model api request
     async function submitModel(values: IModel) {
         var value = JSON.stringify(values, null, 2);
-        var customConfig = {
-            headers: { 'Content-Type': 'application/json' }
-        };
-        await axios.post(`${backendUrl}/models/create_model`, value, customConfig)
-            .then((response: IModel) => {
+        // var customConfig = {
+        //     headers: { 'Content-Type': 'application/json' }
+        // };
+        // await axios.post(`${backendUrl}/models/create_model`, value, customConfig)
+        //     .then((response: IModel) => {
+        //         setOpenSuccessNotfication(true);
+        //     }).catch((e: any) => {
+        //         setcreateModelError(JSON.stringify(e.message));
+        //         setOpenErrorNotfication(true);
+        //     });
+        addNewModel(value)
+            .unwrap()
+            .then(() => {
                 setOpenSuccessNotfication(true);
-            }).catch((e: any) => {
-                setcreateModelError(JSON.stringify(e.message));
-                setOpenErrorNotfication(true);
-            });
+                navigate("/model/view");// navigating to view models screen on successful creation
+             })
+            .then((error) => {
+                    console.log(error)
+                })
+
     }
 
     return (
@@ -192,36 +237,54 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
             } as IModel}
             validationSchema={validationSchema}
             validateOnBlur={false}
-            validateOnChange={true}
+            validateOnChange={validateOnChange}
             onSubmit={(values) => {
                 submitModel(values);
+                // var value = JSON.stringify(values, null, 2);
+                //console.log(value, " the value")
                 setValidateOnChange(true);
             }}
         >
             {formik => {
                 React.useEffect(() => {
-                    axios.get(`${backendUrl}/products/all`).
-                        then((response: any) => {
-                            setProducts(response.data)
-                        }).catch((e: any) => {
-                            setcreateModelError(JSON.stringify(e.message));
-                            setOpenErrorNotfication(true);
-                        });
+                    formik.isSubmitting &&
+                        setValidateOnChange(true);
+                }, [])
+                React.useEffect(() => {
+                    // axios.get(`${backendUrl}/products/all`).
+                    //     then((response: any) => {
+                    //         setProducts(response.data)
+                    //     }).catch((e: any) => {
+                    //         setcreateModelError(JSON.stringify(e.message));
+                    //         setOpenErrorNotfication(true);
+                    //     });
+
+                    //     //         setProducts(response.data)
+                    //     //     }).catch((e: any) => {
+                    //     //         setcreateModelError(JSON.stringify(e.message));
+                    //     //         setOpenErrorNotfication(true);
+
+                    // data ? setProducts(data);
+                    const { data, error, isLoading } = useGetAllProductsQuery('');
+                    //setProducts(data)
+                    console.log(products, " the products");
                     const product = lodash.find(products, { name: formik.values.product });
                     setProduct(product);
                     if (product) {
-                        formik.setFieldValue("factors", getEmptyModel(product).factors)
+                        formik.setFieldValue("policy", populatePolicyFromProduct(product).policy);
+                        formik.setFieldValue("factors", getEmptyModel(product).factors);
                     }
                 }, [formik.values.product]);
                 const v = formik.values;
                 return (
                     <Form>
-                        <CardHeader title={createmodel ? "Create Model" : "Edit Model"} titleTypographyProps={{ variant: "h3" }} action={<div>
-                            <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? true : false} 
-                            style={{ marginRight: '10px', backgroundColor : formik.isValid && formik.dirty ? 'green' : 'blue', color :  formik.isValid && formik.dirty ? 'white' : 'white' }}>Validate</Button>
-                            <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? false : true}>Submit</Button>
-                            <Button onClick={() => formik.setValues(getRandomModel(product!))}>Populate</Button>
-                        </div>} />
+                        <CardHeader title={"Create Model"} titleTypographyProps={{ variant: "h3" }}
+                            action={<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? true : false}
+                                    style={{ backgroundColor: formik.isValid && formik.dirty ? 'green' : 'blue', color: 'white' }}>Validate</Button>
+                                <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? false : true}>Submit</Button>
+                                <Button onClick={() => formik.setValues(getRandomModel(product!))}>Populate</Button>
+                            </div>} />
                         <PolicyEditor products={products} />
 
                         <Card sx={{ boxShadow: '0px 3px 6px #00000029', marginTop: '15px' }}>
@@ -236,7 +299,7 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
                         <Snackbar
                             open={openSuccessNotfication}
                             anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
-                            autoHideDuration={1500}
+                            autoHideDuration={2500}
                             onClose={handleNotificationClose}
                             message="model is created successfully"
                             ContentProps={{
@@ -248,7 +311,7 @@ const CreateModel = ({ createmodel }: { createmodel: boolean }) => {
                         <Snackbar
                             open={openErrorNotfication}
                             anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
-                            autoHideDuration={1500}
+                            autoHideDuration={2500}
                             onClose={handleNotificationClose}
                             message={createModelError}
                             ContentProps={{

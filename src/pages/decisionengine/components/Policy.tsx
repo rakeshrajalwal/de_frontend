@@ -35,9 +35,9 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
     const [purpose, meta3, helpers6] = useField(`policy.loanPurpose`);
     const [isSecured, meta4, helpers7] = useField(`policy.isSecured`);
 
-    const  value  = isSecured.value;
-
+    const value = isSecured.value;
     const selectedProudct = lodash.find(products, { name: product.value });
+   // const value = selectedProudct?.policy.isSecured;
     const purposes = selectedProudct?.policy.loanPurpose;
     return (
 
@@ -60,7 +60,7 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
 
                         <Grid item md={6}>
                             <ControlContainer>
-                                <Label>Model:</Label>
+                                <Label>Model Name:</Label>
                                 <TextField
                                     error={meta2.error && meta2.touched ? true : false}
                                     helperText={meta2.error && meta2.touched ? 'Required' : ''}
@@ -104,14 +104,14 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
                         </Grid>
                         <Grid item md={6}>
                             <ControlContainer>
-                                    <label>
-                                        <Field type="radio" {...isSecured} value={true} checked={value ? true : false}/>
-                                        <span style={{ fontWeight: "bold" }}>Secured</span>
-                                    </label>
-                                    <label>
-                                        <Field type="radio" {...isSecured} value={false} checked={!value ? true : false}/>
-                                        <span style={{ fontWeight: "bold" }}>Unsecured</span>
-                                    </label>
+                                <label>
+                                    <Field type="radio" {...isSecured} value={true} checked={value} />
+                                    <span style={{ fontWeight: "bold" }}>Secured</span>
+                                </label>
+                                <label>
+                                    <Field type="radio" {...isSecured} value={false} checked={!value}/>
+                                    <span style={{ fontWeight: "bold" }}>Unsecured</span>
+                                </label>
                             </ControlContainer>
                         </Grid>
                     </Grid>
