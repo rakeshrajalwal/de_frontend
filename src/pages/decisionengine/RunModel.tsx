@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import UserList from '../../redux/UserList';
-import ProductList from '../../redux/ProductList'
 import { useCreateModelMutation , useGetProductsMutation , useGetAllProductsQuery} from '../../redux/de';
 import { useEffect } from 'preact/hooks';
 
