@@ -8,7 +8,7 @@ import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
 import { IProduct, IModel } from "./interfaces/ModelInterface"
-import './CreateModel.css';
+import './styles/CreateModel.css';
 import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
 

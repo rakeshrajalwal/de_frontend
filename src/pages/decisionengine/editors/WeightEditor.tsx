@@ -16,7 +16,7 @@ import {
 import lodash from 'lodash';
 import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
 import { INode, IProduct, IModel, IRange, IPolicy } from "../interfaces/ModelInterface";
-import '../CreateModel.css';
+import '../styles/CreateModel.css';
 
 const treeWeightsOkay1 = (node: INode): boolean => true;
 const treeWeightsOkay = (node: INode): boolean => {
