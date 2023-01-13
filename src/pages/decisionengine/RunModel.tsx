@@ -39,8 +39,8 @@ function RunModel() {
       <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
         <CardContent>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <Grid container>
-              <Grid item md={6}>
+            <Grid container style={{ padding : '30px'}}>
+              <Grid item md={8}>
                 <ControlContainer>
                   <Label>Product:</Label>
                   <Select
@@ -97,9 +97,6 @@ function RunModel() {
               </Grid>
 
             </Grid>
-
-
-
           </div>
         </CardContent>
       </Card>
