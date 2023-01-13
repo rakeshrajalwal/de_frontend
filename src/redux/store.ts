@@ -1,13 +1,9 @@
 import { configureStore, ThunkAction, Action, combineReducers } from "@reduxjs/toolkit";
-import { testApi } from './base.service';
-import { baseApi } from "./de.service";
 import { deApi } from "./de";
 import counterReducer from "./slices/counter";
 
 const reducer = combineReducers({
   // Added API generated reducer
-  [testApi.reducerPath]: testApi.reducer,
-  [baseApi.reducerPath]: baseApi.reducer,
   [deApi.reducerPath]: deApi.reducer,
   counter: counterReducer
 });
