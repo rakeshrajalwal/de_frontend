@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { render } from 'react-dom';
 import {
   Grid,
   CardContent,
@@ -8,13 +7,11 @@ import {
   Typography, CardHeader, Button,
   MenuItem, Switch
 } from "@mui/material";
-import Divider from '@mui/material/Divider';
 import styled from "@emotion/styled";
 import Select from '@mui/material/Select';
 import { Form, Formik, useField } from "formik";
 import lodash from 'lodash';
-
-// import './styles.css';
+import * as Yup from "yup";
 
 const Label = styled(Typography)`
     font-weight: bold;
@@ -26,12 +23,14 @@ const ColoredLine = ({ color }: { color: string }) => {
     style={{
       color: color,
       backgroundColor: color,
-      height: 5
+      height: 1,
+      borderColor: color,
+      width: 'max-width'
     }}
   />)
 };
 
-const CustomTextField = ({ fieldname, path }: { fieldname: string, path: string }) => {
+const CustomTextField = ({ fieldname, type, path }: { fieldname: string, type: string, path: string }) => {
 
   const [field, meta, helpers] = useField(`${path}`);
 
@@ -48,6 +47,9 @@ const CustomTextField = ({ fieldname, path }: { fieldname: string, path: string 
           <TextField
             fullWidth
             variant="standard"
+            type={type}
+            helperText={meta.error}
+            error={!!meta.error}
             {...field}
           />
         </Grid>
@@ -154,7 +156,7 @@ const Product2: any = {
   loan_details: {
     product: '',
     amount: '',
-    is_secured: true,
+    is_secured: false,
     term: '',
     purpose: '',
     company_name: ''
@@ -193,8 +195,8 @@ const SelectDropdown = ({ fieldname, options, path }: { fieldname: string, optio
           <Select
             fullWidth
             variant="standard"
+            error={!!meta.error}
             {...field}
-
           >
             {options.map(p => <MenuItem key={p.name} value={p.name}>{p.name}</MenuItem>)}
           </Select>
@@ -203,6 +205,20 @@ const SelectDropdown = ({ fieldname, options, path }: { fieldname: string, optio
     </Grid>
   )
 }
+
+const positiveInteger = Yup.number().required('Required').positive("Should be positive").integer('Should be integer');
+const requiredString = Yup.string().required('Required');
+const validationSchema = Yup.object().shape({
+  name: requiredString,
+  loan_details: Yup.object().shape({
+    amount: positiveInteger,
+    term: positiveInteger,
+    purpose: requiredString,
+    company_name: requiredString
+  }),
+});
+
+
 function RunModel() {
   const [product, setProduct] = React.useState<any>();
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
@@ -213,9 +229,8 @@ function RunModel() {
       initialValues={{
         name: '',
         loan_details: {
-          product: '',
           amount: '',
-          is_secured: true,
+          is_secured: false,
           term: '',
           purpose: '',
           company_name: ''
@@ -232,23 +247,29 @@ function RunModel() {
         // ],
         manual_inputs: {}
       }}
+      validationSchema={validationSchema}
       validateOnChange={validateOnChange}
       onSubmit={(values) => {
+        // setValidateOnChange(true);
         console.log(JSON.stringify(values, null, 2))
         alert(JSON.stringify(values, null, 2));
       }}
     >
       {formik => {
         React.useEffect(() => {
-          formik.isSubmitting &&
-            setValidateOnChange(true);
+
         }, [])
         React.useEffect(() => {
           const product = lodash.find(products, { name: formik.values.name });
           setProduct(product);
           if (product) {
-            console.log("here")
-            formik.setFieldValue("manual_inputs", product.manual_inputs)
+            formik.setFieldValue("manual_inputs", product.manual_inputs);
+            formik.setFieldValue("loan_details.is_secured", product.loan_details.is_secured);
+          }
+          if (formik.isSubmitting) {
+            console.log("setting the flag")
+            setValidateOnChange(true);
+
           }
         }, [formik.values.name]);
         const v = formik.values;
@@ -257,7 +278,6 @@ function RunModel() {
             <CardHeader title={"Run Model"} titleTypographyProps={{ variant: "h3" }}
               action={<div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Button type="submit" variant={"contained"}>Submit</Button>
-
               </div>} />
             <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
               <CardContent>
@@ -267,22 +287,29 @@ function RunModel() {
 
                     <SelectDropdown fieldname={'Product'} path={'name'} options={products} />
 
-                    <CustomTextField fieldname={'Loan Amount(£)'} path={'loan_details.amount'} />
+                    <CustomTextField fieldname={'Loan Amount(£)'} path={'loan_details.amount'} type={'number'} />
 
                     <CustomSwitch fieldname={'Is Secured?'} path={'loan_details.is_secured'} />
 
-                    <CustomTextField fieldname={'Term(Months)'} path={'loan_details.term'} />
+                    <CustomTextField fieldname={'Term(Months)'} path={'loan_details.term'} type={'number'} />
 
-                    <SelectDropdown fieldname={'Purpose'} path={'name'} options={purposes} />
+                    <SelectDropdown fieldname={'Purpose'} path={'loan_details.purpose'} options={purposes} />
 
-                    <CustomTextField fieldname={'Company Name'} path={'loan_details.company_name'} />
+                    <CustomTextField fieldname={'Company Name'} path={'loan_details.company_name'} type={'text'} />
 
                   </Grid>
                 </div>
 
-                <h3 style={{ display: 'flex', flexDirection: 'row' }}>
-                  <h3 style={{ color: '#434DB0', zIndex: 100 }}> Additonal Details</h3>
-                </h3>
+                <Grid container>
+                  <Grid item md={2}>
+                    <h3 style={{ color: '#434DB0', margin: '0px' }}> Additonal Details</h3>
+                  </Grid>
+                  <Grid item md={10} mt={1}>
+                    <ColoredLine color={'#434DB0'} />
+                  </Grid>
+                </Grid>
+
+
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
