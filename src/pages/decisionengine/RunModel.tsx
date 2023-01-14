@@ -6,9 +6,9 @@ import {
   Card,
   TextField,
   Typography, CardHeader, Button,
-  MenuItem, Switch,
-  Divider
+  MenuItem, Switch
 } from "@mui/material";
+import Divider from '@mui/material/Divider';
 import styled from "@emotion/styled";
 import Select from '@mui/material/Select';
 import { Form, Formik, useField } from "formik";
@@ -20,6 +20,16 @@ const Label = styled(Typography)`
     font-weight: bold;
     text-transform: capitalize;
 `;
+
+const ColoredLine = ({ color }: { color: string }) => {
+  return (<hr
+    style={{
+      color: color,
+      backgroundColor: color,
+      height: 5
+    }}
+  />)
+};
 
 const CustomTextField = ({ fieldname, path }: { fieldname: string, path: string }) => {
 
@@ -82,6 +92,8 @@ const ManualInputsSwitch = ({ fieldname, path }: { fieldname: string, path: stri
   const [field, meta, helpers] = useField(`${path}`);
   const [switchState, setSwitchState] = React.useState<boolean>(false);
 
+  if (!switchState) field.value = 0;
+
   return (
     <Grid item md={8} mt={3}>
       <ControlContainer>
@@ -92,7 +104,7 @@ const ManualInputsSwitch = ({ fieldname, path }: { fieldname: string, path: stri
           <Typography>:</Typography>
         </Grid>
         <Grid item md={2}>
-          <Switch size="medium" defaultChecked={false} checked={switchState}
+          <Switch size="medium" checked={switchState}
             onChange={(event, checked) => {
               switchState ? setSwitchState(false) : setSwitchState(true)
             }}
@@ -117,7 +129,7 @@ const Product1: any = {
     amount: '',
     is_secured: true,
     term: '',
-    purpose: [],
+    purpose: '',
     company_name: ''
   },
   // manual_inputs2: [{
@@ -144,7 +156,7 @@ const Product2: any = {
     amount: '',
     is_secured: true,
     term: '',
-    purpose: [],
+    purpose: '',
     company_name: ''
   },
   // manual_inputs2: [{
@@ -162,10 +174,6 @@ const Product2: any = {
     sponsors_worth_5: '',
     sponsors_worth_6: '',
   }
-}
-
-function getManualInputs(p: any): any {
-  return p.manual_inputs
 }
 
 const products = [Product1, Product2];
@@ -209,7 +217,7 @@ function RunModel() {
           amount: '',
           is_secured: true,
           term: '',
-          purpose: [],
+          purpose: '',
           company_name: ''
         },
         // manual_inputs2: [{
@@ -263,7 +271,6 @@ function RunModel() {
 
                     <CustomSwitch fieldname={'Is Secured?'} path={'loan_details.is_secured'} />
 
-
                     <CustomTextField fieldname={'Term(Months)'} path={'loan_details.term'} />
 
                     <SelectDropdown fieldname={'Purpose'} path={'name'} options={purposes} />
@@ -273,10 +280,9 @@ function RunModel() {
                   </Grid>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  <h3 style={{ color: '#434DB0' }}> Additonal Details</h3>
-                  <Divider />
-                </div>
+                <h3 style={{ display: 'flex', flexDirection: 'row' }}>
+                  <h3 style={{ color: '#434DB0', zIndex: 100 }}> Additonal Details</h3>
+                </h3>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
@@ -285,11 +291,11 @@ function RunModel() {
                       <ManualInputsSwitch fieldname={f.name} path={`manual_inputs2[${i}].value`} />
                     ))} */}
                     {Object.entries(formik.values.manual_inputs).map(([key, val], i) => (
-                      <ManualInputsSwitch fieldname={`${key}`} path={`manual_inputs[${key}]`} />
+                      <ManualInputsSwitch key={`${key}`} fieldname={`${key}`} path={`manual_inputs[${key}]`} />
                     ))}
 
 
-                    /</Grid>
+                  </Grid>
                 </div>
               </CardContent>
 
