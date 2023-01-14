@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Accordion, AccordionDetails, AccordionSummary, IconButton } from "@mui/material";
 import { CriteriaEditor } from '../components/Criteria';
-import { TotalWeight, WeightEditor } from './WeightEditor';
-import { INode } from "../interfaces/ModelInterface"
-import '../CreateModel.css';
+import { WeightEditor , TotalWeight} from './WeightEditor';
+
+import { INode, IProduct, IModel, IRange, IPolicy } from "../interfaces/ModelInterface";
+import '../styles/CreateModel.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import EditIcon from '@mui/icons-material/Edit';
 import { useField, useFormik, useFormikContext } from "formik";

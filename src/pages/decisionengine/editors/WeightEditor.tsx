@@ -6,9 +6,9 @@ import {
     Button
 } from "@mui/material";
 import lodash from 'lodash';
-import { Field, Form, Formik, useField, useFormik } from "formik";
-import { INode } from "../interfaces/ModelInterface";
-import '../CreateModel.css';
+import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
+import { INode, IProduct, IModel, IRange, IPolicy } from "../interfaces/ModelInterface";
+import '../styles/CreateModel.css';
 
 //const treeWeightsOkay1 = (node: INode): boolean => true;
 const treeWeightsOkay = (node: INode): boolean => {

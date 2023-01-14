@@ -1,12 +1,11 @@
 import * as React from 'react';
-// import { render } from 'react-dom';
 import { useParams } from 'react-router';
 import { useCreateModelMutation, useGetProductsMutation, useGetAllProductsQuery } from '../../redux/de';
 import {
     CardContent,
     Card,
     Typography,
-    Button, CardHeader, Snackbar
+    Button as MuiButton, CardHeader, Snackbar
 } from "@mui/material";
 import { Form, Formik, useField, useFormik } from "formik";
 import { PolicyEditor } from './components/Policy';
@@ -19,6 +18,104 @@ import { TotalWeight } from "./editors/WeightEditor";
 import { useNavigate } from "react-router-dom";
 const axios = require('axios');
 import { useEffect } from 'preact/hooks';
+import './styles/CreateModel.css';
+import styled from "@emotion/styled";
+import { spacing } from "@mui/system";
+
+
+const Label = styled(Typography)`
+    font-weight: bold;
+    text-transform: capitalize;
+`;
+
+const Range = {
+    min: '',
+    max: ''
+}
+
+const Button = styled(MuiButton)(spacing);
+
+const product: IProduct = {
+    name: "Working Capital Loan",
+    factors: [
+        {
+            name: "Financial Strength",
+            subFactors: [
+                {
+                    name: "Market Conditions ",
+                    signals: [
+                        { name: "GP%vsSector" },
+                        { name: "NP%vsSector" },
+                        { name: "LeverageVsSector" },
+                        { name: "GearingVsSector" }
+                    ]
+                },
+                {
+                    name: "Debt Service",
+                    signals: [
+                        { name: "EBIDTA:DSC" }
+                    ]
+                },
+                {
+                    name: "Financial Stability",
+                    signals: [
+                        { name: "%ChgTurnover" },
+                        { name: "EBIDTA%ratio" },
+                        { name: "Stressed EBIDTA:DSC" },
+                        { name: "%ChgRetainedProfits" }
+                    ]
+                },
+                {
+                    name: "Gearing ratio",
+                    signals: [
+                        { name: "Gearing" }
+                    ]
+                },
+                {
+                    name: "Leverage",
+                    signals: [
+                        { name: "Leverage" }
+                    ]
+                }
+            ]
+        },
+        {
+            name: "Strength of Business Owner/Guarantor & Security Package",
+            subFactors: [
+                {
+                    name: "Financial Capacity & Willingness to Support",
+                    signals: [
+                        { name: "Sponsors Debt" },
+                        { name: "Sponsors Net Worth" },
+                        { name: "Sponsor Credit Score" },
+                        { name: "Business Interuption Insurance" }
+                    ]
+                }
+            ]
+        },
+        {
+            name: "Transaction Characteristics ",
+            subFactors: [
+                {
+                    name: "Term of Loan vs. Purpose",
+                    signals: [
+                        {
+                            name: "TermvsPurpose"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+};
+
+const ControlContainer = styled.div`
+display: flex;
+gap:15px;
+align-items:baseline;
+padding-left:5px;
+padding-right:15px;
+`;
 
 function getEmptyModel(p: IProduct): IModel {
     return {
