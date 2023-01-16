@@ -11,7 +11,10 @@ import {
     Paper,
     TextField,
     Typography,
-    Button
+    Button,
+    RadioGroup,
+    FormControlLabel,
+    Radio
 } from "@mui/material";
 import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
 import { RangeEditor } from '../editors/EditorControllers';
@@ -33,7 +36,7 @@ padding-right:15px;
 `;
 
 
-export const PolicyEditor = () => {
+export const PolicyEditor = ({ isDisabled = false }: { isDisabled?: boolean }) => {
 
     const [product, meta, helpers] = useField(`product`);//product name
     const [name, meta8, helpers8] = useField(`name`);//name of model
@@ -57,6 +60,7 @@ export const PolicyEditor = () => {
                                     fullWidth
                                     variant="standard"
                                     {...product}
+                                    disabled={isDisabled}
                                 >
                                     <MenuItem value={'Working Capital Loan'}>Working Capital Loan</MenuItem>
                                     <MenuItem value={'Product 2'}>Product 2</MenuItem>
@@ -72,6 +76,7 @@ export const PolicyEditor = () => {
                                     fullWidth
                                     variant="standard"
                                     {...name}
+                                    disabled={isDisabled}
                                 />
                             </ControlContainer>
                         </Grid>
@@ -81,13 +86,13 @@ export const PolicyEditor = () => {
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Loan Range (£):</Label>
-                                <RangeEditor fieldPath={'policy.loanRange'} />
+                                <RangeEditor fieldPath={'policy.loanRange'} isDisabled={isDisabled} />
                             </ControlContainer>
                         </Grid>
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Term:</Label>
-                                <RangeEditor fieldPath={'policy.loanTermInMonths'} />
+                                <RangeEditor fieldPath={'policy.loanTermInMonths'} isDisabled={isDisabled} />
                             </ControlContainer>
                         </Grid>
                     </Grid>
@@ -101,6 +106,7 @@ export const PolicyEditor = () => {
                                     fullWidth
                                     variant="standard"
                                     {...purpose}
+                                    disabled={isDisabled}
                                 >
                                     <MenuItem value={`Purpose 1`}>Purpose 1</MenuItem>
                                     <MenuItem value={`Purpose 2`}>Purpose 2</MenuItem>

@@ -20,10 +20,12 @@ export const NumberEditor = ({
     variant = 'standard',
     field,
     inputWidth = 'auto',
-    placeholder
-}: { variant?: 'standard' | 'outlined', field: object, inputWidth?: number | string, placeholder: string }) => (
+    placeholder,
+    isDisabled = false,
+}: { variant?: 'standard' | 'outlined', field: object, inputWidth?: number | string, placeholder: string, isDisabled?: boolean }) => (
     <TextField
         style={{ flexGrow: 1, height: 25 }}
+        disabled={isDisabled}
         type={'number'}
         size={"small"}
         variant={variant}
@@ -41,8 +43,9 @@ export const OpenRangeEditor = ({
     fieldPath,
     variant = 'standard',
     inputWidth = 'auto',
-    openRange = false
-}: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
+    openRange = false,
+    isDisabled = false,
+}: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean, isDisabled?: boolean }) => {
     const [minField, , minHelper] = useField(`${fieldPath}.min`);
     const [maxField, , maxHelper] = useField(`${fieldPath}.max`);
     const [aboveOrBelow, setAboveOrBelow] = React.useState<string>('');
@@ -70,7 +73,7 @@ export const OpenRangeEditor = ({
 export const RangeEditor = ({
     isOpen = false,
     ...rest
-}: { isOpen?: boolean, fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
+}: { isOpen?: boolean, fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean, isDisabled?: boolean }) => {
     if (isOpen) {
         return <OpenRangeEditor {...rest} />
     } else {
@@ -82,15 +85,16 @@ export const CloseRangeEditor = ({
     fieldPath,
     variant = 'standard',
     inputWidth = 'auto',
-    openRange = false
-}: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean }) => {
+    openRange = false,
+    isDisabled = false,
+}: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean, isDisabled?: boolean }) => {
     const [minField] = useField(`${fieldPath}.min`);
     const [maxField] = useField(`${fieldPath}.max`);
     return (
         <div style={{ display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1 }}>
-            <NumberEditor field={minField} placeholder={'Min'} inputWidth={inputWidth} variant={variant} />
+            <NumberEditor field={minField} placeholder={'Min'} inputWidth={inputWidth} variant={variant} isDisabled={isDisabled} />
             <Typography>to</Typography>
-            <NumberEditor field={maxField} placeholder={'Max'} inputWidth={inputWidth} variant={variant} />
+            <NumberEditor field={maxField} placeholder={'Max'} inputWidth={inputWidth} variant={variant} isDisabled={isDisabled} />
         </div>
     );
 }
