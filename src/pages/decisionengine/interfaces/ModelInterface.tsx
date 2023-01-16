@@ -80,17 +80,6 @@ export interface ISignal {
 }
 
 
-export interface IPreviewModel {
-    name: string,
-    weight: number | string,
-    overallWeight: number | string,
-    factorName: string,
-    factorWeight: number | string,
-    subFactorName: string,
-    subFactorWeight: number | string,
-    criteria: ICriteria,
-}
-
 export interface INode {
     name: string,
     subFactors?: INode[],
