@@ -11,7 +11,7 @@ import { Form, Formik, useField, useFormik } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
 import { INode, IProduct, IModel, IPolicy } from "./interfaces/ModelInterface"
-import './CreateModel.css';
+import './styles/CreateModel.css';
 import lodash from 'lodash';
 import * as Yup from "yup";
 import { TotalWeight } from "./editors/WeightEditor";
@@ -34,80 +34,6 @@ const Range = {
 }
 
 const Button = styled(MuiButton)(spacing);
-
-const product: IProduct = {
-    name: "Working Capital Loan",
-    factors: [
-        {
-            name: "Financial Strength",
-            subFactors: [
-                {
-                    name: "Market Conditions ",
-                    signals: [
-                        { name: "GP%vsSector" },
-                        { name: "NP%vsSector" },
-                        { name: "LeverageVsSector" },
-                        { name: "GearingVsSector" }
-                    ]
-                },
-                {
-                    name: "Debt Service",
-                    signals: [
-                        { name: "EBIDTA:DSC" }
-                    ]
-                },
-                {
-                    name: "Financial Stability",
-                    signals: [
-                        { name: "%ChgTurnover" },
-                        { name: "EBIDTA%ratio" },
-                        { name: "Stressed EBIDTA:DSC" },
-                        { name: "%ChgRetainedProfits" }
-                    ]
-                },
-                {
-                    name: "Gearing ratio",
-                    signals: [
-                        { name: "Gearing" }
-                    ]
-                },
-                {
-                    name: "Leverage",
-                    signals: [
-                        { name: "Leverage" }
-                    ]
-                }
-            ]
-        },
-        {
-            name: "Strength of Business Owner/Guarantor & Security Package",
-            subFactors: [
-                {
-                    name: "Financial Capacity & Willingness to Support",
-                    signals: [
-                        { name: "Sponsors Debt" },
-                        { name: "Sponsors Net Worth" },
-                        { name: "Sponsor Credit Score" },
-                        { name: "Business Interuption Insurance" }
-                    ]
-                }
-            ]
-        },
-        {
-            name: "Transaction Characteristics ",
-            subFactors: [
-                {
-                    name: "Term of Loan vs. Purpose",
-                    signals: [
-                        {
-                            name: "TermvsPurpose"
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-};
 
 const ControlContainer = styled.div`
 display: flex;
@@ -252,7 +178,7 @@ const validationSchema = Yup.object().shape({
 const CreateModel = () => {
     const navigate = useNavigate();
     const backendUrl: string = (process.env.REACT_APP_BACKEND_URL as string)
-   // const { data, error, isLoading } = useGetAllProductsQuery('');
+    // const { data, error, isLoading } = useGetAllProductsQuery('');
     const [product, setProduct] = React.useState<IProduct>();// to populate a select products features etc.
     const [products, setProducts] = React.useState<IProduct[]>([]);// to populate all the products
     const [openSuccessNotfication, setOpenSuccessNotfication] = React.useState<boolean>(false);// notification for success model creation
@@ -262,7 +188,7 @@ const CreateModel = () => {
     let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
     const [addNewModel, response] = useCreateModelMutation();
-   
+
     // console.log(data, " the products data");
 
     // const [get, response] = useCreateModelMutation();
@@ -311,11 +237,11 @@ const CreateModel = () => {
             .unwrap()
             .then(() => {
                 setOpenSuccessNotfication(true);
-               // navigating to view models screen on successful creation
-             })
+                // navigating to view models screen on successful creation
+            })
             .then((error) => {
-                    console.log(error)
-                })
+                console.log(error)
+            })
 
     }
 
@@ -356,13 +282,13 @@ const CreateModel = () => {
                             setOpenErrorNotfication(true);
                         });
 
-                        //         setProducts(response.data)
-                        //     }).catch((e: any) => {
-                        //         setcreateModelError(JSON.stringify(e.message));
-                        //         setOpenErrorNotfication(true);
+                    //         setProducts(response.data)
+                    //     }).catch((e: any) => {
+                    //         setcreateModelError(JSON.stringify(e.message));
+                    //         setOpenErrorNotfication(true);
 
                     // data ? setProducts(data);
-                   // const { data, error, isLoading } = useGetAllProductsQuery('');
+                    // const { data, error, isLoading } = useGetAllProductsQuery('');
                     //setProducts(data)
                     console.log(products, " the products");
                     const product = lodash.find(products, { name: formik.values.product });
