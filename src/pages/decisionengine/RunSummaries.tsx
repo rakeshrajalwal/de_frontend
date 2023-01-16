@@ -120,15 +120,15 @@ const columns: GridColDef[] = [
       if (params.row.status == "success") {
         return (
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "left" }}>
-            <strong style={{ fontFamily: 'Verdana', paddingRight: '1ex', }}>{params.row.score}</strong>
-            <Chip label={status_params.text} color="primary" variant="outlined" size="small" style={{ borderRadius: '2.2ex', color: status_params.color, borderColor: status_params.color, fontFamily: 'Verdana' }}></Chip>
+            <strong style={{ paddingRight: '1ex', }}>{params.row.score}</strong>
+            <Chip label={status_params.text} color="primary" variant="outlined" size="small" style={{ borderRadius: '2.2ex', color: status_params.color, borderColor: status_params.color }}></Chip>
           </div>
         )
       }
       else {
         return (
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
-            <p style={{ fontFamily: 'Verdana' }}>{params.row.status}</p>
+            <p>{params.row.status}</p>
             <Tooltip title={params.row.failedOperations.error} placement='right'>
               <IconButton aria-label="Info" size="small">
                 <InfoOutlinedIcon />
@@ -149,12 +149,12 @@ const columns: GridColDef[] = [
       const { Icon } = Icons[params.row.source == "DE" ? 'User' : 'Monitor' as keyof typeof Icons];
       return (<div>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
-          <Typography mt={2} style={{ paddingRight: '1.2ex', fontFamily: 'Verdana' }} >{params.row.runBy}</Typography>
+          <Typography mt={2} style={{ paddingRight: '1.2ex' }} >{params.row.runBy}</Typography>
           <Tooltip title={params.row.source} placement='right'>
             <Icon style={{ fontSize: '2.7ex' }} />
           </Tooltip>
         </div>
-        <div style={{ fontFamily: 'Verdana', fontSize: '1.4ex' }}>{params.row.runAt}</div>
+        <div style={{ fontSize: '1.4ex' }}>{params.row.runAt}</div>
       </div>)
     },
   },
@@ -186,6 +186,7 @@ function RunSummariesGrid() {
           disableColumnSelector
           disableDensitySelector
           hideFooterSelectedRowCount
+          getRowClassName={(params) => `super-app-theme--${params.row.status}`}
           components={{ Toolbar: GridToolbar }}
           componentsProps={{
             toolbar: {
@@ -214,7 +215,7 @@ function RunSummaries() {
           fontSize: '1.4ex'
         }}
       >
-        <CardHeader title="Run Summaries" titleTypographyProps={{ variant: "h3" }} style={{ width: "100%", fontFamily: "Verdana" }} action={<div
+        <CardHeader title="Run Summaries" titleTypographyProps={{ variant: "h3" }} style={{ width: "100%" }} action={<div
           style={{
             display: 'flex',
             flexDirection: 'row',
@@ -223,7 +224,7 @@ function RunSummaries() {
         >
           <div style={{ display: 'flex', gap: 5 }}>
             {Object.values(Icons).map(({ text, Icon }) => (
-              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: '2.5ex', fontStyle: 'Verdana', margin: '5px' }}>
+              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: '2.5ex', margin: '5px' }}>
                 <Icon />
                 <p style={{ fontSize: '2ex' }}>{text}</p>
               </div>

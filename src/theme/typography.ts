@@ -2,17 +2,7 @@ import { TypographyOptions } from "@mui/material/styles/createTypography";
 
 const typography: TypographyOptions = {
   fontFamily: [
-    "Inter",
-    "-apple-system",
-    "BlinkMacSystemFont",
-    '"Segoe UI"',
-    "Roboto",
-    '"Helvetica Neue"',
-    "Arial",
-    "sans-serif",
-    '"Apple Color Emoji"',
-    '"Segoe UI Emoji"',
-    '"Segoe UI Symbol"',
+    "Verdana"
   ].join(","),
   fontSize: 13,
   fontWeightLight: 300,

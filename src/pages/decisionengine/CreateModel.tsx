@@ -152,7 +152,7 @@ function CreateModel() {
                 return (
                     <Form>
                         <div style={{ paddingBottom: 8, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Typography style={{ fontFamily: 'Verdana', fontWeight: 'bold', fontSize: '1.1rem' }} variant="h3" gutterBottom display='inline'>Create Model</Typography>
+                            <Typography style={{ fontWeight: 'bold', fontSize: '1.1rem' }} variant="h3" gutterBottom display='inline'>Create Model</Typography>
                             <Button mr={1} type="submit" variant='contained' style={{ backgroundColor: '#434DB0', color: '#fff' }} size="medium">Submit</Button>
                         </div>
 

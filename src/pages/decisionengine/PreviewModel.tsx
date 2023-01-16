@@ -1,169 +1,38 @@
 import {
-    CardContent,
-    Card,
     Typography,
     Button as MuiButton,
     Paper as MuiPaper,
     Table,
     TableBody,
-    TableCell,
+    TableCell as MuiTableCell,
     TableContainer,
     TableHead,
     TableRow,
+    tableCellClasses,
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
-import { NodeEditor } from './editors/NodeEditor';
-import { IProduct, IModel, IFactor, ISubFactor, INode } from "./interfaces/ModelInterface";
+import { IProduct, IModel, INode } from "./interfaces/ModelInterface";
 import './styles/CreateModel.css';
 import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
-import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import modelsJson from "./getmodels.json";
 import lodash from 'lodash';
 
 const Paper = styled(MuiPaper)(spacing);
 const Button = styled(MuiButton)(spacing);
+const TableCell = styled(MuiTableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: '#D9F1FC',
+        color: '#1B2430',
+        fontWeight: 'bold',
+        opacity: 1,
+        letterSpacing: '0.11px',
+
+    },
+}));
 
 const oneModel = modelsJson[0];
-
-const Label = styled(Typography)`
-    font-weight: bold;
-    text-transform: capitalize;
-`;
-
-const Range = {
-    min: '',
-    max: ''
-}
-
-const paperSx = {
-    "& MuiPaper-root": {
-        fontFamily: "Verdana",
-    },
-    "& .css-1bpvgg-MuiPaper-root": {
-        padding: "10rem",
-    },
-};
-
-const datagridSx = {
-    "& .MuiDataGrid-columnHeaders": {
-        backgroundColor: "#D9F1FC",
-    },
-    "& .MuiDataGrid-columnHeaderTitle": {
-        fontFamily: "Verdana",
-        fontWeight: "bold",
-        letterSpacing: "0.05ex",
-        opacity: 1,
-        color: "#1B2430",
-    },
-    "& .MuiPaper-elevation1": {
-        backgroundColor: "#F3FBFE",
-    },
-    "& .MuiDataGrid-cellContent": {
-        fontFamily: "Verdana",
-        wordWrap: "break-word !important",
-        textAlign: "center",
-        fontSize: "1.5ex",
-        justifyContent: "center",
-        color: "#1B2430",
-        letterSpacing: "0.05ex",
-        opacity: 1,
-    },
-    "& .MuiDataGrid-cell": {
-        whiteSpace: "normal !important",
-    },
-    "& .MuiDataGrid-toolbarQuickFilter": {
-        border: "solid",
-    },
-    "& .MuiChip-label": {
-        textAlign: "center",
-        fontSize: "1.5ex",
-    },
-    "& .MuiDataGrid-toolbarContainer": {
-        backgroundColor: "#F7F9FC",
-    },
-};
-
-const columns: GridColDef[] = [
-    {
-        field: "factors.subFactors.signals._id",
-        headerName: "ID",
-        // width: 10,
-        hide: true,
-        headerAlign: "center",
-    },
-    {
-        field: "factors.name",
-        headerName: "Factor",
-        flex: 5,
-        headerAlign: "center",
-        align: "center",
-    },
-    {
-        field: "factors.weight",
-        headerName: "Weight",
-        description: "Factor weight",
-        // width: 150,
-        flex: 7,
-        headerAlign: "center",
-        align: "center",
-    },
-    {
-        field: "factors.subFactors.name",
-        headerName: "Sub-Factor",
-        description: "Sub-Factor",
-        // width: 200,
-        flex: 7,
-        headerAlign: "center",
-        align: "center",
-    },
-    {
-        field: "factors.subFactors.weight",
-        headerName: "Weight",
-        description: "Weight",
-        // width: 150,
-        flex: 7,
-        headerAlign: "center",
-        align: "center",
-    },
-    {
-        field: "factors.subFactors.signals.name",
-        headerName: "Signal",
-        description: "Signal",
-        // width: 75,
-        flex: 4,
-        headerAlign: "center",
-        align: "center",
-    },
-    {
-        field: "factors.subFactors.signals.weight",
-        headerName: "Weight",
-        description: "Weight",
-        // width: 100,
-        flex: 6,
-        headerAlign: "center",
-        align: "center",
-    },
-    {
-        field: "factors.subFactors.signals.overallWeight",
-        headerName: "Total weights",
-        description: "Total weights",
-        // width: 75,
-        flex: 5,
-        headerAlign: "center",
-        align: "center",
-    },
-    {
-        field: "factors.subFactors.signals.criteria",
-        headerName: "Criteria",
-        description: "Criteria",
-        // width: 75,
-        flex: 4,
-        headerAlign: "center",
-        align: "center",
-    },
-];
 
 const product: IProduct = {
     name: "Working Capital Loan",
@@ -281,32 +150,32 @@ function ModelDataGrid() {
     }
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ marginTop: 5 }}>
             <Table sx={{ minWidth: 650 }} aria-label="preview table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Factor</TableCell>
-                        <TableCell align="right">Weight</TableCell>
-                        <TableCell align="right">Sub-Factor</TableCell>
-                        <TableCell align="right">Weight</TableCell>
-                        <TableCell align="right">Signal</TableCell>
-                        <TableCell align="right">Weight</TableCell>
-                        <TableCell align="right">Overall Weight</TableCell>
-                        <TableCell align="right">Criteria</TableCell>
+                        <TableCell align="center" width="15%">Factor</TableCell>
+                        <TableCell align="center" width="5%">Weight</TableCell>
+                        <TableCell align="center" width="15%">Sub-Factor</TableCell>
+                        <TableCell align="center" width="5%">Weight</TableCell>
+                        <TableCell align="center" width="15%">Signal</TableCell>
+                        <TableCell align="center" width="5%">Weight</TableCell>
+                        <TableCell align="center" width="10%">Overall Weight</TableCell>
+                        <TableCell align="center" width="25%">Criteria</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {flatSignals.map(({ factor, subFactor, signal }, i) => (
                         <TableRow key={i}>
                             {(i == 0 || factor !== flatSignals[i - 1].factor) && (
-                                <><TableCell rowSpan={rowSpanOfNode(factor)}>{factor.name}</TableCell><TableCell rowSpan={rowSpanOfNode(factor)}>{factor.weight}</TableCell></>
+                                <><TableCell align="center" rowSpan={rowSpanOfNode(factor)}>{factor.name}</TableCell><TableCell align="right" rowSpan={rowSpanOfNode(factor)}>{factor.weight}%</TableCell></>
                             )}
                             {(i == 0 || subFactor !== flatSignals[i - 1].subFactor) && (
-                                <><TableCell rowSpan={rowSpanOfNode(subFactor)}>{subFactor.name}</TableCell><TableCell rowSpan={rowSpanOfNode(subFactor)}>{subFactor.weight}</TableCell></>
+                                <><TableCell align="center" rowSpan={rowSpanOfNode(subFactor)}>{subFactor.name}</TableCell><TableCell align="right" rowSpan={rowSpanOfNode(subFactor)}>{subFactor.weight}%</TableCell></>
                             )}
-                            <TableCell>{signal.name}</TableCell>
-                            <TableCell>{signal.weight}</TableCell>
-                            <TableCell>{signal.overallWeight}</TableCell>
+                            <TableCell align="center">{signal.name}</TableCell>
+                            <TableCell align="right">{signal.weight}%</TableCell>
+                            <TableCell align="right">{signal.overallWeight}%</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -329,7 +198,7 @@ function PreviewModel() {
                 return (
                     <Form>
                         <div style={{ paddingBottom: 8, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Typography style={{ fontFamily: 'Verdana', fontWeight: 'bold', fontSize: '1.1rem' }} variant="h3" gutterBottom display='inline'>Preview Model</Typography>
+                            <Typography style={{ fontWeight: 'bold', fontSize: '1.1rem' }} variant="h3" gutterBottom display='inline'>Preview Model</Typography>
                             <Button mr={1} type="submit" variant='contained' style={{ backgroundColor: '#434DB0', color: '#fff' }} size="medium">Submit</Button>
                         </div>
 
