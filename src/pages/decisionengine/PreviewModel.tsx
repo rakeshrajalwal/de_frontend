@@ -18,6 +18,7 @@ import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
 import modelsJson from "./getmodels.json";
 import lodash from 'lodash';
+import { CriteriaBar } from './editors/NodeEditor';
 
 const Paper = styled(MuiPaper)(spacing);
 const Button = styled(MuiButton)(spacing);
@@ -176,6 +177,7 @@ function ModelDataGrid() {
                             <TableCell align="center">{signal.name}</TableCell>
                             <TableCell align="right">{signal.weight}%</TableCell>
                             <TableCell align="right">{signal.overallWeight}%</TableCell>
+                            <TableCell align="right"><CriteriaBar /></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

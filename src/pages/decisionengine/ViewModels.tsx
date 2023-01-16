@@ -210,7 +210,7 @@ function ViewModels() {
   const navigate = useNavigate();
   return (
     <React.Fragment>
-      <Helmet title='Models' />
+      <Helmet title='View Models' />
       <div
         style={{
           display: 'flex',

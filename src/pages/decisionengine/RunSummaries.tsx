@@ -205,7 +205,7 @@ function RunSummariesGrid() {
 function RunSummaries() {
   return (
     <React.Fragment>
-      <Helmet title="Run Summary" />
+      <Helmet title="Run Summaries" />
       <div
         style={{
           display: 'flex',

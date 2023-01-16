@@ -21,7 +21,7 @@ import '../styles/CreateModel.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 
 
-const CriteriaBar = () => {
+export const CriteriaBar = () => {
     return (
         <div className='criteria-bar'>
             {[-5, 5, 15].map((v, i) => (

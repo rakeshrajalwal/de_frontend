@@ -172,4 +172,4 @@ function CreateModel() {
     )
 }
 
-export default CreateModel
+export default CreateModel;
