@@ -116,11 +116,11 @@ export const PolicyEditor = ({ isDisabled = false }: { isDisabled?: boolean }) =
                         </Grid>
                         <Grid item md={6}>
                             <label>
-                                <Field type="radio" {...isSecured} value="true" />
+                                <Field type="radio" {...isSecured} value="true" disabled={isDisabled} />
                                 <span style={{ fontWeight: "bold" }}>Secured</span>
                             </label>
                             <label>
-                                <Field type="radio" {...isSecured} value="false" />
+                                <Field type="radio" {...isSecured} value="false" disabled={isDisabled} />
                                 <span style={{ fontWeight: "bold" }}>Unsecured</span>
                             </label>
                         </Grid>
