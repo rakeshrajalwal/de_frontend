@@ -182,7 +182,8 @@ const CreateModel = () => {
                 // navigating to view models screen on successful creation
             })
             .then((error) => {
-                console.log(error)
+                setOpenErrorNotfication(true);
+                setcreateModelError(error!)
             })
     }
 
@@ -209,7 +210,6 @@ const CreateModel = () => {
             {formik => {
                 React.useEffect(() => {
 
-                    console.log(products, " the products");
                     const product = lodash.find(products, { name: formik.values.product });
                     setProduct(product);
                     if (product) {
