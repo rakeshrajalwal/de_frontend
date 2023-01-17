@@ -177,8 +177,8 @@ const CreateModel = () => {
 
     // function that sends the create model api request
     async function submitModel(values: IModel) {
-
-        await addNewModel(values)
+        let value = JSON.stringify(values, null, 2);
+        addNewModel(value)
             .unwrap()
             .then(() => {
                 setOpenSuccessNotfication(true);
@@ -203,20 +203,13 @@ const CreateModel = () => {
                 factors: []
             } as IModel}
             validationSchema={validationSchema}
-            validateOnBlur={validateOnChange}
+            validateOnBlur={false}
             validateOnChange={validateOnChange}
             onSubmit={(values) => {
-                // setValidateOnChange(true);
-                //submitModel(values);
-                // var value = JSON.stringify(values, null, 2);
-                console.log(JSON.stringify(values, null, 2), " the value")
+                submitModel(values);
             }}
         >
             {formik => {
-                React.useEffect(() => {
-                    formik.isSubmitting &&
-                        setValidateOnChange(true);
-                }, [])
                 React.useEffect(() => {
                     axios.get(`${backendUrl}/products/all`).
                         then((response: any) => {
@@ -239,9 +232,12 @@ const CreateModel = () => {
                     <Form>
                         <CardHeader title={"Create Model"} titleTypographyProps={{ variant: "h3" }}
                             action={<div style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
-                                <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? true : false}
-                                    style={{ backgroundColor: formik.isValid && formik.dirty ? 'green' : 'blue', color: 'white' }}>Validate</Button>
-                                <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? false : true}>Submit</Button>
+                                <Button variant={"contained"}
+                                    style={{ backgroundColor: formik.isValid && validateOnChange ? 'green' : 'blue', color: 'white' }}
+                                    onClick={() => { setValidateOnChange(true); formik.validateForm(); }}
+                                >Validate</Button>
+
+                                <Button type="submit" variant={"contained"} disabled={false}>Submit</Button>
                                 <Button onClick={() => formik.setValues(getRandomModel(product!))}>Populate</Button>
                             </div>} />
                         <PolicyEditor products={products} />
