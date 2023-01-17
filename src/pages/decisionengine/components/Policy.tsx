@@ -106,16 +106,21 @@ export const PolicyEditor = ({ products, isDisabled = false }: { products?: IPro
                                 <FormControl
                                     fullWidth
                                 >
-                                    <Select
-                                        multiple
+                                    {isDisabled ? <TextField
                                         fullWidth
                                         variant="standard"
-                                        error={!!purposemeta.error}
                                         {...purpose}
                                         disabled={isDisabled}
-                                    >
-                                        {purposes?.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
-                                    </Select>
+                                    />
+                                        : <Select
+                                            multiple
+                                            fullWidth
+                                            variant="standard"
+                                            error={!!purposemeta.error}
+                                            {...purpose}
+                                        >
+                                            {purposes?.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
+                                        </Select>}
                                     {!!purposemeta.error && <FormHelperText error >{purposemeta.error}</FormHelperText>}
                                 </FormControl>
                             </ControlContainer>
