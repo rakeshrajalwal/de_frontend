@@ -151,16 +151,11 @@ const validationSchema = Yup.object().shape({
 
 const CreateModel = () => {
     const navigate = useNavigate();
-    const backendUrl: string = (process.env.REACT_APP_BACKEND_URL as string)
-
-    const { data : products, error, isLoading } = useGetAllProductsQuery();
+    const { data: products, error, isLoading } = useGetAllProductsQuery();// fetching all the products
     const [product, setProduct] = React.useState<IProduct>();// to populate a select products features etc.
-    //const [products, setProducts] = React.useState<IProduct[]>([]);// to populate all the products
     const [openSuccessNotfication, setOpenSuccessNotfication] = React.useState<boolean>(false);// notification for success model creation
     const [openErrorNotfication, setOpenErrorNotfication] = React.useState<boolean>(false);//notification for error in model creation
     const [createModelError, setcreateModelError] = React.useState<string>('');// set the error from api response
-
-
 
     let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
@@ -213,7 +208,7 @@ const CreateModel = () => {
         >
             {formik => {
                 React.useEffect(() => {
-                    
+
                     console.log(products, " the products");
                     const product = lodash.find(products, { name: formik.values.product });
                     setProduct(product);
@@ -227,12 +222,12 @@ const CreateModel = () => {
                     <Form>
                         <CardHeader title={"Create Model"} titleTypographyProps={{ variant: "h3" }}
                             action={<div style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
-                                <Button variant={"contained"}
+                                <Button variant={"contained"} type="submit" disabled={formik.isValid && validateOnChange}
                                     style={{ backgroundColor: formik.isValid && validateOnChange ? 'green' : 'blue', color: 'white' }}
                                     onClick={() => { setValidateOnChange(true); formik.validateForm(); }}
                                 >Validate</Button>
 
-                                <Button type="submit" variant={"contained"} disabled={false}>Submit</Button>
+                                <Button type="submit" variant={"contained"} disabled={ !validateOnChange || !formik.isValid}>Submit</Button>
                                 <Button onClick={() => formik.setValues(getRandomModel(product!))}>Populate</Button>
                             </div>} />
                         <PolicyEditor products={products} />
