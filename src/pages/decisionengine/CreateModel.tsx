@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCreateModelMutation } from '../../redux/de';
+import { useCreateModelMutation, useGetAllProductsQuery } from '../../redux/de';
 import {
     CardContent,
     Card,
@@ -153,12 +153,14 @@ const CreateModel = () => {
     const navigate = useNavigate();
     const backendUrl: string = (process.env.REACT_APP_BACKEND_URL as string)
 
-    // const { data, error, isLoading } = useGetAllProductsQuery('');
+    const { data : products, error, isLoading } = useGetAllProductsQuery();
     const [product, setProduct] = React.useState<IProduct>();// to populate a select products features etc.
-    const [products, setProducts] = React.useState<IProduct[]>([]);// to populate all the products
+    //const [products, setProducts] = React.useState<IProduct[]>([]);// to populate all the products
     const [openSuccessNotfication, setOpenSuccessNotfication] = React.useState<boolean>(false);// notification for success model creation
     const [openErrorNotfication, setOpenErrorNotfication] = React.useState<boolean>(false);//notification for error in model creation
     const [createModelError, setcreateModelError] = React.useState<string>('');// set the error from api response
+
+
 
     let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
@@ -211,14 +213,7 @@ const CreateModel = () => {
         >
             {formik => {
                 React.useEffect(() => {
-                    axios.get(`${backendUrl}/products/all`).
-                        then((response: any) => {
-                            setProducts(response.data)
-                        }).catch((e: any) => {
-                            setcreateModelError(JSON.stringify(e.message));
-                            setOpenErrorNotfication(true);
-                        });
-
+                    
                     console.log(products, " the products");
                     const product = lodash.find(products, { name: formik.values.product });
                     setProduct(product);

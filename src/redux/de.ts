@@ -10,7 +10,7 @@ export const deApi = createApi({
     reducerPath: 'deApi',
     baseQuery: fetchBaseQuery({ baseUrl }),
     endpoints: (builder) => ({
-        getAllProducts: builder.query<IProduct[], string>({
+        getAllProducts: builder.query<IProduct[], void>({
             query: () => `products/all`,
         }),
         createModel: builder.mutation({
