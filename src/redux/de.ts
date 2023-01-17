@@ -2,23 +2,17 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { IProduct } from '../pages/decisionengine/interfaces/ModelInterface'
 
+let baseUrl: string = (process.env.REACT_APP_BACKEND_URL as string);
+
 // Define a service using a base URL and expected endpoints
 export const deApi = createApi({
+
     reducerPath: 'deApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/' }),
+    baseQuery: fetchBaseQuery({ baseUrl }),
     endpoints: (builder) => ({
         getAllProducts: builder.query<IProduct[], string>({
             query: () => `products/all`,
         }),
-        getProducts: builder.mutation({
-            query: () => ({
-                url: `products/all`,
-                method: 'GET',
-            })
-        }),
-        // createModel: builder.query<IProduct[], string>({
-        //     query: () => `models/create_model`,
-        // }),
         createModel: builder.mutation({
             query: (payload) => ({
                 url: '/models/create_model',
@@ -37,7 +31,6 @@ export const deApi = createApi({
 // auto-generated based on the defined endpoints
 export const {
     useGetAllProductsQuery,
-    useGetProductsMutation,
     useCreateModelMutation } = deApi
 
 

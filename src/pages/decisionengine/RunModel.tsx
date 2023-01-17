@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import { useCreateModelMutation , useGetProductsMutation , useGetAllProductsQuery} from '../../redux/de';
+import { useCreateModelMutation  , useGetAllProductsQuery} from '../../redux/de';
 import { useEffect } from 'preact/hooks';
 
 // import './styles.css';

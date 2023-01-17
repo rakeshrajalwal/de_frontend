@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useParams } from 'react-router';
-import { useCreateModelMutation, useGetProductsMutation, useGetAllProductsQuery } from '../../redux/de';
+import { useCreateModelMutation , useGetAllProductsQuery } from '../../redux/de';
 import {
     CardContent,
     Card,
@@ -21,17 +21,6 @@ import { useEffect } from 'preact/hooks';
 import './styles/CreateModel.css';
 import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
-
-
-const Label = styled(Typography)`
-    font-weight: bold;
-    text-transform: capitalize;
-`;
-
-const Range = {
-    min: '',
-    max: ''
-}
 
 const Button = styled(MuiButton)(spacing);
 
@@ -71,20 +60,6 @@ function getEmptyModel(p: IProduct): IModel {
                 }))
             }))
         }))
-    }
-}
-
-function populatePolicyFromProduct(p: any): any {
-    return {
-        name: '',
-        product: '',
-        policy: {
-            loanRange: { min: p.policy.loanRange.min, max: p.policy.loanRange.max },
-            loanTermInMonths: { min: '', max: '' },
-            loanPurpose: [],
-            isSecured: p.policy.isSecured,
-        },
-        factors: []
     }
 }
 
@@ -190,9 +165,6 @@ const CreateModel = () => {
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
     const [addNewModel, response] = useCreateModelMutation();
 
-    // const [get, response] = useCreateModelMutation();
-    const [getAllProducts] = useGetProductsMutation();
-
     //handles notification popups after submitting
     const handleNotificationClose = () => {
         if (openSuccessNotfication) {
@@ -206,8 +178,8 @@ const CreateModel = () => {
 
     // function that sends the create model api request
     async function submitModel(values: IModel) {
-        var value = JSON.stringify(values, null, 2);
-        addNewModel(value)
+        
+        await addNewModel(values)
             .unwrap()
             .then(() => {
                 setOpenSuccessNotfication(true);
