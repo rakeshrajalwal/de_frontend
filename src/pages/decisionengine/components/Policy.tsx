@@ -5,12 +5,13 @@ import {
     CardContent,
     Card,
     TextField,
-    Typography
+    Typography,
+    MenuItem,
+    Select,
+    FormControl, FormHelperText
 } from "@mui/material";
-import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
+import { Field, Form, Formik, useField } from "formik";
 import { RangeEditor } from '../editors/EditorControllers';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import styled from "@emotion/styled";
 import { IProduct } from "../interfaces/ModelInterface";
 import lodash from "lodash";
@@ -30,10 +31,10 @@ padding-right:15px;
 
 export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
 
-    const [product, meta, helpers] = useField(`product`);//product name
-    const [name, meta2, helpers8] = useField(`name`);//name of model
-    const [purpose, meta3, helpers6] = useField(`policy.loanPurpose`);
-    const [isSecured, meta4, helpers7] = useField(`policy.isSecured`);
+    const [product] = useField(`product`);//product name
+    const [name, modelmeta] = useField(`name`);//name of model
+    const [purpose, purposemeta] = useField(`policy.loanPurpose`);
+    const [isSecured, meta4,] = useField(`policy.isSecured`);
 
     const value = isSecured.value;
     const selectedProudct = lodash.find(products, { name: product.value });
@@ -62,8 +63,8 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
                             <ControlContainer>
                                 <Label>Model Name:</Label>
                                 <TextField
-                                    error={meta2.error && meta2.touched ? true : false}
-                                    helperText={meta2.error && meta2.touched ? 'Required' : ''}
+                                    helperText={modelmeta.error}
+                                    error={!!modelmeta.error}
                                     fullWidth
                                     variant="standard"
                                     {...name}
@@ -91,15 +92,21 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Purpose:</Label>
+                                <FormControl 
+                                
+                                >
                                 <Select
-                                    error={meta3.error && meta3.touched ? true : false}
                                     multiple
                                     fullWidth
                                     variant="standard"
+                                    error={!!purposemeta.error}
                                     {...purpose}
                                 >
                                     {purposes?.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
                                 </Select>
+                                <FormHelperText disabled={!!purposemeta.error}
+                                >Hi</FormHelperText>
+                                </FormControl>
                             </ControlContainer>
                         </Grid>
                         <Grid item md={6}>

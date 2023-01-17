@@ -189,25 +189,8 @@ const CreateModel = () => {
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
     const [addNewModel, response] = useCreateModelMutation();
 
-    // console.log(data, " the products data");
-
     // const [get, response] = useCreateModelMutation();
     const [getAllProducts] = useGetProductsMutation();
-
-    // Then you can call with await
-    //  getAllProducts.unwrap().then((fulfilled) => setProducts(fulfilled))
-    //     .catch((rejected) => console.error(rejected));
-
-    // Or with standard promise
-    // getAllProducts()
-    //     .unwrap()
-    //     .then((fulfilled) => console.log(fulfilled))
-    //     .catch((rejected) => console.error(rejected));
-
-    // React.useEffect(() => {
-    //     setProducts(data);
-    // }, [data])
-
 
     //handles notification popups after submitting
     const handleNotificationClose = () => {
@@ -223,16 +206,6 @@ const CreateModel = () => {
     // function that sends the create model api request
     async function submitModel(values: IModel) {
         var value = JSON.stringify(values, null, 2);
-        // var customConfig = {
-        //     headers: { 'Content-Type': 'application/json' }
-        // };
-        // await axios.post(`${backendUrl}/models/create_model`, value, customConfig)
-        //     .then((response: IModel) => {
-        //         setOpenSuccessNotfication(true);
-        //     }).catch((e: any) => {
-        //         setcreateModelError(JSON.stringify(e.message));
-        //         setOpenErrorNotfication(true);
-        //     });
         addNewModel(value)
             .unwrap()
             .then(() => {
@@ -242,7 +215,6 @@ const CreateModel = () => {
             .then((error) => {
                 console.log(error)
             })
-
     }
 
     return (
@@ -259,13 +231,13 @@ const CreateModel = () => {
                 factors: []
             } as IModel}
             validationSchema={validationSchema}
-            validateOnBlur={false}
+            validateOnBlur={validateOnChange}
             validateOnChange={validateOnChange}
             onSubmit={(values) => {
-                submitModel(values);
+               // setValidateOnChange(true);
+                //submitModel(values);
                 // var value = JSON.stringify(values, null, 2);
-                //console.log(value, " the value")
-                setValidateOnChange(true);
+                console.log(JSON.stringify(values, null, 2), " the value")
             }}
         >
             {formik => {
@@ -282,19 +254,11 @@ const CreateModel = () => {
                             setOpenErrorNotfication(true);
                         });
 
-                    //         setProducts(response.data)
-                    //     }).catch((e: any) => {
-                    //         setcreateModelError(JSON.stringify(e.message));
-                    //         setOpenErrorNotfication(true);
-
-                    // data ? setProducts(data);
-                    // const { data, error, isLoading } = useGetAllProductsQuery('');
-                    //setProducts(data)
                     console.log(products, " the products");
                     const product = lodash.find(products, { name: formik.values.product });
                     setProduct(product);
                     if (product) {
-                        formik.setFieldValue("policy", populatePolicyFromProduct(product).policy);
+                        formik.setFieldValue("policy", product.policy);
                         formik.setFieldValue("factors", getEmptyModel(product).factors);
                     }
                 }, [formik.values.product]);
@@ -302,7 +266,7 @@ const CreateModel = () => {
                 return (
                     <Form>
                         <CardHeader title={"Create Model"} titleTypographyProps={{ variant: "h3" }}
-                            action={<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            action={<div style={{ display: 'flex', justifyContent: 'space-between' , gap: 10}}>
                                 <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? true : false}
                                     style={{ backgroundColor: formik.isValid && formik.dirty ? 'green' : 'blue', color: 'white' }}>Validate</Button>
                                 <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? false : true}>Submit</Button>
