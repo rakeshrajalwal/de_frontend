@@ -2,22 +2,19 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import {
     Grid,
-    Accordion,
-    AccordionDetails,
     CardContent,
     Card,
-    AccordionSummary,
-    Box,
-    Paper,
     TextField,
     Typography,
-    Button
+    MenuItem,
+    Select,
+    FormControl, FormHelperText
 } from "@mui/material";
-import { Field, Form, Formik, useField, useFormik, useFormikContext, FormikProvider } from "formik";
+import { Field, Form, Formik, useField } from "formik";
 import { RangeEditor } from '../editors/EditorControllers';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import styled from "@emotion/styled";
+import { IProduct } from "../interfaces/ModelInterface";
+import lodash from "lodash";
 
 const Label = styled(Typography)`
     font-weight: bold;
@@ -32,18 +29,17 @@ padding-left:5px;
 padding-right:15px;
 `;
 
+export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
 
-export const PolicyEditor = () => {
+    const [product] = useField(`product`);//product name
+    const [name, modelmeta] = useField(`name`);//name of model
+    const [purpose, purposemeta] = useField(`policy.loanPurpose`);
+    const [isSecured, meta4,] = useField(`policy.isSecured`);
 
-    const [product, meta, helpers] = useField(`product`);//product name
-    const [name, meta8, helpers8] = useField(`name`);//name of model
-    const [loanMin, meta2, helpers2] = useField(`policy.loanRange.min`);
-    const [loanMax, meta3, helpers3] = useField(`policy.loanRange.max`);
-    const [termMin, meta4, helpers4] = useField(`policy.loanTermInMonths.min`);
-    const [termMax, meta5, helpers5] = useField(`policy.loanTermInMonths.max`);
-    const [purpose, meta6, helpers6] = useField(`policy.loanPurpose`);
-    const [isSecured, meta7, helpers7] = useField(`policy.isSecured`);
-
+    const value = isSecured.value;
+    const selectedProudct = lodash.find(products, { name: product.value });
+    // const value = selectedProudct?.policy.isSecured;
+    const purposes = selectedProudct?.policy.loanPurpose;
     return (
 
         <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
@@ -58,17 +54,17 @@ export const PolicyEditor = () => {
                                     variant="standard"
                                     {...product}
                                 >
-                                    <MenuItem value={'Working Capital Loan'}>Working Capital Loan</MenuItem>
-                                    <MenuItem value={'Product 2'}>Product 2</MenuItem>
-                                    <MenuItem value={'Product 3'}>Product 3</MenuItem>
+                                    {products.map(p => <MenuItem key={p.name} value={p.name}>{p.name}</MenuItem>)}
                                 </Select>
                             </ControlContainer>
                         </Grid>
 
                         <Grid item md={6}>
                             <ControlContainer>
-                                <Label>Model:</Label>
+                                <Label>Model Name:</Label>
                                 <TextField
+                                    helperText={modelmeta.error}
+                                    error={!!modelmeta.error}
                                     fullWidth
                                     variant="standard"
                                     {...name}
@@ -81,13 +77,13 @@ export const PolicyEditor = () => {
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Loan Range (£):</Label>
-                                <RangeEditor fieldPath={'policy.loanRange'} />
+                                <RangeEditor fieldPath={'policy.loanRange'} textFieldProps={{ variant: 'standard' }} />
                             </ControlContainer>
                         </Grid>
                         <Grid item md={6}>
                             <ControlContainer>
-                                <Label>Term:</Label>
-                                <RangeEditor fieldPath={'policy.loanTermInMonths'} />
+                                <Label>Term(months):</Label>
+                                <RangeEditor fieldPath={'policy.loanTermInMonths'} textFieldProps={{ variant: 'standard' }} />
                             </ControlContainer>
                         </Grid>
                     </Grid>
@@ -96,27 +92,33 @@ export const PolicyEditor = () => {
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Purpose:</Label>
-                                <Select
-                                    multiple
+                                <FormControl
                                     fullWidth
-                                    variant="standard"
-                                    {...purpose}
                                 >
-                                    <MenuItem value={`Purpose 1`}>Purpose 1</MenuItem>
-                                    <MenuItem value={`Purpose 2`}>Purpose 2</MenuItem>
-                                    <MenuItem value={`Purpose 3`}>Purpose 3</MenuItem>
-                                </Select>
+                                    <Select
+                                        multiple
+                                        fullWidth
+                                        variant="standard"
+                                        error={!!purposemeta.error}
+                                        {...purpose}
+                                    >
+                                        {purposes?.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
+                                    </Select>
+                                    {!!purposemeta.error && <FormHelperText error >{purposemeta.error}</FormHelperText>}
+                                </FormControl>
                             </ControlContainer>
                         </Grid>
                         <Grid item md={6}>
-                            <label>
-                                <Field type="radio" {...isSecured} value="true" />
-                                <span style={{ fontWeight: "bold" }}>Secured</span>
-                            </label>
-                            <label>
-                                <Field type="radio" {...isSecured} value="false" />
-                                <span style={{ fontWeight: "bold" }}>Unsecured</span>
-                            </label>
+                            <ControlContainer>
+                                <label>
+                                    <Field type="radio" {...isSecured} value={true} checked={value} />
+                                    <span style={{ fontWeight: "bold" }}>Secured</span>
+                                </label>
+                                <label>
+                                    <Field type="radio" {...isSecured} value={false} checked={!value} />
+                                    <span style={{ fontWeight: "bold" }}>Unsecured</span>
+                                </label>
+                            </ControlContainer>
                         </Grid>
                     </Grid>
 

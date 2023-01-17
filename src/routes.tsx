@@ -32,7 +32,6 @@ import Logout from "./pages/decisionengine/Logout";
 import SimpleTable from "./pages/tables/SimpleTable";
 import AdvancedTable from "./pages/tables/AdvancedTable";
 
-
 // Landing
 import Landing from "./pages/presentation/Landing";
 
@@ -96,6 +95,10 @@ const routes = [
         element: <CreateModel />,
       },
       {
+        path: "/model/:id/edit",
+        element: <CreateModel />,
+      },
+      {
         path: "/model/view",
         element: <ViewModels />,
       },
@@ -103,10 +106,7 @@ const routes = [
         path: "/model/run",
         element: <RunModel />,
       },
-      {
-        path: "/model/run",
-        element: <RunModel />,
-      },
+
     ],
   },
   {
