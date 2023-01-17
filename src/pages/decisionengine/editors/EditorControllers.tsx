@@ -1,100 +1,54 @@
-import styled from "@emotion/styled";
 import React from 'react'
-import {
-    Breadcrumbs as MuiBreadcrumbs,
-    Button,
-    Card as MuiCard,
-    CardContent,
-    Divider as MuiDivider,
-    FormControl as MuiFormControl,
-    Grid,
-    TextField,
-    Typography
-} from "@mui/material";
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import { TextField, TextFieldProps, Typography } from "@mui/material";
 import { useField } from "formik";
 
-
-export const NumberEditor = ({
-    variant = 'standard',
-    field,
-    inputWidth = 'auto',
-    placeholder,
-    isDisabled = false,
-}: { variant?: 'standard' | 'outlined', field: object, inputWidth?: number | string, placeholder: string, isDisabled?: boolean }) => (
+interface NumberEditorProps {
+    inputWidth: number | string,
+}
+export const NumberEditor = ({ error, ...textFieldProps }: TextFieldProps) => (
     <TextField
-        style={{ flexGrow: 1, height: 25 }}
-        disabled={isDisabled}
+        fullWidth
         type={'number'}
         size={"small"}
-        variant={variant}
-        {...field}
-        InputLabelProps={{ style: { height: 25 } }}
-        InputProps={{
-            placeholder,
-            style: { width: inputWidth, height: 25 }
-        }}
+        error={!!error}
+        helperText={error}
         inputProps={{ style: { textAlign: 'center' } }}
+        {...textFieldProps}
     />
 )
 
-export const OpenRangeEditor = ({
-    fieldPath,
-    variant = 'standard',
-    inputWidth = 'auto',
-    openRange = false,
-    isDisabled = false,
-}: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean, isDisabled?: boolean }) => {
-    const [minField, , minHelper] = useField(`${fieldPath}.min`);
-    const [maxField, , maxHelper] = useField(`${fieldPath}.max`);
-    const [aboveOrBelow, setAboveOrBelow] = React.useState<string>('');
-    const setMinMax = (v: string) => {
-        setAboveOrBelow(v);
-        const min = minField.value;
-        const max = maxField.value;
-        const editableField = (aboveOrBelow === 'above') ? minHelper : maxHelper;
-        editableField.setValue(min ?? max);
-    }
-    return (
-        <div style={{ display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1 }}>
-            <NumberEditor field={(aboveOrBelow === 'above') ? minField : maxField} placeholder={''}
-                inputWidth={inputWidth} variant={variant} />
-            <Typography>or</Typography>
-            <Select value={aboveOrBelow} fullWidth variant={'standard'}
-                onChange={(e) => setMinMax(e.target.value)}>
-                <MenuItem value={'above'}>above</MenuItem>
-                <MenuItem value={'below'}>below</MenuItem>
-            </Select>
-        </div>
-    );
-}
-
+/* component that takes the min and max values in any range eg.loanrange. with all necessary validations */
 export const RangeEditor = ({
-    isOpen = false,
-    ...rest
-}: { isOpen?: boolean, fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean, isDisabled?: boolean }) => {
-    if (isOpen) {
-        return <OpenRangeEditor {...rest} />
-    } else {
-        return <CloseRangeEditor {...rest} />
-    }
-}
-
-export const CloseRangeEditor = ({
     fieldPath,
-    variant = 'standard',
-    inputWidth = 'auto',
-    openRange = false,
-    isDisabled = false,
-}: { fieldPath: string, variant?: 'standard' | 'outlined', inputWidth?: number | string, openRange?: boolean, isDisabled?: boolean }) => {
-    const [minField] = useField(`${fieldPath}.min`);
-    const [maxField] = useField(`${fieldPath}.max`);
+    oneEndOnly = false,
+    onChange = () => { },
+    textFieldProps
+}: { textFieldProps?: TextFieldProps, oneEndOnly?: boolean, fieldPath: string, openRange?: boolean, onChange?: (e: React.ChangeEvent<any>) => void }) => {
+    const [minField, minMeta, helper] = useField(`${fieldPath}.min`);
+    const [maxField, maxMeta] = useField(`${fieldPath}.max`);
     return (
         <div style={{ display: "flex", gap: 5, alignItems: 'baseline', flexGrow: 1 }}>
-            <NumberEditor field={minField} placeholder={'Min'} inputWidth={inputWidth} variant={variant} isDisabled={isDisabled} />
+            <NumberEditor
+                {...textFieldProps}
+                placeholder={'Min'}
+                {...minField}
+                error={!!minMeta.error}
+                helperText={minMeta.error}
+                onChange={e => {
+                    minField.onChange(e);
+                    onChange(e)
+                }}
+                disabled={oneEndOnly && isNaN(maxField.value)}
+            />
             <Typography>to</Typography>
-            <NumberEditor field={maxField} placeholder={'Max'} inputWidth={inputWidth} variant={variant} isDisabled={isDisabled} />
+            <NumberEditor
+                {...textFieldProps}
+                placeholder={'Max'}
+                {...maxField}
+                error={!!maxMeta.error}
+                helperText={maxMeta.error}
+                disabled={oneEndOnly}
+            />
         </div>
     );
 }
