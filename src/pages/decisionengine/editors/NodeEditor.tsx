@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Accordion, AccordionDetails, AccordionSummary, IconButton } from "@mui/material";
 import { CriteriaEditor } from '../components/Criteria';
-import { WeightEditor , TotalWeight} from './WeightEditor';
+import { WeightEditor, TotalWeight } from './WeightEditor';
 
 import { INode, IProduct, IModel, IRange, IPolicy } from "../interfaces/ModelInterface";
 import '../styles/CreateModel.css';
@@ -10,7 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useField, useFormik, useFormikContext } from "formik";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
-const CriteriaBar = ({ path, isReverseScale }: { path: string, isReverseScale: boolean }) => {
+export const CriteriaBar = ({ path, isReverseScale }: { path: string, isReverseScale: boolean }) => {
     const [, { error, value },] = useField(`${path}.criteria`);
     const { strong, good, satisfactory, weak } = value;
     const boundaries = isReverseScale ? [good.min, satisfactory.min, weak.min] : [satisfactory.min, good.min, strong.min];

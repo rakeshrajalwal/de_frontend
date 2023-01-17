@@ -72,7 +72,7 @@ function ModelDataGrid() {
                             <TableCell align="center">{signal.name}</TableCell>
                             <TableCell align="right">{signal.weight}%</TableCell>
                             <TableCell align="right">{signal.overallWeight}%</TableCell>
-                            <TableCell align="right" sx={{ paddingLeft: '5ex' }}><CriteriaBar /></TableCell>
+                            {/* <TableCell align="right" sx={{ paddingLeft: '5ex' }}><CriteriaBar /></TableCell> */}
                         </TableRow>
                     ))}
                 </TableBody>

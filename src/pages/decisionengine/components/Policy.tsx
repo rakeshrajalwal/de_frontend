@@ -9,7 +9,7 @@ import {
     Button,
     RadioGroup,
     FormControlLabel,
-    Radio
+    Radio,
     MenuItem,
     Select,
     FormControl, FormHelperText
@@ -33,7 +33,7 @@ padding-left:5px;
 padding-right:15px;
 `;
 
-export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
+export const PolicyEditor = ({ products, isDisabled = false }: { products?: IProduct[], isDisabled?: boolean }) => {
 
     const [product] = useField(`product`);//product name
     const [name, modelmeta] = useField(`name`);//name of model
@@ -53,14 +53,19 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Product:</Label>
-                                <Select
+                                {isDisabled ? <TextField
                                     fullWidth
                                     variant="standard"
                                     {...product}
                                     disabled={isDisabled}
-                                >
-                                    {products.map(p => <MenuItem key={p.name} value={p.name}>{p.name}</MenuItem>)}
-                                </Select>
+                                />
+                                    : <Select
+                                        fullWidth
+                                        variant="standard"
+                                        {...product}
+                                    >
+                                        {products?.map(p => <MenuItem key={p.name} value={p.name}>{p.name}</MenuItem>)}
+                                    </Select>}
                             </ControlContainer>
                         </Grid>
 
@@ -83,13 +88,13 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Loan Range (£):</Label>
-                                <RangeEditor fieldPath={'policy.loanRange'} textFieldProps={{ variant: 'standard' }} />
+                                <RangeEditor fieldPath={'policy.loanRange'} textFieldProps={{ variant: 'standard' }} isDisabled={isDisabled} />
                             </ControlContainer>
                         </Grid>
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Term(months):</Label>
-                                <RangeEditor fieldPath={'policy.loanTermInMonths'} textFieldProps={{ variant: 'standard' }} />
+                                <RangeEditor fieldPath={'policy.loanTermInMonths'} textFieldProps={{ variant: 'standard' }} isDisabled={isDisabled} />
                             </ControlContainer>
                         </Grid>
                     </Grid>
@@ -107,6 +112,7 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
                                         variant="standard"
                                         error={!!purposemeta.error}
                                         {...purpose}
+                                        disabled={isDisabled}
                                     >
                                         {purposes?.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
                                     </Select>
@@ -117,11 +123,11 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
                         <Grid item md={6}>
                             <ControlContainer>
                                 <label>
-                                    <Field type="radio" {...isSecured} value={true} checked={value} />
+                                    <Field type="radio" {...isSecured} value={true} checked={value} disabled={isDisabled} />
                                     <span style={{ fontWeight: "bold" }}>Secured</span>
                                 </label>
                                 <label>
-                                    <Field type="radio" {...isSecured} value={false} checked={!value} />
+                                    <Field type="radio" {...isSecured} value={false} checked={!value} disabled={isDisabled} />
                                     <span style={{ fontWeight: "bold" }}>Unsecured</span>
                                 </label>
                             </ControlContainer>

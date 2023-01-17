@@ -1,23 +1,22 @@
 import * as React from 'react';
-import { useParams } from 'react-router';
-import { useCreateModelMutation, useGetAllProductsQuery } from '../../redux/de';
+import { useCreateModelMutation } from '../../redux/de';
 import {
     CardContent,
     Card,
-    Typography,
-    Button as MuiButton, CardHeader, Snackbar
+    Button as MuiButton,
+    CardHeader,
+    Snackbar,
 } from "@mui/material";
-import { Form, Formik, useField, useFormik } from "formik";
+import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
-import { INode, IProduct, IModel, IPolicy } from "./interfaces/ModelInterface"
+import { IProduct, IModel } from "./interfaces/ModelInterface"
 import './styles/CreateModel.css';
 import lodash from 'lodash';
 import * as Yup from "yup";
 import { TotalWeight } from "./editors/WeightEditor";
 import { useNavigate } from "react-router-dom";
 const axios = require('axios');
-import { useEffect } from 'preact/hooks';
 import './styles/CreateModel.css';
 import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
