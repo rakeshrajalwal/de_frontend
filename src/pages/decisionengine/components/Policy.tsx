@@ -38,7 +38,7 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
 
     const value = isSecured.value;
     const selectedProudct = lodash.find(products, { name: product.value });
-   // const value = selectedProudct?.policy.isSecured;
+    // const value = selectedProudct?.policy.isSecured;
     const purposes = selectedProudct?.policy.loanPurpose;
     return (
 
@@ -92,20 +92,19 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Purpose:</Label>
-                                <FormControl 
-                                
-                                >
-                                <Select
-                                    multiple
+                                <FormControl
                                     fullWidth
-                                    variant="standard"
-                                    error={!!purposemeta.error}
-                                    {...purpose}
                                 >
-                                    {purposes?.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
-                                </Select>
-                                <FormHelperText disabled={!!purposemeta.error}
-                                >Hi</FormHelperText>
+                                    <Select
+                                        multiple
+                                        fullWidth
+                                        variant="standard"
+                                        error={!!purposemeta.error}
+                                        {...purpose}
+                                    >
+                                        {purposes?.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
+                                    </Select>
+                                    {!!purposemeta.error && <FormHelperText error >{purposemeta.error}</FormHelperText>}
                                 </FormControl>
                             </ControlContainer>
                         </Grid>
@@ -116,7 +115,7 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
                                     <span style={{ fontWeight: "bold" }}>Secured</span>
                                 </label>
                                 <label>
-                                    <Field type="radio" {...isSecured} value={false} checked={!value}/>
+                                    <Field type="radio" {...isSecured} value={false} checked={!value} />
                                     <span style={{ fontWeight: "bold" }}>Unsecured</span>
                                 </label>
                             </ControlContainer>

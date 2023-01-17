@@ -9,9 +9,6 @@ const reducer = combineReducers({
 });
 
 export const store = configureStore({
-  // reducer: {
-  //   counter: counterReducer,
-  // },
   reducer,
   middleware: (getDefaultMiddleware) =>
     //getDefaultMiddleware().concat(testApi.middleware),

@@ -156,7 +156,7 @@ const validationSchema = Yup.object().shape({
     policy: Yup.object().shape({
         loanRange: positiveIntRangeSchema,
         loanTermInMonths: positiveIntRangeSchema,
-        loanPurpose: Yup.array().of(Yup.string().required()).required().min(1)
+        loanPurpose: Yup.array().of(Yup.string().required()).required().min(1,"minimum 1 is required")
     }),
     factors: Yup.array().of(Yup.object().shape({
         weight: Yup.number().required().min(0).max(100),
@@ -178,6 +178,7 @@ const validationSchema = Yup.object().shape({
 const CreateModel = () => {
     const navigate = useNavigate();
     const backendUrl: string = (process.env.REACT_APP_BACKEND_URL as string)
+
     // const { data, error, isLoading } = useGetAllProductsQuery('');
     const [product, setProduct] = React.useState<IProduct>();// to populate a select products features etc.
     const [products, setProducts] = React.useState<IProduct[]>([]);// to populate all the products
