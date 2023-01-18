@@ -23,14 +23,6 @@ import { spacing } from "@mui/system";
 
 const Button = styled(MuiButton)(spacing);
 
-const ControlContainer = styled.div`
-display: flex;
-gap:15px;
-align-items:baseline;
-padding-left:5px;
-padding-right:15px;
-`;
-
 function getEmptyModel(p: IProduct): IModel {
     return {
         name: '',//modelname
@@ -151,15 +143,17 @@ const validationSchema = Yup.object().shape({
 
 const CreateModel = () => {
     const navigate = useNavigate();
-    const { data: products, error, isLoading } = useGetAllProductsQuery();// fetching all the products
+
     const [product, setProduct] = React.useState<IProduct>();// to populate a select products features etc.
+    const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false); // handling the form validation
     const [openSuccessNotfication, setOpenSuccessNotfication] = React.useState<boolean>(false);// notification for success model creation
     const [openErrorNotfication, setOpenErrorNotfication] = React.useState<boolean>(false);//notification for error in model creation
     const [createModelError, setcreateModelError] = React.useState<string>('');// set the error from api response
 
     let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
-    const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
-    const [addNewModel, response] = useCreateModelMutation();
+
+    const { data: products, error, isLoading } = useGetAllProductsQuery();// fetching all the products
+    const [addNewModel, response] = useCreateModelMutation();// query to create model
 
     //handles notification popups after submitting
     const handleNotificationClose = () => {
@@ -174,16 +168,14 @@ const CreateModel = () => {
 
     // function that sends the create model api request
     async function submitModel(values: IModel) {
-        let value = JSON.stringify(values, null, 2);
-        addNewModel(value)
-            .unwrap()
+
+        await addNewModel(values).unwrap()
             .then(() => {
                 setOpenSuccessNotfication(true);
-                // navigating to view models screen on successful creation
             })
-            .then((error) => {
+            .catch((error) => {
+                setcreateModelError(error.data)
                 setOpenErrorNotfication(true);
-                setcreateModelError(error!)
             })
     }
 
@@ -209,7 +201,6 @@ const CreateModel = () => {
         >
             {formik => {
                 React.useEffect(() => {
-
                     const product = lodash.find(products, { name: formik.values.product });
                     setProduct(product);
                     if (product) {
@@ -227,7 +218,7 @@ const CreateModel = () => {
                                     onClick={() => { setValidateOnChange(true); formik.validateForm(); }}
                                 >Validate</Button>
 
-                                <Button type="submit" variant={"contained"} disabled={ !validateOnChange || !formik.isValid}>Submit</Button>
+                                <Button type="submit" variant={"contained"} disabled={!validateOnChange || !formik.isValid}>Submit</Button>
                                 <Button onClick={() => formik.setValues(getRandomModel(product!))}>Populate</Button>
                             </div>} />
                         <PolicyEditor products={products} />
