@@ -33,7 +33,7 @@ padding-left:5px;
 padding-right:15px;
 `;
 
-export const PolicyEditor = ({ products, isDisabled = false }: { products?: IProduct[], isDisabled?: boolean }) => {
+export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
 
     const [product] = useField(`product`);//product name
     const [name, modelmeta] = useField(`name`);//name of model
@@ -53,19 +53,13 @@ export const PolicyEditor = ({ products, isDisabled = false }: { products?: IPro
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Product:</Label>
-                                {isDisabled ? <TextField
+                                <Select
                                     fullWidth
                                     variant="standard"
                                     {...product}
-                                    disabled={isDisabled}
-                                />
-                                    : <Select
-                                        fullWidth
-                                        variant="standard"
-                                        {...product}
-                                    >
-                                        {products?.map(p => <MenuItem key={p.name} value={p.name}>{p.name}</MenuItem>)}
-                                    </Select>}
+                                >
+                                    {products?.map(p => <MenuItem key={p.name} value={p.name}>{p.name}</MenuItem>)}
+                                </Select>
                             </ControlContainer>
                         </Grid>
 
@@ -78,7 +72,6 @@ export const PolicyEditor = ({ products, isDisabled = false }: { products?: IPro
                                     fullWidth
                                     variant="standard"
                                     {...name}
-                                    disabled={isDisabled}
                                 />
                             </ControlContainer>
                         </Grid>
@@ -88,13 +81,13 @@ export const PolicyEditor = ({ products, isDisabled = false }: { products?: IPro
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Loan Range (£):</Label>
-                                <RangeEditor fieldPath={'policy.loanRange'} textFieldProps={{ variant: 'standard' }} isDisabled={isDisabled} />
+                                <RangeEditor fieldPath={'policy.loanRange'} textFieldProps={{ variant: 'standard' }} />
                             </ControlContainer>
                         </Grid>
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Term(months):</Label>
-                                <RangeEditor fieldPath={'policy.loanTermInMonths'} textFieldProps={{ variant: 'standard' }} isDisabled={isDisabled} />
+                                <RangeEditor fieldPath={'policy.loanTermInMonths'} textFieldProps={{ variant: 'standard' }} />
                             </ControlContainer>
                         </Grid>
                     </Grid>
@@ -106,21 +99,15 @@ export const PolicyEditor = ({ products, isDisabled = false }: { products?: IPro
                                 <FormControl
                                     fullWidth
                                 >
-                                    {isDisabled ? <TextField
+                                    <Select
+                                        multiple
                                         fullWidth
                                         variant="standard"
+                                        error={!!purposemeta.error}
                                         {...purpose}
-                                        disabled={isDisabled}
-                                    />
-                                        : <Select
-                                            multiple
-                                            fullWidth
-                                            variant="standard"
-                                            error={!!purposemeta.error}
-                                            {...purpose}
-                                        >
-                                            {purposes?.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
-                                        </Select>}
+                                    >
+                                        {purposes?.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
+                                    </Select>
                                     {!!purposemeta.error && <FormHelperText error >{purposemeta.error}</FormHelperText>}
                                 </FormControl>
                             </ControlContainer>
@@ -128,11 +115,11 @@ export const PolicyEditor = ({ products, isDisabled = false }: { products?: IPro
                         <Grid item md={6}>
                             <ControlContainer>
                                 <label>
-                                    <Field type="radio" {...isSecured} value={true} checked={value} disabled={isDisabled} />
+                                    <Field type="radio" {...isSecured} value={true} checked={value} />
                                     <span style={{ fontWeight: "bold" }}>Secured</span>
                                 </label>
                                 <label>
-                                    <Field type="radio" {...isSecured} value={false} checked={!value} disabled={isDisabled} />
+                                    <Field type="radio" {...isSecured} value={false} checked={!value} />
                                     <span style={{ fontWeight: "bold" }}>Unsecured</span>
                                 </label>
                             </ControlContainer>

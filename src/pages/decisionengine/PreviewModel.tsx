@@ -1,5 +1,4 @@
 import {
-    Typography,
     Button as MuiButton,
     Paper as MuiPaper,
     Table,
@@ -9,10 +8,11 @@ import {
     TableHead,
     TableRow,
     tableCellClasses,
+    CardHeader,
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
-import { IProduct, IModel, INode, ISignal, ISubFactor, IFactor } from "./interfaces/ModelInterface";
+import { IProduct, INode, ISignal, ISubFactor, IFactor } from "./interfaces/ModelInterface";
 import './styles/CreateModel.css';
 import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
@@ -20,7 +20,8 @@ import modelsJson from "./models.json";
 import productCollection from "./product_collection.json";
 import lodash from 'lodash';
 import { CriteriaBar } from './editors/NodeEditor';
-import { useParams } from "react-router-dom";
+import React from "react";
+import axios from 'axios';
 
 const Paper = styled(MuiPaper)(spacing);
 const Button = styled(MuiButton)(spacing);
@@ -98,6 +99,8 @@ function ModelDataGrid() {
 }
 
 function PreviewModel() {
+    const backendUrl: string = (process.env.REACT_APP_BACKEND_URL as string)
+    const [products, setProducts] = React.useState<IProduct[]>([]);// to populate all the products
     return (
         <Formik
             initialValues={oneModel}
@@ -107,15 +110,25 @@ function PreviewModel() {
             }}
         >
             {formik => {
+                axios.get(`${backendUrl}/products/all`).
+                    then((response: any) => {
+                        setProducts(response.data)
+                    }).catch((e: any) => {
+                        // Notify error on failure to fetch all products
+                        console.log(e);
+                    });
                 const v = formik.values;
                 return (
                     <Form>
-                        <div style={{ paddingBottom: 8, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Typography style={{ fontWeight: 'bold', fontSize: '1.1rem' }} variant="h3" gutterBottom display='inline'>Preview Model</Typography>
-                            <Button mr={1} type="submit" variant='contained' style={{ backgroundColor: '#434DB0', color: '#fff' }} size="medium">Submit</Button>
-                        </div>
+                        <CardHeader title={"Preview Model"} titleTypographyProps={{ variant: "h3" }}
+                            action={
+                                <Button mr={1} type="submit" variant='contained' style={{ backgroundColor: '#434DB0', color: '#fff' }} size="medium">Submit</Button>
+                            } />
 
-                        <PolicyEditor isDisabled={true} />
+
+                        <div style={{ pointerEvents: "none" }}>
+                            <PolicyEditor products={products} />
+                        </div>
 
                         <ModelDataGrid />
                     </Form>
