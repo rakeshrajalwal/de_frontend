@@ -22,7 +22,7 @@ export interface IRunModel {
     loanDetails: {
         product: string,
         amount: string,
-        secured: boolean,
+        isSecured: boolean,
         term: string,
         purpose: string,
         company_name: string

@@ -401,7 +401,7 @@ function RunModel() {
         loanDetails: {
           product: '',
           amount: '',
-          secured: false,
+          isSecured: false,
           term: '',
           purpose: '',
           company_name: ''
@@ -443,7 +443,7 @@ function RunModel() {
 
                     <CustomTextField fieldname={'Loan Amount(£)'} path={'loanDetails.amount'} type={'number'} />
 
-                    <CustomSwitch fieldname={'Is Secured?'} path={'loanDetails.secured'} />
+                    <CustomSwitch fieldname={'Is Secured?'} path={'loanDetails.isSecured'} />
 
                     <CustomTextField fieldname={'Term(Months)'} path={'loanDetails.term'} type={'number'} />
 
