@@ -29,6 +29,10 @@ const pagesSection = [
         href: "/model/run",
         title: "Run Model",
       },
+      {
+        href: "/model/preview",
+        title: "Preview Model",
+      },
     ],
   },
   {

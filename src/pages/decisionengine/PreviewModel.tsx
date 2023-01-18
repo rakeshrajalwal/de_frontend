@@ -63,7 +63,7 @@ function ModelDataGrid() {
 
     return (
         <TableContainer component={Paper} sx={{ marginTop: 5 }}>
-            <Table sx={{ minWidth: 650 }} aria-label="preview table">
+            <Table sx={{ minWidth: '35ex' }} aria-label="preview table">
                 <TableHead>
                     <TableRow>
                         <TableCell align="center" width="15%">Factor</TableCell>
@@ -88,7 +88,7 @@ function ModelDataGrid() {
                             <TableCell align="center">{signal.name}</TableCell>
                             <TableCell align="right">{signal.weight}%</TableCell>
                             <TableCell align="right">{signal.overallWeight}%</TableCell>
-                            <TableCell align="right" sx={{ paddingLeft: '15ex' }}><CriteriaBar path={getSignalPath(factor, subFactor, signal)} isReverseScale={reverseSignalNames.includes(signal.name)} /></TableCell>
+                            <TableCell align="right" sx={{ paddingLeft: '5ex' }}><CriteriaBar path={getSignalPath(factor, subFactor, signal)} isReverseScale={reverseSignalNames.includes(signal.name)} /></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
