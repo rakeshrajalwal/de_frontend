@@ -27,6 +27,21 @@ const Button = styled(MuiButton)(spacing);
 
 const product: IProduct = {
     name: "Working Capital Loan",
+    policy: {
+        "loanRange": {
+            "min": 1000,
+            "max": 5000000
+        },
+        "loanTermInMonths": {
+            "min": 24,
+            "max": 30
+        },
+        "loanPurpose": [
+            "new business",
+            "expansion"
+        ],
+        "isSecured": true
+    },
     factors: [
         {
             name: "Financial Strength",

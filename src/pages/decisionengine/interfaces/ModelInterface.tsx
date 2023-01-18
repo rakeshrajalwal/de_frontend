@@ -1,5 +1,11 @@
 export interface IProduct {
+    _id?: string,
+    policy: IPolicy,
     name: string,
+    manualInputs?: {
+        name: string,
+        value: number | string
+    }[]
     factors: {
         name: string,
         subFactors: {
@@ -9,6 +15,23 @@ export interface IProduct {
             }[]
         }[]
     }[]
+}
+
+export interface IRunModel {
+    model?: IModel,
+    loanDetails: {
+        product: string,
+        amount: string,
+        secured: boolean,
+        term: string,
+        purpose: string,
+        company_name: string
+    },
+    manualInputs: {
+        name: string,
+        value: number | string
+    }[]
+
 }
 
 
@@ -78,4 +101,22 @@ export interface INode {
     subFactors?: INode[],
     signals?: INode[],
     weight: number | string,
+}
+
+export interface IModelRun {
+    model: IModel,
+    loanDetails: {
+        customerId: string,
+        product: string,
+        amount: number,
+        term: number,
+        purpose: string,
+        secured: boolean
+    },
+    manualInputs: {
+        name: string,
+        value: number,
+        _id?: string
+    }[]
+
 }

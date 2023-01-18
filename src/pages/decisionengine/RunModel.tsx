@@ -5,11 +5,11 @@ import {
   Card,
   TextField,
   Typography, CardHeader, Button,
-  MenuItem, Switch
+  MenuItem, Switch, Select
 } from "@mui/material";
 import styled from "@emotion/styled";
-import Select from '@mui/material/Select';
 import { Form, Formik, useField } from "formik";
+import { IProduct, IModelRun, IRunModel } from './interfaces/ModelInterface';
 import lodash from 'lodash';
 import * as Yup from "yup";
 
@@ -94,8 +94,6 @@ const ManualInputsSwitch = ({ fieldname, path }: { fieldname: string, path: stri
   const [field, meta, helpers] = useField(`${path}`);
   const [switchState, setSwitchState] = React.useState<boolean>(false);
 
-  if (!switchState) field.value = 0;
-
   return (
     <Grid item md={8} mt={3}>
       <ControlContainer>
@@ -124,61 +122,207 @@ const ManualInputsSwitch = ({ fieldname, path }: { fieldname: string, path: stri
   )
 }
 
-const Product1: any = {
-  name: 'working captial loan',
-  loan_details: {
-    product: '',
-    amount: '',
-    is_secured: true,
-    term: '',
-    purpose: '',
-    company_name: ''
-  },
-  // manual_inputs2: [{
-  //   name: 'insurance', value: ''
-  // },
-  // {
-  //   name: 'insurance 2', value: ''
-  // },
-  // {
-  //   name: 'insurance 3', value: ''
-  // },
-  // ],
-  manual_inputs: {
-    sponsors_worth: '',
-    sponsors_worth_2: '',
-    sponsors_worth_3: '',
-  }
-}
 
-const Product2: any = {
-  name: 'working capital loan 2',
-  loan_details: {
-    product: '',
-    amount: '',
-    is_secured: false,
-    term: '',
-    purpose: '',
-    company_name: ''
+const product1: IProduct = {
+  name: "Working Capital Loan",
+  policy: {
+    "loanRange": {
+      "min": 1000,
+      "max": 5000000
+    },
+    "loanTermInMonths": {
+      "min": 24,
+      "max": 30
+    },
+    "loanPurpose": [
+      "biz growth",
+      "expansion"
+    ],
+    "isSecured": true
   },
-  // manual_inputs2: [{
-  //   name: 'guarantee', value: ''
-  // },
-  // {
-  //   name: 'guarantee 2', value: ''
-  // },
-  // {
-  //   name: 'gurantee 3', value: ''
-  // },
-  // ],
-  manual_inputs: {
-    sponsors_worth_4: '',
-    sponsors_worth_5: '',
-    sponsors_worth_6: '',
-  }
-}
+  factors: [
+    {
+      name: "Financial Strength",
+      subFactors: [
+        {
+          name: "Market Conditions ",
+          signals: [
+            { name: "GP%vsSector" },
+            { name: "NP%vsSector" },
+            { name: "LeverageVsSector" },
+            { name: "GearingVsSector" }
+          ]
+        },
+        {
+          name: "Debt Service",
+          signals: [
+            { name: "EBIDTA:DSC" }
+          ]
+        },
+        {
+          name: "Financial Stability",
+          signals: [
+            { name: "%ChgTurnover" },
+            { name: "EBIDTA%ratio" },
+            { name: "Stressed EBIDTA:DSC" },
+            { name: "%ChgRetainedProfits" }
+          ]
+        },
+        {
+          name: "Gearing ratio",
+          signals: [
+            { name: "Gearing" }
+          ]
+        },
+        {
+          name: "Leverage",
+          signals: [
+            { name: "Leverage" }
+          ]
+        }
+      ]
+    },
+    {
+      name: "Strength of Business Owner/Guarantor & Security Package",
+      subFactors: [
+        {
+          name: "Financial Capacity & Willingness to Support",
+          signals: [
+            { name: "Sponsors Debt" },
+            { name: "Sponsors Net Worth" },
+            { name: "Sponsor Credit Score" },
+            { name: "Business Interuption Insurance" }
+          ]
+        }
+      ]
+    },
+    {
+      name: "Transaction Characteristics ",
+      subFactors: [
+        {
+          name: "Term of Loan vs. Purpose",
+          signals: [
+            {
+              name: "TermvsPurpose"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  manualInputs: [
+    {
+      name: 'sponsors_networth', value: ''
+    },
+    {
+      name: 'sponsors_networth2', value: ''
+    },
+    {
+      name: 'sponsors_networth3', value: ''
+    }
+  ]
+};
 
-const products = [Product1, Product2];
+const product2: IProduct = {
+  name: "Working Capital Loan 2",
+  policy: {
+    "loanRange": {
+      "min": 1000,
+      "max": 5000000
+    },
+    "loanTermInMonths": {
+      "min": 24,
+      "max": 30
+    },
+    "loanPurpose": [
+      "new business",
+      "expansion"
+    ],
+    "isSecured": true
+  },
+  factors: [
+    {
+      name: "Financial Strength",
+      subFactors: [
+        {
+          name: "Market Conditions ",
+          signals: [
+            { name: "GP%vsSector" },
+            { name: "NP%vsSector" },
+            { name: "LeverageVsSector" },
+            { name: "GearingVsSector" }
+          ]
+        },
+        {
+          name: "Debt Service",
+          signals: [
+            { name: "EBIDTA:DSC" }
+          ]
+        },
+        {
+          name: "Financial Stability",
+          signals: [
+            { name: "%ChgTurnover" },
+            { name: "EBIDTA%ratio" },
+            { name: "Stressed EBIDTA:DSC" },
+            { name: "%ChgRetainedProfits" }
+          ]
+        },
+        {
+          name: "Gearing ratio",
+          signals: [
+            { name: "Gearing" }
+          ]
+        },
+        {
+          name: "Leverage",
+          signals: [
+            { name: "Leverage" }
+          ]
+        }
+      ]
+    },
+    {
+      name: "Strength of Business Owner/Guarantor & Security Package",
+      subFactors: [
+        {
+          name: "Financial Capacity & Willingness to Support",
+          signals: [
+            { name: "Sponsors Debt" },
+            { name: "Sponsors Net Worth" },
+            { name: "Sponsor Credit Score" },
+            { name: "Business Interuption Insurance" }
+          ]
+        }
+      ]
+    },
+    {
+      name: "Transaction Characteristics ",
+      subFactors: [
+        {
+          name: "Term of Loan vs. Purpose",
+          signals: [
+            {
+              name: "TermvsPurpose"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  manualInputs: [{
+    name: 'sponsors_networth4', value: ''
+  },
+  {
+    name: 'sponsors_networth5', value: ''
+  },
+  {
+    name: 'sponsors_networth6', value: ''
+  }
+  ]
+};
+
+const products = [product1, product2];
 
 const SelectDropdown = ({ fieldname, options, path }: { fieldname: string, options: any[], path: string }) => {
   const [field, meta, helpers] = useField(`${path}`)
@@ -206,6 +350,32 @@ const SelectDropdown = ({ fieldname, options, path }: { fieldname: string, optio
   )
 }
 
+const SelectDropdown2 = ({ fieldname, options, path }: { fieldname: string, options: any[], path: string }) => {
+  const [field, meta, helpers] = useField(`${path}`)
+  return (
+    <Grid item md={8} mt={3}>
+      <ControlContainer>
+        <Grid item md={3}>
+          <Label>{fieldname}</Label>
+        </Grid>
+        <Grid item md={1}>
+          <Typography>:</Typography>
+        </Grid>
+        <Grid item md={9}>
+          <Select
+            fullWidth
+            variant="standard"
+            error={!!meta.error}
+            {...field}
+          >
+            {options.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
+          </Select>
+        </Grid>
+      </ControlContainer>
+    </Grid>
+  )
+}
+
 const positiveInteger = Yup.number().required('Required').positive("Should be positive").integer('Should be integer');
 const requiredString = Yup.string().required('Required');
 const validationSchema = Yup.object().shape({
@@ -220,35 +390,26 @@ const validationSchema = Yup.object().shape({
 
 
 function RunModel() {
-  const [product, setProduct] = React.useState<any>();
+  const [product, setProduct] = React.useState<IProduct>();
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
-  const purposes = [{ name: 'purpose 1' }, { name: 'purpose 2' }];
+  const [purposes, setPurposes] = React.useState<string[]>([]);
+
   return (
 
     <Formik
       initialValues={{
-        name: '',
-        loan_details: {
+        loanDetails: {
+          product: '',
           amount: '',
-          is_secured: false,
+          secured: false,
           term: '',
           purpose: '',
           company_name: ''
         },
-        // manual_inputs2: [{
-        //   name: 'abc', value: ''
-        // },
-        // {
-        //   name: 'abc 2', value: ''
-        // },
-        // {
-        //   name: 'abc 3', value: ''
-        // },
-        // ],
-        manual_inputs: {}
-      }}
+        manualInputs: []
+      } as IRunModel}
       validationSchema={validationSchema}
-      validateOnChange={validateOnChange}
+      validateOnChange={true}
       onSubmit={(values) => {
         // setValidateOnChange(true);
         console.log(JSON.stringify(values, null, 2))
@@ -257,45 +418,38 @@ function RunModel() {
     >
       {formik => {
         React.useEffect(() => {
-
-        }, [])
-        React.useEffect(() => {
-          const product = lodash.find(products, { name: formik.values.name });
+          const product = lodash.find(products, { name: formik.values.loanDetails.product });
           setProduct(product);
           if (product) {
-            formik.setFieldValue("manual_inputs", product.manual_inputs);
-            formik.setFieldValue("loan_details.is_secured", product.loan_details.is_secured);
+            formik.setFieldValue("manualInputs", product.manualInputs);
+            setPurposes(product.policy.loanPurpose);
           }
-          if (formik.isSubmitting) {
-            console.log("setting the flag")
-            setValidateOnChange(true);
+        }, [formik.values.loanDetails.product]);
 
-          }
-        }, [formik.values.name]);
-        const v = formik.values;
         return (
           <Form>
             <CardHeader title={"Run Model"} titleTypographyProps={{ variant: "h3" }}
               action={<div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Button type="submit" variant={"contained"}>Submit</Button>
               </div>} />
+
             <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
               <CardContent>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
                   <Grid container style={{ padding: '30px' }}>
 
-                    <SelectDropdown fieldname={'Product'} path={'name'} options={products} />
+                    <SelectDropdown fieldname={'Product'} path={'loanDetails.product'} options={products} />
 
-                    <CustomTextField fieldname={'Loan Amount(£)'} path={'loan_details.amount'} type={'number'} />
+                    <CustomTextField fieldname={'Loan Amount(£)'} path={'loanDetails.amount'} type={'number'} />
 
-                    <CustomSwitch fieldname={'Is Secured?'} path={'loan_details.is_secured'} />
+                    <CustomSwitch fieldname={'Is Secured?'} path={'loanDetails.secured'} />
 
-                    <CustomTextField fieldname={'Term(Months)'} path={'loan_details.term'} type={'number'} />
+                    <CustomTextField fieldname={'Term(Months)'} path={'loanDetails.term'} type={'number'} />
 
-                    <SelectDropdown fieldname={'Purpose'} path={'loan_details.purpose'} options={purposes} />
+                    <SelectDropdown2 fieldname={'Purpose'} path={'loanDetails.purpose'} options={purposes} />
 
-                    <CustomTextField fieldname={'Company Name'} path={'loan_details.company_name'} type={'text'} />
+                    <CustomTextField fieldname={'Company Name'} path={'loanDetails.company_name'} type={'text'} />
 
                   </Grid>
                 </div>
@@ -309,19 +463,12 @@ function RunModel() {
                   </Grid>
                 </Grid>
 
-
-
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
                   <Grid container style={{ padding: '30px' }}>
-                    {/* {formik.values.manual_inputs2.map((f, i) => (
-                      <ManualInputsSwitch fieldname={f.name} path={`manual_inputs2[${i}].value`} />
-                    ))} */}
-                    {Object.entries(formik.values.manual_inputs).map(([key, val], i) => (
-                      <ManualInputsSwitch key={`${key}`} fieldname={`${key}`} path={`manual_inputs[${key}]`} />
+                    {formik.values.manualInputs.map((f, i) => (
+                      <ManualInputsSwitch key={i} fieldname={f.name} path={`manualInputs[${i}].value`} />
                     ))}
-
-
                   </Grid>
                 </div>
               </CardContent>
