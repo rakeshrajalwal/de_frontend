@@ -2,10 +2,6 @@ export interface IProduct {
     _id?: string,
     policy: IPolicy,
     name: string,
-    manualInputs?: {
-        name: string,
-        value: number | string
-    }[]
     factors: {
         name: string,
         subFactors: {
@@ -17,6 +13,11 @@ export interface IProduct {
     }[]
 }
 
+export interface IManualInputs {
+    name : string,
+    value : number | string
+}
+
 export interface IRunModel {
     model?: IModel,
     loanDetails: {
@@ -25,7 +26,7 @@ export interface IRunModel {
         isSecured: boolean,
         term: string,
         purpose: string,
-        company_name: string
+        companyName: string
     },
     manualInputs: {
         name: string,
