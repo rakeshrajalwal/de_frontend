@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { Form, Formik, useField } from "formik";
-import { IProduct, IModelRun, IRunModel } from './interfaces/ModelInterface';
+import { IProduct, IRunModel, IManualInputs } from './interfaces/ModelInterface';
 import lodash from 'lodash';
 import * as Yup from "yup";
 
@@ -90,7 +90,7 @@ const CustomSwitch = ({ fieldname, path }: { fieldname: string, path: string }) 
   )
 }
 
-const ManualInputsSwitch = ({ fieldname, path }: { fieldname: string, path: string }) => {
+const ManualTextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path: string }) => {
   const [field, meta, helpers] = useField(`${path}`);
   const [switchState, setSwitchState] = React.useState<boolean>(false);
 
@@ -209,17 +209,6 @@ const product1: IProduct = {
         }
       ]
     }
-  ],
-  manualInputs: [
-    {
-      name: 'sponsors_networth', value: ''
-    },
-    {
-      name: 'sponsors_networth2', value: ''
-    },
-    {
-      name: 'sponsors_networth3', value: ''
-    }
   ]
 };
 
@@ -309,16 +298,6 @@ const product2: IProduct = {
         }
       ]
     }
-  ],
-  manualInputs: [{
-    name: 'sponsors_networth4', value: ''
-  },
-  {
-    name: 'sponsors_networth5', value: ''
-  },
-  {
-    name: 'sponsors_networth6', value: ''
-  }
   ]
 };
 
@@ -388,11 +367,38 @@ const validationSchema = Yup.object().shape({
   }),
 });
 
+const manualInputsSample: IRunModel = {
+  loanDetails: {
+    product: '',
+    amount: '',
+    isSecured: false,
+    term: '',
+    purpose: '',
+    companyName: ''
+  },
+  manualInputs: [{
+    name: 'sponsors networth',
+    value: ''
+  },
+  {
+    name: 'sponsors networth2',
+    value: ''
+  },
+  {
+    name: 'sponsors networth3',
+    value: ''
+  }
+
+  ]
+}
 
 function RunModel() {
   const [product, setProduct] = React.useState<IProduct>();
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
   const [purposes, setPurposes] = React.useState<string[]>([]);
+  const [manualInputs, getManualInputs] = React.useState<IManualInputs[]>([]);
+
+ // getManualInputs(manualInputsSample.manualInputs)
 
   return (
 
@@ -404,9 +410,9 @@ function RunModel() {
           isSecured: false,
           term: '',
           purpose: '',
-          company_name: ''
+          companyName: ''
         },
-        manualInputs: []
+        manualInputs: manualInputs
       } as IRunModel}
       //validationSchema={validationSchema}
       validateOnChange={true}
@@ -421,7 +427,6 @@ function RunModel() {
           const product = lodash.find(products, { name: formik.values.loanDetails.product });
           setProduct(product);
           if (product) {
-            formik.setFieldValue("manualInputs", product.manualInputs);
             setPurposes(product.policy.loanPurpose);
           }
         }, [formik.values.loanDetails.product]);
@@ -449,7 +454,7 @@ function RunModel() {
 
                     <SelectDropdown2 fieldname={'Purpose'} path={'loanDetails.purpose'} options={purposes} />
 
-                    <CustomTextField fieldname={'Company Name'} path={'loanDetails.company_name'} type={'text'} />
+                    <CustomTextField fieldname={'Company Name'} path={'loanDetails.companyName'} type={'text'} />
 
                   </Grid>
                 </div>
@@ -467,7 +472,7 @@ function RunModel() {
 
                   <Grid container style={{ padding: '30px' }}>
                     {formik.values.manualInputs.map((f, i) => (
-                      <ManualInputsSwitch key={i} fieldname={f.name} path={`manualInputs[${i}].value`} />
+                      <ManualTextInputFieldWithSwitch key={i} fieldname={f.name} path={`manualInputs[${i}].value`} />
                     ))}
                   </Grid>
                 </div>
