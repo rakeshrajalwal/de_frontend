@@ -12,13 +12,15 @@ import {
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
-import { IProduct, IModel, INode } from "./interfaces/ModelInterface";
+import { IProduct, IModel, INode, ISignal, ISubFactor, IFactor } from "./interfaces/ModelInterface";
 import './styles/CreateModel.css';
 import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
-import modelsJson from "./getmodels.json";
+import modelsJson from "./models.json";
+import productCollection from "./product_collection.json";
 import lodash from 'lodash';
 import { CriteriaBar } from './editors/NodeEditor';
+import { useParams } from "react-router-dom";
 
 const Paper = styled(MuiPaper)(spacing);
 const Button = styled(MuiButton)(spacing);
@@ -36,14 +38,28 @@ const TableCell = styled(MuiTableCell)(({ theme }) => ({
 const oneModel = modelsJson[0];
 
 function ModelDataGrid() {
+
+    // Convert into flatSignals - {factor, subfactor, signal}
     const flatSignals = oneModel.factors.flatMap(factor =>
         factor.subFactors.flatMap(subFactor =>
             subFactor.signals.flatMap(signal => ({ factor, subFactor, signal }))))
 
+    // Get rowspan for factors and subfactors
     const rowSpanOfNode = (n: INode) => {
         if (n.signals) return n.signals.length;
         return lodash.sumBy(n.subFactors, sf => sf.signals!.length);
     }
+
+    const getSignalPath = (factor: IFactor, subFactor: ISubFactor, signal: ISignal) => {
+        let factorIndex = oneModel.factors.findIndex(object => { return object.name === factor.name });
+        let subFactorIndex = factor.subFactors.findIndex(object => { return object.name === subFactor.name });
+        let signalIndex = subFactor.signals.findIndex(object => { return object.name === signal.name });
+        return `factors[${factorIndex}].subFactors[${subFactorIndex}].signals[${signalIndex}]`;
+    }
+
+    let reverseSignalNames = productCollection.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
+
+    console.log('reverseSignalNames: ', reverseSignalNames);
 
     return (
         <TableContainer component={Paper} sx={{ marginTop: 5 }}>
@@ -72,7 +88,7 @@ function ModelDataGrid() {
                             <TableCell align="center">{signal.name}</TableCell>
                             <TableCell align="right">{signal.weight}%</TableCell>
                             <TableCell align="right">{signal.overallWeight}%</TableCell>
-                            {/* <TableCell align="right" sx={{ paddingLeft: '5ex' }}><CriteriaBar /></TableCell> */}
+                            <TableCell align="right" sx={{ paddingLeft: '15ex' }}><CriteriaBar path={getSignalPath(factor, subFactor, signal)} isReverseScale={reverseSignalNames.includes(signal.name)} /></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

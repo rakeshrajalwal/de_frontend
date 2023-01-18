@@ -22,22 +22,22 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .criteriaType {
-    font :'normal normal bold 11px Verdana' 
+    font: 'normal normal bold 11px Verdana'
 }
 
 .criteria-bar {
     display: flex;
-    width: 150px;
+    width: 25ex;
     border-bottom: 5px solid;
-    padding-left: 18.75px;
-    border-image:   linear-gradient(to left, #078F08 25%, #9DD566 25%, #9DD566 50%, #FEC401 50%, #FEC401 75%, #FB0102 75%) 5;
+    /* padding-left: 18.75px; */
+    border-image: linear-gradient(to left, #078F08 25%, #9DD566 25%, #9DD566 50%, #FEC401 50%, #FEC401 75%, #FB0102 75%) 5;
 }
 
 .criteria-bar.reverse {
-    border-image:   linear-gradient(to right, #078F08 25%, #9DD566 25%, #9DD566 50%, #FEC401 50%, #FEC401 75%, #FB0102 75%) 5;
+    border-image: linear-gradient(to right, #078F08 25%, #9DD566 25%, #9DD566 50%, #FEC401 50%, #FEC401 75%, #FB0102 75%) 5;
 }
 
 .criteria-value {
-    width: 37.5px;
-    text-align: center;
+    min-width: 6ex;
+    text-align: left;
 }
