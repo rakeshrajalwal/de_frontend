@@ -240,7 +240,8 @@ function RunModel() {
       } as IRunModel}
       enableReinitialize={true}
       validationSchema={validationSchema}
-      validateOnChange={true}
+      validateOnChange={validateOnChange}
+      validateOnBlur={false}
       onSubmit={(values) => {
         console.log(JSON.stringify(values, null, 2))
         alert(JSON.stringify(values, null, 2));
@@ -261,7 +262,7 @@ function RunModel() {
           <Form>
             <CardHeader title={"Run Model"} titleTypographyProps={{ variant: "h3" }}
               action={<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Button type="submit" variant={"contained"}>Submit</Button>
+                <Button type="submit" variant={"contained"} onClick={() => { setValidateOnChange(true); formik.validateForm(); }}>Submit</Button>
               </div>} />
 
             <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
