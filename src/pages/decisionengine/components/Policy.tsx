@@ -33,7 +33,7 @@ padding-left:5px;
 padding-right:15px;
 `;
 
-export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
+export const PolicyEditor = (products: IProduct[]) => {
 
     const [product] = useField(`product`);//product name
     const [name, modelmeta] = useField(`name`);//name of model
