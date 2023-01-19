@@ -9,7 +9,9 @@ import {
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { Form, Formik, useField } from "formik";
-import { IProduct, IRunModel, IManualInputs } from './interfaces/ModelInterface';
+import { IProduct, IRunModel } from './interfaces/ModelInterface';
+import { useGetAllProductsQuery, useGetManualInputsByProductNameQuery, useLazyGetManualInputsByProductNameQuery } from '../../redux/de';
+import { skipToken } from '@reduxjs/toolkit/query'
 import lodash from 'lodash';
 import * as Yup from "yup";
 
@@ -122,189 +124,9 @@ const ManualTextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string
   )
 }
 
-
-const product1: IProduct = {
-  name: "Working Capital Loan",
-  policy: {
-    "loanRange": {
-      "min": 1000,
-      "max": 5000000
-    },
-    "loanTermInMonths": {
-      "min": 24,
-      "max": 30
-    },
-    "loanPurpose": [
-      "biz growth",
-      "expansion"
-    ],
-    "isSecured": true
-  },
-  factors: [
-    {
-      name: "Financial Strength",
-      subFactors: [
-        {
-          name: "Market Conditions ",
-          signals: [
-            { name: "GP%vsSector" },
-            { name: "NP%vsSector" },
-            { name: "LeverageVsSector" },
-            { name: "GearingVsSector" }
-          ]
-        },
-        {
-          name: "Debt Service",
-          signals: [
-            { name: "EBIDTA:DSC" }
-          ]
-        },
-        {
-          name: "Financial Stability",
-          signals: [
-            { name: "%ChgTurnover" },
-            { name: "EBIDTA%ratio" },
-            { name: "Stressed EBIDTA:DSC" },
-            { name: "%ChgRetainedProfits" }
-          ]
-        },
-        {
-          name: "Gearing ratio",
-          signals: [
-            { name: "Gearing" }
-          ]
-        },
-        {
-          name: "Leverage",
-          signals: [
-            { name: "Leverage" }
-          ]
-        }
-      ]
-    },
-    {
-      name: "Strength of Business Owner/Guarantor & Security Package",
-      subFactors: [
-        {
-          name: "Financial Capacity & Willingness to Support",
-          signals: [
-            { name: "Sponsors Debt" },
-            { name: "Sponsors Net Worth" },
-            { name: "Sponsor Credit Score" },
-            { name: "Business Interuption Insurance" }
-          ]
-        }
-      ]
-    },
-    {
-      name: "Transaction Characteristics ",
-      subFactors: [
-        {
-          name: "Term of Loan vs. Purpose",
-          signals: [
-            {
-              name: "TermvsPurpose"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-};
-
-const product2: IProduct = {
-  name: "Working Capital Loan 2",
-  policy: {
-    "loanRange": {
-      "min": 1000,
-      "max": 5000000
-    },
-    "loanTermInMonths": {
-      "min": 24,
-      "max": 30
-    },
-    "loanPurpose": [
-      "new business",
-      "expansion"
-    ],
-    "isSecured": true
-  },
-  factors: [
-    {
-      name: "Financial Strength",
-      subFactors: [
-        {
-          name: "Market Conditions ",
-          signals: [
-            { name: "GP%vsSector" },
-            { name: "NP%vsSector" },
-            { name: "LeverageVsSector" },
-            { name: "GearingVsSector" }
-          ]
-        },
-        {
-          name: "Debt Service",
-          signals: [
-            { name: "EBIDTA:DSC" }
-          ]
-        },
-        {
-          name: "Financial Stability",
-          signals: [
-            { name: "%ChgTurnover" },
-            { name: "EBIDTA%ratio" },
-            { name: "Stressed EBIDTA:DSC" },
-            { name: "%ChgRetainedProfits" }
-          ]
-        },
-        {
-          name: "Gearing ratio",
-          signals: [
-            { name: "Gearing" }
-          ]
-        },
-        {
-          name: "Leverage",
-          signals: [
-            { name: "Leverage" }
-          ]
-        }
-      ]
-    },
-    {
-      name: "Strength of Business Owner/Guarantor & Security Package",
-      subFactors: [
-        {
-          name: "Financial Capacity & Willingness to Support",
-          signals: [
-            { name: "Sponsors Debt" },
-            { name: "Sponsors Net Worth" },
-            { name: "Sponsor Credit Score" },
-            { name: "Business Interuption Insurance" }
-          ]
-        }
-      ]
-    },
-    {
-      name: "Transaction Characteristics ",
-      subFactors: [
-        {
-          name: "Term of Loan vs. Purpose",
-          signals: [
-            {
-              name: "TermvsPurpose"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-};
-
-const products = [product1, product2];
-
 const SelectDropdown = ({ fieldname, options, path }: { fieldname: string, options: any[], path: string }) => {
   const [field, meta, helpers] = useField(`${path}`)
+  console.log(options, "options")
   return (
     <Grid item md={8} mt={3}>
       <ControlContainer>
@@ -321,7 +143,7 @@ const SelectDropdown = ({ fieldname, options, path }: { fieldname: string, optio
             error={!!meta.error}
             {...field}
           >
-            {options.map(p => <MenuItem key={p.name} value={p.name}>{p.name}</MenuItem>)}
+            {options?.map(p => <MenuItem key={p.name} value={p.name}>{p.name}</MenuItem>)}
           </Select>
         </Grid>
       </ControlContainer>
@@ -367,53 +189,28 @@ const validationSchema = Yup.object().shape({
   }),
 });
 
-const manualInputsSample: IRunModel = {
-  loanDetails: {
-    product: '',
-    amount: '',
-    secured: false,
-    term: '',
-    purpose: '',
-    customerId: ''
-  },
-  manualInputs: [{
-    name: 'sponsors networth',
-    value: ''
-  },
-  {
-    name: 'sponsors networth2',
-    value: ''
-  },
-  {
-    name: 'sponsors networth3',
-    value: ''
-  }
-
-  ]
-}
-
 function RunModel() {
   const [product, setProduct] = React.useState<IProduct>();
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
   const [purposes, setPurposes] = React.useState<string[]>([]);
-  const [manualInputs, getManualInputs] = React.useState<IManualInputs[]>([]);
-
-  // getManualInputs(manualInputsSample.manualInputs)
+  const { data: products } = useGetAllProductsQuery();// fetching all the products
+  const [trigger, response ] = useLazyGetManualInputsByProductNameQuery();
+ // const [manualInputs,setManualInputs] = React.useState<any[]>([])
 
   return (
-
     <Formik
       initialValues={{
         loanDetails: {
-          product: '',
+          product: product ? product.name : '',
           amount: '',
           secured: false,
           term: '',
           purpose: '',
           customerId: ''
         },
-        manualInputs: []
+        manualInputs: response.data ? response.data.map(function(name) { return {name , value : ''}}) : []
       } as IRunModel}
+      enableReinitialize={true}
       //validationSchema={validationSchema}
       validateOnChange={true}
       onSubmit={(values) => {
@@ -425,12 +222,15 @@ function RunModel() {
       {formik => {
         React.useEffect(() => {
           const product = lodash.find(products, { name: formik.values.loanDetails.product });
-        //  formik.setValues("manualInputs", manualInputsSample.manualInputs)
           setProduct(product);
           if (product) {
             setPurposes(product.policy.loanPurpose);
+            trigger(product._id!) //.then(() => {console.log("here in success"); console.log(response)}); // triggering api to get the manual inputs for the selected product
+            //setManualInputs(response?.data.map(function(name) { return {name , value : ''}}))
+            
           }
         }, [formik.values.loanDetails.product]);
+
 
         return (
           <Form>
@@ -445,7 +245,7 @@ function RunModel() {
 
                   <Grid container style={{ padding: '30px' }}>
 
-                    <SelectDropdown fieldname={'Product'} path={'loanDetails.product'} options={products} />
+                    <SelectDropdown fieldname={'Product'} path={'loanDetails.product'} options={products!} />
 
                     <CustomTextField fieldname={'Loan Amount(£)'} path={'loanDetails.amount'} type={'number'} />
 
@@ -453,7 +253,7 @@ function RunModel() {
 
                     <CustomTextField fieldname={'Term(Months)'} path={'loanDetails.term'} type={'number'} />
 
-                    <SelectDropdown2 fieldname={'Purpose'} path={'loanDetails.purpose'} options={purposes} />
+                    <SelectDropdown2 fieldname={'Purpose'} path={'loanDetails.purpose'} options={purposes!} />
 
                     <CustomTextField fieldname={'Company Name'} path={'loanDetails.customerId'} type={'text'} />
 
@@ -472,9 +272,9 @@ function RunModel() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
                   <Grid container style={{ padding: '30px' }}>
-                    {formik.values.manualInputs.map((f, i) => (
+                    {/* {formik.values.manualInputs.map((f, i) => (
                       <ManualTextInputFieldWithSwitch key={i} fieldname={f.name} path={`manualInputs[${i}].value`} />
-                    ))}
+                    ))} */}
                   </Grid>
                 </div>
               </CardContent>

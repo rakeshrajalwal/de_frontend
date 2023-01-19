@@ -1,4 +1,5 @@
 export interface IProduct {
+    _id?: string,
     name: string,
     policy: IPolicy,
     factors: {
@@ -13,10 +14,10 @@ export interface IProduct {
     }[]
 }
 
-export interface IManualInputs {
-    name : string,
-    value : number | string
-}
+// export interface IManualInputs {
+//     name : string,
+//     value : number | string
+// }
 
 export interface IRunModel {
     model?: IModel,
@@ -34,6 +35,20 @@ export interface IRunModel {
     }[]
 
 }
+
+// export interface IRunModel {
+//     model?: IModel,
+//     loanDetails: {
+//         product: string,
+//         amount: string,
+//         secured: boolean,
+//         term: string,
+//         purpose: string,
+//         customerId: string
+//     },
+//     manualInputs: string[]
+
+// }
 
 
 export interface IRange {
