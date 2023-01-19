@@ -11,7 +11,7 @@ export const deApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl }),
     endpoints: (builder) => ({
         getAllProducts: builder.query<IProduct[], void>({
-            query: () => `products/all`,
+            query: () => `/products`,
         }),
         createModel: builder.mutation({
             query: (payload) => ({
