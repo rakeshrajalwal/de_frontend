@@ -1,0 +1,510 @@
+[
+  {
+    "_id": "model-PropertyBorrower",
+    "product": "Working Capital Loan",
+    "name": "model-PropertyBorrower",
+    "policy": {
+      "loanRange": {
+        "min": 2000,
+        "max": 5000
+      },
+      "loanTermInMonths": {
+        "min": 24,
+        "max": 30
+      },
+      "loanPurpose": [
+        "biz growth",
+        "expansion"
+      ],
+      "isSecured": true
+    },
+    "factors": [
+      {
+        "name": "Financial Strength",
+        "subFactors": [
+          {
+            "name": "Market Conditions",
+            "signals": [
+              {
+                "name": "Sector Appetite",
+                "weight": 50,
+                "overallWeight": 6,
+                "criteria": {
+                  "strong": {
+                    "min": 2,
+                    "max": 3
+                  },
+                  "good": {
+                    "min": 3,
+                    "max": 4.1
+                  },
+                  "satisfactory": {
+                    "min": 4.1,
+                    "max": 5.9
+                  },
+                  "weak": {
+                    "min": 5.9,
+                    "max": 7
+                  }
+                }
+              },
+              {
+                "name": "BusinessVsSector_GPRatio",
+                "weight": 12.5,
+                "overallWeight": 1.5,
+                "criteria": {
+                  "strong": {
+                    "min": 10,
+                    "max": 15
+                  },
+                  "good": {
+                    "min": 5,
+                    "max": 10
+                  },
+                  "satisfactory": {
+                    "min": -5,
+                    "max": 5
+                  },
+                  "weak": {
+                    "min": -10,
+                    "max": -5
+                  }
+                }
+              },
+              {
+                "name": "BusinessVsSector_NPRatio",
+                "weight": 12.5,
+                "overallWeight": 1.5,
+                "criteria": {
+                  "strong": {
+                    "min": 10,
+                    "max": 15
+                  },
+                  "good": {
+                    "min": 5,
+                    "max": 10
+                  },
+                  "satisfactory": {
+                    "min": -5,
+                    "max": 5
+                  },
+                  "weak": {
+                    "min": -10,
+                    "max": -5
+                  }
+                }
+              },
+              {
+                "name": "BusinessVsSector_Leverage",
+                "weight": 12.5,
+                "overallWeight": 1.5,
+                "criteria": {
+                  "strong": {
+                    "min": 50,
+                    "max": 75
+                  },
+                  "good": {
+                    "min": 75,
+                    "max": 90
+                  },
+                  "satisfactory": {
+                    "min": 90,
+                    "max": 110
+                  },
+                  "weak": {
+                    "min": 110,
+                    "max": 130
+                  }
+                }
+              },
+              {
+                "name": "BusinessVsSector_Gearing",
+                "weight": 12.5,
+                "overallWeight": 1.5,
+                "criteria": {
+                  "strong": {
+                    "min": 50,
+                    "max": 75
+                  },
+                  "good": {
+                    "min": 75,
+                    "max": 90
+                  },
+                  "satisfactory": {
+                    "min": 90,
+                    "max": 110
+                  },
+                  "weak": {
+                    "min": 110,
+                    "max": 130
+                  }
+                }
+              }
+            ],
+            "weight": 20
+          },
+          {
+            "name": "Debt Service",
+            "signals": [
+              {
+                "name": "EBIDTAvsDSC",
+                "weight": 100,
+                "overallWeight": 12,
+                "criteria": {
+                  "strong": {
+                    "min": 200,
+                    "max": 250
+                  },
+                  "good": {
+                    "min": 160,
+                    "max": 200
+                  },
+                  "satisfactory": {
+                    "min": 130,
+                    "max": 160
+                  },
+                  "weak": {
+                    "min": 100,
+                    "max": 130
+                  }
+                }
+              }
+            ],
+            "weight": 20
+          },
+          {
+            "name": "Financial stability",
+            "signals": [
+              {
+                "name": "TurnoverChangeYoY",
+                "weight": 15,
+                "overallWeight": 2.7,
+                "criteria": {
+                  "strong": {
+                    "min": 20,
+                    "max": 25
+                  },
+                  "good": {
+                    "min": 15,
+                    "max": 20
+                  },
+                  "satisfactory": {
+                    "min": 10,
+                    "max": 15
+                  },
+                  "weak": {
+                    "min": 5,
+                    "max": 10
+                  }
+                }
+              },
+              {
+                "name": "EBIDTA_Ratio",
+                "weight": 20,
+                "overallWeight": 3.6,
+                "criteria": {
+                  "strong": {
+                    "min": 20,
+                    "max": 25
+                  },
+                  "good": {
+                    "min": 10,
+                    "max": 20
+                  },
+                  "satisfactory": {
+                    "min": 5,
+                    "max": 10
+                  },
+                  "weak": {
+                    "min": 0,
+                    "max": 5
+                  }
+                }
+              },
+              {
+                "name": "StressedEBIDTAvsDSC",
+                "weight": 50,
+                "overallWeight": 9,
+                "criteria": {
+                  "strong": {
+                    "min": 150,
+                    "max": 175
+                  },
+                  "good": {
+                    "min": 100,
+                    "max": 150
+                  },
+                  "satisfactory": {
+                    "min": 75,
+                    "max": 100
+                  },
+                  "weak": {
+                    "min": 50,
+                    "max": 75
+                  }
+                }
+              },
+              {
+                "name": "RetainedProfits",
+                "weight": 15,
+                "overallWeight": 2.7,
+                "criteria": {
+                  "strong": {
+                    "min": 150,
+                    "max": 200
+                  },
+                  "good": {
+                    "min": 100,
+                    "max": 150
+                  },
+                  "satisfactory": {
+                    "min": 50,
+                    "max": 100
+                  },
+                  "weak": {
+                    "min": 0,
+                    "max": 50
+                  }
+                }
+              }
+            ],
+            "weight": 30
+          },
+          {
+            "name": "Gearing ratio",
+            "signals": [
+              {
+                "name": "GearingRatio",
+                "weight": 100,
+                "overallWeight": 9,
+                "criteria": {
+                  "strong": {
+                    "min": 0,
+                    "max": 75
+                  },
+                  "good": {
+                    "min": 75,
+                    "max": 150
+                  },
+                  "satisfactory": {
+                    "min": 150,
+                    "max": 250
+                  },
+                  "weak": {
+                    "min": 250,
+                    "max": 300
+                  }
+                }
+              }
+            ],
+            "weight": 15
+          },
+          {
+            "name": "Leverage",
+            "signals": [
+              {
+                "name": "Leverage",
+                "weight": 100,
+                "overallWeight": 9,
+                "criteria": {
+                  "strong": {
+                    "min": 0,
+                    "max": 75
+                  },
+                  "good": {
+                    "min": 75,
+                    "max": 150
+                  },
+                  "satisfactory": {
+                    "min": 150,
+                    "max": 250
+                  },
+                  "weak": {
+                    "min": 250,
+                    "max": 300
+                  }
+                }
+              }
+            ],
+            "weight": 15
+          }
+        ],
+        "weight": 60
+      },
+      {
+        "name": "Strength of Business Owner/Guarantor & Security Package",
+        "subFactors": [
+          {
+            "name": "Financial Capacity & Willingness to Support",
+            "signals": [
+              {
+                "name": "DebtInBusiness",
+                "weight": 20,
+                "overallWeight": 6,
+                "criteria": {
+                  "strong": {
+                    "min": 150,
+                    "max": 200
+                  },
+                  "good": {
+                    "min": 100,
+                    "max": 150
+                  },
+                  "satisfactory": {
+                    "min": 75,
+                    "max": 100
+                  },
+                  "weak": {
+                    "min": 50,
+                    "max": 75
+                  }
+                }
+              },
+              {
+                "name": "SponsorNetWorthVsFacilityApplied",
+                "weight": 25,
+                "overallWeight": 7.5,
+                "criteria": {
+                  "strong": {
+                    "min": 200,
+                    "max": 250
+                  },
+                  "good": {
+                    "min": 150,
+                    "max": 200
+                  },
+                  "satisfactory": {
+                    "min": 100,
+                    "max": 150
+                  },
+                  "weak": {
+                    "min": 50,
+                    "max": 100
+                  }
+                }
+              },
+              {
+                "name": "Sponsor Credit Score",
+                "weight": 20,
+                "overallWeight": 6,
+                "criteria": {
+                  "strong": {
+                    "min": 800,
+                    "max": 900
+                  },
+                  "good": {
+                    "min": 700,
+                    "max": 800
+                  },
+                  "satisfactory": {
+                    "min": 600,
+                    "max": 700
+                  },
+                  "weak": {
+                    "min": 500,
+                    "max": 600
+                  }
+                }
+              },
+              {
+                "name": "SponsorLiabilitiesVsFacilityApplied",
+                "weight": 25,
+                "overallWeight": 7.5,
+                "criteria": {
+                  "strong": {
+                    "min": 200,
+                    "max": 250
+                  },
+                  "good": {
+                    "min": 150,
+                    "max": 200
+                  },
+                  "satisfactory": {
+                    "min": 100,
+                    "max": 150
+                  },
+                  "weak": {
+                    "min": 50,
+                    "max": 100
+                  }
+                }
+              },
+              {
+                "name": "Business Interuption Insurance",
+                "weight": 10,
+                "overallWeight": 3,
+                "criteria": {
+                  "strong": {
+                    "min": 12,
+                    "max": 15
+                  },
+                  "good": {
+                    "min": 6,
+                    "max": 12
+                  },
+                  "satisfactory": {
+                    "min": 3,
+                    "max": 6
+                  },
+                  "weak": {
+                    "min": 0,
+                    "max": 3
+                  }
+                }
+              }
+            ],
+            "weight": 100
+          }
+        ],
+        "weight": 30
+      },
+      {
+        "name": "Transaction Characteristics ",
+        "subFactors": [
+          {
+            "name": "Term of Loan vs. Purpose",
+            "signals": [
+              {
+                "name": "TermvsPurpose",
+                "weight": 100,
+                "overallWeight": 10,
+                "criteria": {
+                  "strong": {
+                    "min": 3,
+                    "max": 4
+                  },
+                  "good": {
+                    "min": 2,
+                    "max": 3
+                  },
+                  "satisfactory": {
+                    "min": 1,
+                    "max": 2
+                  },
+                  "weak": {
+                    "min": 0,
+                    "max": 1
+                  }
+                }
+              }
+            ],
+            "weight": 100
+          }
+        ],
+        "weight": 10
+      }
+    ],
+    "info": {
+      "createdBy": "cu",
+      "createdAt": "2023-01-18 00:44:16",
+      "approvalStatus": "draft",
+      "isActive": false,
+      "runCount": 0
+    },
+    "lastRun": {
+      "source": "nCino",
+      "runAt": "2023-01-18 00:44:16"
+    },
+    "__v": 0
+  }
+]

@@ -32,13 +32,13 @@ import Logout from "./pages/decisionengine/Logout";
 import SimpleTable from "./pages/tables/SimpleTable";
 import AdvancedTable from "./pages/tables/AdvancedTable";
 
-
 // Landing
 import Landing from "./pages/presentation/Landing";
 
 // Protected routes
 import ProtectedPage from "./pages/protected/ProtectedPage";
 import Page404 from "./pages/auth/Page404";
+import PreviewModel from "./pages/decisionengine/PreviewModel";
 
 //const SaaS = async(() => import("./pages/dashboards/SaaS"));
 
@@ -96,17 +96,22 @@ const routes = [
         element: <CreateModel />,
       },
       {
+        path: "/model/:id/edit",
+        element: <CreateModel />,
+      },
+      {
         path: "/model/view",
         element: <ViewModels />,
       },
       {
-        path: "/model/run",
-        element: <RunModel />,
+        path: "/model/preview",
+        element: <PreviewModel />,
       },
       {
         path: "/model/run",
         element: <RunModel />,
       },
+
     ],
   },
   {
