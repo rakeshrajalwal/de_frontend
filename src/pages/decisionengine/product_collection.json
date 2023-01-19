@@ -1,0 +1,136 @@
+{
+    "productId": "product101",
+    "name": "Working Capital Loan",
+    "factors": [
+      {
+        "name": "Financial Strength",
+        "subFactors": [
+          {
+            "name": "Market Conditions ",
+            "signals": [
+              {
+                "name": "BusinessVsSector_GPRatio",
+                "isReverseScale": false
+              },
+              {
+                "name": "BusinessVsSector_NPRatio",
+                "isReverseScale": false
+              },
+              {
+                "name": "BusinessVsSector_Leverage",
+                "isReverseScale": true
+              },
+              {
+                "name": "BusinessVsSector_Gearing",
+                "isReverseScale": true
+              }
+            ]
+          },
+          {
+            "name": "Debt Service",
+            "signals": [
+              {
+                "name": "EBIDTAvsDSC",
+                "isReverseScale": false
+              }
+            ]
+          },
+          {
+            "name": "Financial Stability",
+            "signals": [
+              {
+                "name": "TurnoverChangeYoY",
+                "isReverseScale": false
+              },
+              {
+                "name": "EBIDTA_Ratio",
+                "isReverseScale": false
+              },
+              {
+                "name": "StressedEBIDTAvsDSC",
+                "isReverseScale": false
+              },
+              {
+                "name": "RetainedProfits",
+                "isReverseScale": false
+              }
+            ]
+          },
+          {
+            "name": "Gearing ratio",
+            "signals": [
+              {
+                "name": "GearingRatio",
+                "isReverseScale": true
+              }
+            ]
+          },
+          {
+            "name": "Leverage",
+            "signals": [
+              {
+                "name": "Leverage",
+                "isReverseScale": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Strength of Business Owner/Guarantor & Security Package",
+        "subFactors": [
+          {
+            "name": "Financial Capacity & Willingness to Support",
+            "signals": [
+              {
+                "name": "SpnsorLiabilitiesVsFacilityApplied",
+                "isReverseScale": false
+              },
+              {
+                "name": "SpnsorNetWorthVsFacilityApplied",
+                "isReverseScale": false
+              },
+              {
+                "name": "PromotersCreditScore",
+                "isReverseScale": false
+              },
+              {
+                "name": "BusinessInterruptionInsurance",
+                "isReverseScale": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Transaction Characteristics ",
+        "subFactors": [
+          {
+            "name": "Term of Loan vs. Purpose",
+            "signals": [
+              {
+                "name": "TermVsPurpose",
+                "isReverseScale": true
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "policy": {
+      "loanRange": {
+        "min": 1000,
+        "max": 5000000
+      },
+      "loanTermInMonths": {
+        "min": 24,
+        "max": 30
+      },
+      "loanPurpose": [
+        "biz growth",
+        "expansion"
+      ],
+      "isSecured": true
+    }
+  }
+  

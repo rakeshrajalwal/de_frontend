@@ -6,6 +6,10 @@ import {
     Card,
     TextField,
     Typography,
+    Button,
+    RadioGroup,
+    FormControlLabel,
+    Radio,
     MenuItem,
     Select,
     FormControl, FormHelperText
@@ -54,7 +58,7 @@ export const PolicyEditor = ({ products }: { products: IProduct[] }) => {
                                     variant="standard"
                                     {...product}
                                 >
-                                    {products.map(p => <MenuItem key={p.name} value={p.name}>{p.name}</MenuItem>)}
+                                    {products?.map(p => <MenuItem key={p.name} value={p.name}>{p.name}</MenuItem>)}
                                 </Select>
                             </ControlContainer>
                         </Grid>

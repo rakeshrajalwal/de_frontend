@@ -6,15 +6,15 @@ interface NumberEditorProps {
     inputWidth: number | string,
 }
 export const NumberEditor = ({ error, ...textFieldProps }: TextFieldProps) => (
-        <TextField
-            fullWidth
-            type={'number'}
-            size={"small"}
-            error={!!error}
-            helperText={error}
-            inputProps={{ style: { textAlign: 'center' } }}
-            {...textFieldProps}
-        />
+    <TextField
+        fullWidth
+        type={'number'}
+        size={"small"}
+        error={!!error}
+        helperText={error}
+        inputProps={{ style: { textAlign: 'center' } }}
+        {...textFieldProps}
+    />
 )
 
 /* component that takes the min and max values in any range eg.loanrange. with all necessary validations */
@@ -22,7 +22,7 @@ export const RangeEditor = ({
     fieldPath,
     oneEndOnly = false,
     onChange = () => { },
-    textFieldProps
+    textFieldProps,
 }: { textFieldProps?: TextFieldProps, oneEndOnly?: boolean, fieldPath: string, openRange?: boolean, onChange?: (e: React.ChangeEvent<any>) => void }) => {
     const [minField, minMeta, helper] = useField(`${fieldPath}.min`);
     const [maxField, maxMeta] = useField(`${fieldPath}.max`);

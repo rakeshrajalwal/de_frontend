@@ -38,6 +38,7 @@ import Landing from "./pages/presentation/Landing";
 // Protected routes
 import ProtectedPage from "./pages/protected/ProtectedPage";
 import Page404 from "./pages/auth/Page404";
+import PreviewModel from "./pages/decisionengine/PreviewModel";
 
 //const SaaS = async(() => import("./pages/dashboards/SaaS"));
 
@@ -101,6 +102,10 @@ const routes = [
       {
         path: "/model/view",
         element: <ViewModels />,
+      },
+      {
+        path: "/model/preview",
+        element: <PreviewModel />,
       },
       {
         path: "/model/run",

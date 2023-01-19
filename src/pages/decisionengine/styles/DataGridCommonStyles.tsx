@@ -1,9 +1,9 @@
 const paperSx = {
-    "& MuiPaper-root": {
-        fontFamily: "Verdana",
-    },
     "& .css-1bpvgg-MuiPaper-root": {
         padding: "10rem",
+    },
+    '& .super-app-theme--failure': {
+        backgroundColor: '#FB0102'
     },
 };
 
@@ -12,7 +12,6 @@ const datagridSx = {
         backgroundColor: "#D9F1FC",
     },
     "& .MuiDataGrid-columnHeaderTitle": {
-        fontFamily: "Verdana",
         fontWeight: "bold",
         letterSpacing: "0.05ex",
         opacity: 1,
@@ -22,7 +21,6 @@ const datagridSx = {
         backgroundColor: "#F3FBFE",
     },
     "& .MuiDataGrid-cellContent": {
-        fontFamily: "Verdana",
         wordWrap: "break-word !important",
         textAlign: "center",
         fontSize: "1.7ex",
@@ -49,7 +47,7 @@ const datagridSx = {
 const MultiStringCell = ({ value }: { value?: string[] }) => (
     <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', fontSize: '1.6ex' }}>
         {value?.map((text, i) => (
-            <div key={i} style={{ fontSize: `${i == 0 ? 2 : 1.4}ex`, fontFamily: "Verdana", }}>
+            <div key={i} style={{ fontSize: `${i == 0 ? 2 : 1.4}ex`, }}>
                 {text}
             </div>
         ))}

@@ -1,23 +1,22 @@
 import * as React from 'react';
-import { useParams } from 'react-router';
-import { useCreateModelMutation , useGetAllProductsQuery } from '../../redux/de';
+import { useCreateModelMutation } from '../../redux/de';
 import {
     CardContent,
     Card,
-    Typography,
-    Button as MuiButton, CardHeader, Snackbar
+    Button as MuiButton,
+    CardHeader,
+    Snackbar,
 } from "@mui/material";
-import { Form, Formik, useField, useFormik } from "formik";
+import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
-import { INode, IProduct, IModel, IPolicy } from "./interfaces/ModelInterface"
+import { IProduct, IModel } from "./interfaces/ModelInterface"
 import './styles/CreateModel.css';
 import lodash from 'lodash';
 import * as Yup from "yup";
 import { TotalWeight } from "./editors/WeightEditor";
 import { useNavigate } from "react-router-dom";
 const axios = require('axios');
-import { useEffect } from 'preact/hooks';
 import './styles/CreateModel.css';
 import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
@@ -131,7 +130,7 @@ const validationSchema = Yup.object().shape({
     policy: Yup.object().shape({
         loanRange: positiveIntRangeSchema,
         loanTermInMonths: positiveIntRangeSchema,
-        loanPurpose: Yup.array().of(Yup.string().required()).required().min(1,"minimum 1 is required")
+        loanPurpose: Yup.array().of(Yup.string().required()).required().min(1, "minimum 1 is required")
     }),
     factors: Yup.array().of(Yup.object().shape({
         weight: Yup.number().required().min(0).max(100),
@@ -178,7 +177,7 @@ const CreateModel = () => {
 
     // function that sends the create model api request
     async function submitModel(values: IModel) {
-        
+
         await addNewModel(values)
             .unwrap()
             .then(() => {
@@ -207,7 +206,7 @@ const CreateModel = () => {
             validateOnBlur={validateOnChange}
             validateOnChange={validateOnChange}
             onSubmit={(values) => {
-               // setValidateOnChange(true);
+                // setValidateOnChange(true);
                 //submitModel(values);
                 // var value = JSON.stringify(values, null, 2);
                 console.log(JSON.stringify(values, null, 2), " the value")
@@ -239,7 +238,7 @@ const CreateModel = () => {
                 return (
                     <Form>
                         <CardHeader title={"Create Model"} titleTypographyProps={{ variant: "h3" }}
-                            action={<div style={{ display: 'flex', justifyContent: 'space-between' , gap: 10}}>
+                            action={<div style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
                                 <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? true : false}
                                     style={{ backgroundColor: formik.isValid && formik.dirty ? 'green' : 'blue', color: 'white' }}>Validate</Button>
                                 <Button type="submit" variant={"contained"} disabled={formik.isValid && formik.dirty ? false : true}>Submit</Button>
@@ -287,4 +286,4 @@ const CreateModel = () => {
     )
 }
 
-export default CreateModel
+export default CreateModel;
