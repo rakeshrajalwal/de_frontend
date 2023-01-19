@@ -125,16 +125,17 @@ const CustomSwitch = ({ fieldname, path }: { fieldname: string, path: string }) 
 }
 
 const TextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path: string }) => {
-  const [field, meta, helpers] = useField(`${path}`);
-  const [switchState, setSwitchState] = React.useState<boolean>(false);
+  const [field, meta, helpers] = useField(`${path}.value`);
+  const [field2, meta2, helpers2] = useField(`${path}.switchstate`);
+  // const [switchState, setSwitchState] = React.useState<boolean>(false);
 
   // reseting the value when switch is turned off and managing switch state
   function handleClick() {
-    if (switchState) {
-      setSwitchState(false);
+    if (field2.value) {
+      helpers2.setValue(false)
       helpers.setValue('')
     } else {
-      setSwitchState(true);
+      helpers2.setValue(true);
     }
   }
 
@@ -148,14 +149,16 @@ const TextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path
           <Typography>:</Typography>
         </Grid>
         <Grid item md={2}>
-          <CustomStyledSwitch size="medium" checked={switchState}
+          <CustomStyledSwitch size="medium" checked={field2.value}
             onChange={handleClick}
           />
         </Grid>
-        {switchState && <Grid item md={5} >
+        {field2.value && <Grid item md={5} >
           <TextField
             fullWidth
             variant="standard"
+            helperText={meta.error}
+            error={!!meta.error}
             {...field}
           />
         </Grid>}
@@ -205,7 +208,15 @@ const validationSchema = Yup.object().shape({
     purpose: requiredString,
     customerId: requiredString
   }),
+  manualInputs :  Yup.array().of(Yup.object().shape({
+    switchstate : Yup.boolean(),
+    value : Yup.string().when("switchstate", {
+      is:true,
+      then: Yup.string().required('required')
+    })
+  }))
 });
+
 
 function RunModel() {
   const [product, setProduct] = React.useState<IProduct>();
@@ -225,7 +236,7 @@ function RunModel() {
           purpose: '',
           customerId: ''
         },
-        manualInputs: response.data ? response.data.map(function (name) { return { name, value: '' } }) : []
+        manualInputs: response.data ? response.data.map(function (name) { return { name, value: '', switchstate: false } }) : []
       } as IRunModel}
       enableReinitialize={true}
       validationSchema={validationSchema}
@@ -287,7 +298,7 @@ function RunModel() {
 
                   <Grid container style={{ padding: '30px' }}>
                     {formik.values.manualInputs.map((f, i) => (
-                      <TextInputFieldWithSwitch key={i} fieldname={f.name} path={`manualInputs[${i}].value`} />
+                      <TextInputFieldWithSwitch key={i} fieldname={f.name} path={`manualInputs[${i}]`} />
                     ))}
                   </Grid>
                 </div>
