@@ -7,7 +7,8 @@ export interface IProduct {
         subFactors: {
             name: string,
             signals: {
-                name: string
+                name: string,
+                isReverseScale?: boolean
             }[]
         }[]
     }[]
