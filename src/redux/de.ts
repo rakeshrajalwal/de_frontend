@@ -15,7 +15,7 @@ export const deApi = createApi({
         }),
         createModel: builder.mutation({
             query: (payload) => ({
-                url: '/models/create_model',
+                url: '/models/',
                 method: 'POST',
                 body: payload,
                 headers: {
