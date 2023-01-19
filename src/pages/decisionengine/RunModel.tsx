@@ -5,7 +5,7 @@ import {
   Card,
   TextField,
   Typography, CardHeader, Button,
-  MenuItem, Switch, Select
+  MenuItem, Switch, Select, FormControl, FormHelperText
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { Form, Formik, useField } from "formik";
@@ -128,12 +128,12 @@ const TextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path
   const [field, meta, helpers] = useField(`${path}`);
   const [switchState, setSwitchState] = React.useState<boolean>(false);
 
-   // reseting the value when switch is turned off and managing switch state
-  function handleClick(){
-    if(switchState) {
+  // reseting the value when switch is turned off and managing switch state
+  function handleClick() {
+    if (switchState) {
       setSwitchState(false);
       helpers.setValue('')
-    }else {
+    } else {
       setSwitchState(true);
     }
   }
@@ -164,35 +164,9 @@ const TextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path
   )
 }
 
-const SelectDropdown = ({ fieldname, options, path }: { fieldname: string, options: any[], path: string }) => {
+const SelectDropdown = ({ fieldname, options, path }: { fieldname: string, options: string[], path: string }) => {
   const [field, meta, helpers] = useField(`${path}`)
-  console.log(options, "options")
-  return (
-    <Grid item md={8} mt={3}>
-      <ControlContainer>
-        <Grid item md={3}>
-          <Label>{fieldname}</Label>
-        </Grid>
-        <Grid item md={1}>
-          <Typography>:</Typography>
-        </Grid>
-        <Grid item md={9}>
-          <Select
-            fullWidth
-            variant="standard"
-            error={!!meta.error}
-            {...field}
-          >
-            {options?.map(p => <MenuItem key={p.name} value={p.name}>{p.name}</MenuItem>)}
-          </Select>
-        </Grid>
-      </ControlContainer>
-    </Grid>
-  )
-}
 
-const SelectDropdown2 = ({ fieldname, options, path }: { fieldname: string, options: any[], path: string }) => {
-  const [field, meta, helpers] = useField(`${path}`)
   return (
     <Grid item md={8} mt={3}>
       <ControlContainer>
@@ -203,14 +177,17 @@ const SelectDropdown2 = ({ fieldname, options, path }: { fieldname: string, opti
           <Typography>:</Typography>
         </Grid>
         <Grid item md={9}>
-          <Select
-            fullWidth
-            variant="standard"
-            error={!!meta.error}
-            {...field}
-          >
-            {options.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
-          </Select>
+          <FormControl fullWidth  >
+            <Select
+              fullWidth
+              variant="standard"
+              error={!!meta.error}
+              {...field}
+            >
+              {options?.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)}
+            </Select>
+            {!!meta.error && <FormHelperText error >{meta.error}</FormHelperText>}
+          </FormControl>
         </Grid>
       </ControlContainer>
     </Grid>
@@ -220,12 +197,13 @@ const SelectDropdown2 = ({ fieldname, options, path }: { fieldname: string, opti
 const positiveInteger = Yup.number().required('Required').positive("Should be positive").integer('Should be integer');
 const requiredString = Yup.string().required('Required');
 const validationSchema = Yup.object().shape({
-  name: requiredString,
-  loan_details: Yup.object().shape({
+  loanDetails: Yup.object().shape({
+    product: requiredString,
     amount: positiveInteger,
+    secured: requiredString,
     term: positiveInteger,
     purpose: requiredString,
-    company_name: requiredString
+    customerId: requiredString
   }),
 });
 
@@ -234,7 +212,7 @@ function RunModel() {
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
   const [purposes, setPurposes] = React.useState<string[]>([]);
   const { data: products } = useGetAllProductsQuery();// fetching all the products
-  const [trigger, response ] = useLazyGetManualInputsByProductNameQuery();// query to fetch manualinputs
+  const [trigger, response] = useLazyGetManualInputsByProductNameQuery();// query to fetch manualinputs
 
   return (
     <Formik
@@ -247,13 +225,12 @@ function RunModel() {
           purpose: '',
           customerId: ''
         },
-        manualInputs: response.data ? response.data.map(function(name) { return {name , value : ''}}) : []
+        manualInputs: response.data ? response.data.map(function (name) { return { name, value: '' } }) : []
       } as IRunModel}
       enableReinitialize={true}
-      //validationSchema={validationSchema}
+      validationSchema={validationSchema}
       validateOnChange={true}
       onSubmit={(values) => {
-        // setValidateOnChange(true);
         console.log(JSON.stringify(values, null, 2))
         alert(JSON.stringify(values, null, 2));
       }}
@@ -282,7 +259,7 @@ function RunModel() {
 
                   <Grid container style={{ padding: '30px' }}>
 
-                    <SelectDropdown fieldname={'Product'} path={'loanDetails.product'} options={products!} />
+                    <SelectDropdown fieldname={'Product'} path={'loanDetails.product'} options={products?.map((i) => i.name)!} />
 
                     <CustomTextField fieldname={'Loan Amount(£)'} path={'loanDetails.amount'} type={'number'} />
 
@@ -290,7 +267,7 @@ function RunModel() {
 
                     <CustomTextField fieldname={'Term(Months)'} path={'loanDetails.term'} type={'number'} />
 
-                    <SelectDropdown2 fieldname={'Purpose'} path={'loanDetails.purpose'} options={purposes!} />
+                    <SelectDropdown fieldname={'Purpose'} path={'loanDetails.purpose'} options={purposes!} />
 
                     <CustomTextField fieldname={'Company Name'} path={'loanDetails.customerId'} type={'text'} />
 
@@ -309,9 +286,9 @@ function RunModel() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
                   <Grid container style={{ padding: '30px' }}>
-                     {formik.values.manualInputs.map((f, i) => (
+                    {formik.values.manualInputs.map((f, i) => (
                       <TextInputFieldWithSwitch key={i} fieldname={f.name} path={`manualInputs[${i}].value`} />
-                    ))} 
+                    ))}
                   </Grid>
                 </div>
               </CardContent>
