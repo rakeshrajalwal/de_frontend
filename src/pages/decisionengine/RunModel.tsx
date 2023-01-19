@@ -11,9 +11,41 @@ import styled from "@emotion/styled";
 import { Form, Formik, useField } from "formik";
 import { IProduct, IRunModel } from './interfaces/ModelInterface';
 import { useGetAllProductsQuery, useGetManualInputsByProductNameQuery, useLazyGetManualInputsByProductNameQuery } from '../../redux/de';
-import { skipToken } from '@reduxjs/toolkit/query'
 import lodash from 'lodash';
 import * as Yup from "yup";
+
+const CustomStyledSwitch = styled(Switch)(({ theme }) => ({
+  padding: 8,
+  '& .MuiSwitch-track': {
+    borderRadius: 22 / 2,
+    '&:before, &:after': {
+      content: '""',
+      position: 'absolute',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      width: 16,
+      height: 16,
+    },
+    '&:before': {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText(theme.palette.primary.main),
+      )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+      left: 12,
+    },
+    '&:after': {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText(theme.palette.primary.main),
+      )}" d="M19,13H5V11H19V13Z" /></svg>')`,
+      right: 12,
+    },
+  },
+  '& .MuiSwitch-thumb': {
+    boxShadow: 'none',
+    width: 16,
+    height: 16,
+    margin: 2,
+  },
+}));
 
 const Label = styled(Typography)`
     font-weight: bold;
@@ -81,7 +113,7 @@ const CustomSwitch = ({ fieldname, path }: { fieldname: string, path: string }) 
           <Typography>:</Typography>
         </Grid>
         <Grid item md={9}>
-          <Switch size="medium" checked={field.value}
+          <CustomStyledSwitch size="medium" checked={field.value}
             onChange={(event, checked) => {
               helpers.setValue(field.value ? false : true)
             }}
@@ -92,9 +124,19 @@ const CustomSwitch = ({ fieldname, path }: { fieldname: string, path: string }) 
   )
 }
 
-const ManualTextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path: string }) => {
+const TextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path: string }) => {
   const [field, meta, helpers] = useField(`${path}`);
   const [switchState, setSwitchState] = React.useState<boolean>(false);
+
+   // reseting the value when switch is turned off and managing switch state
+  function handleClick(){
+    if(switchState) {
+      setSwitchState(false);
+      helpers.setValue('')
+    }else {
+      setSwitchState(true);
+    }
+  }
 
   return (
     <Grid item md={8} mt={3}>
@@ -106,10 +148,8 @@ const ManualTextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string
           <Typography>:</Typography>
         </Grid>
         <Grid item md={2}>
-          <Switch size="medium" checked={switchState}
-            onChange={(event, checked) => {
-              switchState ? setSwitchState(false) : setSwitchState(true)
-            }}
+          <CustomStyledSwitch size="medium" checked={switchState}
+            onChange={handleClick}
           />
         </Grid>
         {switchState && <Grid item md={5} >
@@ -194,8 +234,7 @@ function RunModel() {
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
   const [purposes, setPurposes] = React.useState<string[]>([]);
   const { data: products } = useGetAllProductsQuery();// fetching all the products
-  const [trigger, response ] = useLazyGetManualInputsByProductNameQuery();
- // const [manualInputs,setManualInputs] = React.useState<any[]>([])
+  const [trigger, response ] = useLazyGetManualInputsByProductNameQuery();// query to fetch manualinputs
 
   return (
     <Formik
@@ -225,9 +264,7 @@ function RunModel() {
           setProduct(product);
           if (product) {
             setPurposes(product.policy.loanPurpose);
-            trigger(product._id!) //.then(() => {console.log("here in success"); console.log(response)}); // triggering api to get the manual inputs for the selected product
-            //setManualInputs(response?.data.map(function(name) { return {name , value : ''}}))
-            
+            trigger(product._id!) // triggering api to get the manual inputs for the selected product
           }
         }, [formik.values.loanDetails.product]);
 
@@ -272,9 +309,9 @@ function RunModel() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
                   <Grid container style={{ padding: '30px' }}>
-                    {/* {formik.values.manualInputs.map((f, i) => (
-                      <ManualTextInputFieldWithSwitch key={i} fieldname={f.name} path={`manualInputs[${i}].value`} />
-                    ))} */}
+                     {formik.values.manualInputs.map((f, i) => (
+                      <TextInputFieldWithSwitch key={i} fieldname={f.name} path={`manualInputs[${i}].value`} />
+                    ))} 
                   </Grid>
                 </div>
               </CardContent>
