@@ -153,6 +153,7 @@ const CreateModel = () => {
     let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
 
     const { data: products, error, isLoading } = useGetAllProductsQuery();// fetching all the products
+
     const [addNewModel, response] = useCreateModelMutation();// query to create model
 
     //handles notification popups after submitting
@@ -221,7 +222,7 @@ const CreateModel = () => {
                                 <Button type="submit" variant={"contained"} disabled={!validateOnChange || !formik.isValid}>Submit</Button>
                                 <Button onClick={() => formik.setValues(getRandomModel(product!))}>Populate</Button>
                             </div>} />
-                        <PolicyEditor products={products} />
+                        <PolicyEditor products={products!} />
 
                         <Card sx={{ boxShadow: '0px 3px 6px #00000029', marginTop: '15px' }}>
                             <CardContent>
