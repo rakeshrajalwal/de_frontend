@@ -1,7 +1,6 @@
 export interface IProduct {
-    _id?: string,
-    policy: IPolicy,
     name: string,
+    policy: IPolicy,
     factors: {
         name: string,
         subFactors: {
@@ -55,13 +54,15 @@ export interface ILastRun {
     runAt: string,
 }
 
-export interface ICriteria {
-    weak: IRange,
-    satisfactory: IRange,
-    good: IRange,
-    strong: IRange,
-}
-
+export const criteriaRangeNames = ["strong", "good", "satisfactory", "weak"] as const
+type CriteriaRangeName = typeof criteriaRangeNames[number];
+export type TCriteria = Record<CriteriaRangeName, IRange>;
+// export interface ICriteria {
+//     strong: IRange,
+//     good: IRange,
+//     satisfactory: IRange,
+//     weak: IRange
+// }
 export interface IModel {
     __v?: number | string,
     _id?: string,
@@ -79,46 +80,37 @@ export interface IModel {
     runCount?: number,
     lastRun?: ILastRun,
     policy: IPolicy,
-    factors: {
-        _id?: string,
-        name: string,
-        weight: number | string,
-        subFactors: {
-            _id?: string,
-            name: string,
-            weight: number | string,
-            signals: {
-                _id?: string,
-                name: string
-                weight: number | string,
-                overallWeight?: number | string,
-                criteria?: ICriteria,
-            }[]
-        }[]
-    }[]
+    factors: IFactor[],
 }
+
+
+export interface IFactor {
+    _id?: string,
+    name: string,
+    weight: number | string,
+    subFactors: ISubFactor[],
+}
+
+export interface ISubFactor {
+    _id?: string,
+    name: string,
+    weight: number | string,
+    signals: ISignal[],
+}
+
+export interface ISignal {
+    _id?: string,
+    name: string,
+    weight: number | string,
+    overallWeight?: number | string,
+    criteria?: TCriteria,
+}
+
 
 export interface INode {
     name: string,
     subFactors?: INode[],
     signals?: INode[],
     weight: number | string,
-}
-
-export interface IModelRun {
-    model: IModel,
-    loanDetails: {
-        customerId: string,
-        product: string,
-        amount: number,
-        term: number,
-        purpose: string,
-        secured: boolean
-    },
-    manualInputs: {
-        name: string,
-        value: number,
-        _id?: string
-    }[]
-
+    criteria?: TCriteria
 }
