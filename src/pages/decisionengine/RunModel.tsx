@@ -398,7 +398,7 @@ function RunModel() {
   const [purposes, setPurposes] = React.useState<string[]>([]);
   const [manualInputs, getManualInputs] = React.useState<IManualInputs[]>([]);
 
- // getManualInputs(manualInputsSample.manualInputs)
+  // getManualInputs(manualInputsSample.manualInputs)
 
   return (
 
@@ -407,12 +407,12 @@ function RunModel() {
         loanDetails: {
           product: '',
           amount: '',
-          isSecured: false,
+          secured: false,
           term: '',
           purpose: '',
-          companyName: ''
+          customerId: ''
         },
-        manualInputs: manualInputs
+        manualInputs: []
       } as IRunModel}
       //validationSchema={validationSchema}
       validateOnChange={true}
@@ -425,6 +425,7 @@ function RunModel() {
       {formik => {
         React.useEffect(() => {
           const product = lodash.find(products, { name: formik.values.loanDetails.product });
+        //  formik.setValues("manualInputs", manualInputsSample.manualInputs)
           setProduct(product);
           if (product) {
             setPurposes(product.policy.loanPurpose);
