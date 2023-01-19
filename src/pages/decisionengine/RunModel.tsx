@@ -441,7 +441,7 @@ const RunModel = () => {
       }
     ]
   }
-   const { data, error, isLoading } = useGetAllProductsQuery('');
+   const { data, error, isLoading } = useGetAllProductsQuery();
   // const [addNewPost, response] = useCreateModelMutation();
   // var value = JSON.stringify(formData, null, 2);
   // useEffect(() => {
