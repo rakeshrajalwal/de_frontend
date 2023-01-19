@@ -23,8 +23,7 @@ export const RangeEditor = ({
     oneEndOnly = false,
     onChange = () => { },
     textFieldProps,
-    isDisabled = false,
-}: { textFieldProps?: TextFieldProps, oneEndOnly?: boolean, fieldPath: string, openRange?: boolean, isDisabled?: boolean, onChange?: (e: React.ChangeEvent<any>) => void }) => {
+}: { textFieldProps?: TextFieldProps, oneEndOnly?: boolean, fieldPath: string, openRange?: boolean, onChange?: (e: React.ChangeEvent<any>) => void }) => {
     const [minField, minMeta, helper] = useField(`${fieldPath}.min`);
     const [maxField, maxMeta] = useField(`${fieldPath}.max`);
     return (
@@ -39,7 +38,7 @@ export const RangeEditor = ({
                     minField.onChange(e);
                     onChange(e)
                 }}
-                disabled={isDisabled || (oneEndOnly && isNaN(maxField.value))}
+                disabled={oneEndOnly && isNaN(maxField.value)}
             />
             <Typography>to</Typography>
             <NumberEditor
@@ -48,7 +47,7 @@ export const RangeEditor = ({
                 {...maxField}
                 error={!!maxMeta.error}
                 helperText={maxMeta.error}
-                disabled={isDisabled || oneEndOnly}
+                disabled={oneEndOnly}
             />
         </div>
     );
