@@ -371,10 +371,10 @@ const manualInputsSample: IRunModel = {
   loanDetails: {
     product: '',
     amount: '',
-    isSecured: false,
+    secured: false,
     term: '',
     purpose: '',
-    companyName: ''
+    customerId: ''
   },
   manualInputs: [{
     name: 'sponsors networth',
@@ -449,13 +449,13 @@ function RunModel() {
 
                     <CustomTextField fieldname={'Loan Amount(£)'} path={'loanDetails.amount'} type={'number'} />
 
-                    <CustomSwitch fieldname={'Is Secured?'} path={'loanDetails.isSecured'} />
+                    <CustomSwitch fieldname={'Is Secured?'} path={'loanDetails.secured'} />
 
                     <CustomTextField fieldname={'Term(Months)'} path={'loanDetails.term'} type={'number'} />
 
                     <SelectDropdown2 fieldname={'Purpose'} path={'loanDetails.purpose'} options={purposes} />
 
-                    <CustomTextField fieldname={'Company Name'} path={'loanDetails.companyName'} type={'text'} />
+                    <CustomTextField fieldname={'Company Name'} path={'loanDetails.customerId'} type={'text'} />
 
                   </Grid>
                 </div>
