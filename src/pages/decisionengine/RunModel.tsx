@@ -125,20 +125,12 @@ const CustomSwitch = ({ fieldname, path }: { fieldname: string, path: string }) 
 }
 
 const TextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path: string }) => {
-  const [field, meta, helpers] = useField(`${path}.value`);
-  const [field2, meta2, helpers2] = useField(`${path}.switchstate`);
-  // const [switchState, setSwitchState] = React.useState<boolean>(false);
-
-  // reseting the value when switch is turned off and managing switch state
-  function handleClick() {
-    if (field2.value) {
-      helpers2.setValue(false)
-      helpers.setValue('')
-    } else {
-      helpers2.setValue(true);
-    }
-  }
-
+  const [valueField, valueMeta] = useField(`${path}.value`);
+  const [switchField] = useField({
+    name: `${path}.switchstate`,
+    type: 'checkbox'
+  });
+  
   return (
     <Grid item md={8} mt={3}>
       <ControlContainer>
@@ -149,17 +141,15 @@ const TextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path
           <Typography>:</Typography>
         </Grid>
         <Grid item md={2}>
-          <CustomStyledSwitch size="medium" checked={field2.value}
-            onChange={handleClick}
-          />
+          <CustomStyledSwitch {...switchField} />
         </Grid>
-        {field2.value && <Grid item md={5} >
+        {switchField.checked && <Grid item md={5} >
           <TextField
             fullWidth
             variant="standard"
-            helperText={meta.error}
-            error={!!meta.error}
-            {...field}
+            helperText={valueMeta.error}
+            error={!!valueMeta.error}
+            {...valueField}
           />
         </Grid>}
       </ControlContainer>
@@ -167,7 +157,7 @@ const TextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path
   )
 }
 
-const SelectDropdown = ({ fieldname, options, path }: { fieldname: string, options: string[], path: string }) => {
+const SelectDropdown = ({ fieldname, options, path }: { fieldname: string, options?: string[], path: string }) => {
   const [field, meta, helpers] = useField(`${path}`)
 
   return (
@@ -199,46 +189,45 @@ const SelectDropdown = ({ fieldname, options, path }: { fieldname: string, optio
 
 const positiveInteger = Yup.number().required('Required').positive("Should be positive").integer('Should be integer');
 const requiredString = Yup.string().required('Required');
-const validationSchema = Yup.object().shape({
-  loanDetails: Yup.object().shape({
-    product: requiredString,
-    amount: positiveInteger,
-    secured: requiredString,
-    term: positiveInteger,
-    purpose: requiredString,
-    customerId: requiredString
-  }),
-  manualInputs :  Yup.array().of(Yup.object().shape({
-    switchstate : Yup.boolean(),
-    value : Yup.string().when("switchstate", {
-      is:true,
-      then: Yup.string().required('required')
-    })
-  }))
-});
 
 
 function RunModel() {
-  const [product, setProduct] = React.useState<IProduct>();
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
-  const [purposes, setPurposes] = React.useState<string[]>([]);
   const { data: products } = useGetAllProductsQuery();// fetching all the products
-  const [trigger, response] = useLazyGetManualInputsByProductNameQuery();// query to fetch manualinputs
+  const [product, setProduct] = React.useState<IProduct>();
+  const [fetchManualInputs, { data: manualInputNames }] = useLazyGetManualInputsByProductNameQuery();// query to fetch manualinputs
 
+  const validationSchema = Yup.object().shape({
+    loanDetails: Yup.object().shape({
+      product: requiredString,
+      amount: positiveInteger.min(product?.policy.loanRange.min as number).max(product?.policy.loanRange.max as number),
+      secured: requiredString,
+      term: positiveInteger.min(product?.policy.loanTermInMonths.min as number).max(product?.policy.loanTermInMonths.max as number),
+      purpose: requiredString,
+      customerId: requiredString
+    }),
+    manualInputs :  Yup.array().of(Yup.object().shape({
+      switchstate : Yup.boolean(),
+      value : Yup.string().when("switchstate", {
+        is:true,
+        then: Yup.string().required('required')
+      })
+    }))
+  });
+  
   return (
     <Formik
       initialValues={{
         loanDetails: {
-          product: product ? product.name : '',
+          product: '',
           amount: '',
           secured: false,
           term: '',
           purpose: '',
           customerId: ''
         },
-        manualInputs: response.data ? response.data.map(function (name) { return { name, value: '', switchstate: false } }) : []
+        manualInputs: []
       } as IRunModel}
-      enableReinitialize={true}
       validationSchema={validationSchema}
       validateOnChange={validateOnChange}
       validateOnBlur={false}
@@ -251,18 +240,27 @@ function RunModel() {
         React.useEffect(() => {
           const product = lodash.find(products, { name: formik.values.loanDetails.product });
           setProduct(product);
-          if (product) {
-            setPurposes(product.policy.loanPurpose);
-            trigger(product._id!) // triggering api to get the manual inputs for the selected product
+          if(product) {
+            fetchManualInputs(product._id!) // triggering api to get the manual inputs for the selected product
           }
-        }, [formik.values.loanDetails.product]);
+        }, [formik.values.loanDetails.product])
+
+        React.useEffect(() => {
+          formik.setFieldValue("manualInputs", manualInputNames?.map(name => ({ name, value: '', switchstate: true })) || [])
+        }, [manualInputNames])
 
 
+        const handleSubmit = () => {
+          setValidateOnChange(true);
+          formik.validateForm();
+        };
         return (
           <Form>
             <CardHeader title={"Run Model"} titleTypographyProps={{ variant: "h3" }}
               action={<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Button type="submit" variant={"contained"} onClick={() => { setValidateOnChange(true); formik.validateForm(); }}>Submit</Button>
+                <Button type="submit" variant={"contained"} onClick={handleSubmit}>
+                    Submit
+                </Button>
               </div>} />
 
             <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
@@ -279,7 +277,7 @@ function RunModel() {
 
                     <CustomTextField fieldname={'Term(Months)'} path={'loanDetails.term'} type={'number'} />
 
-                    <SelectDropdown fieldname={'Purpose'} path={'loanDetails.purpose'} options={purposes!} />
+                    <SelectDropdown fieldname={'Purpose'} path={'loanDetails.purpose'} options={product?.policy.loanPurpose} />
 
                     <CustomTextField fieldname={'Company Name'} path={'loanDetails.customerId'} type={'text'} />
 
