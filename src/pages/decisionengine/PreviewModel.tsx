@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
-import { IProduct, INode, ISignal, ISubFactor, IFactor } from "./interfaces/ModelInterface";
+import { IProduct, INode, ISignal, ISubFactor, IFactor, IModel } from "./interfaces/ModelInterface";
 import './styles/CreateModel.css';
 import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
@@ -36,7 +36,20 @@ const TableCell = styled(MuiTableCell)(({ theme }) => ({
     },
 }));
 
-const oneModel = modelsJson[0];
+const mj = modelsJson[0];
+const oneModel:IModel = {
+    ...mj,
+    factors: mj.factors.map(f => ({
+        ...f, 
+        subFactors: f.subFactors.map(sf => ({
+            ...sf, 
+            signals: sf.signals.map(sig => ({
+                ...sig, 
+                criteria: [sig.criteria]
+            }))
+        }))
+    }))
+};
 
 function ModelDataGrid() {
 

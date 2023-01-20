@@ -11,7 +11,7 @@ import { useField, useFormik, useFormikContext } from "formik";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 export const CriteriaBar = ({ path, isReverseScale }: { path: string, isReverseScale: boolean }) => {
-    const [, { error, value },] = useField(`${path}.criteria`);
+    const [, { error, value },] = useField(`${path}.criteria[0]`);
     const { strong, good, satisfactory, weak } = value;
     const boundaries = isReverseScale ? [strong.min, good.min, satisfactory.min, weak.min, weak.max] : [weak.min, weak.max, satisfactory.max, good.max, strong.max];
 

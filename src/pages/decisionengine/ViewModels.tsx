@@ -14,10 +14,11 @@ import {
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
 import AccessTime from "@mui/icons-material/AccessTime";
-import modelsJson from "./getmodels.json";
+// import modelsJson from "./getmodels.json";
 import lodash from "lodash";
 import { INode, IProduct, IModel, IRange, IPolicy } from "./interfaces/ModelInterface";
 import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
+import { useGetAllModelsQuery } from "../../redux/de";
 
 const Chip = styled(MuiChip)(spacing);
 
@@ -52,7 +53,8 @@ const columns: GridColDef[] = [
     headerAlign: "center",
   },
   {
-    field: "approvalStatus",
+    field: "info.approvalStatus",
+    valueGetter: ({ row, field }) => lodash.get(row, field),
     headerName: "",
     flex: 0.2,
     headerAlign: "center",
@@ -127,7 +129,8 @@ const columns: GridColDef[] = [
     valueFormatter: ({ value }) => value ? "Yes" : "No",
   },
   {
-    field: "runCount",
+    field: "info.runCount",
+    valueGetter: ({ row, field }) => lodash.get(row, field),
     headerName: "Runs",
     description: "Runs",
     // width: 75,
@@ -136,14 +139,14 @@ const columns: GridColDef[] = [
     align: "center",
   },
   {
-    field: "lastRun",
+    field: "info.lastRun",
+    valueGetter: ({ row, field }) => lodash.get(row, field),
     headerName: "Last Run",
     description: "Last Run",
     // width: 75,
     flex: 7,
     headerAlign: "center",
     align: "center",
-    valueGetter: ({ row: { lastRun } }) => [lastRun.source, lastRun.runAt],
     renderCell: MultiStringCell,
   },
   {
@@ -154,16 +157,17 @@ const columns: GridColDef[] = [
     flex: 7,
     headerAlign: "center",
     align: "center",
-    valueGetter: ({ row: { createdBy, createdOn } }) => [createdBy, createdOn],
+    valueGetter: ({ row: { info:{createdBy, createdOn} } }) => [createdBy, createdOn],
     renderCell: MultiStringCell,
   },
   {
-    field: "isActive",
+    field: "info.isActive",
+    valueGetter: ({ row, field }) => lodash.get(row, field),
     headerName: "",
     // width: 100,
     flex: 5,
     align: "center",
-    renderCell: ({ row: { isActive } }) => (
+    renderCell: ({ value:isActive }) => (
       <Chip
         label={isActive ? "Active" : "Inactive"}
         color={isActive ? "primary" : 'default'}
@@ -177,13 +181,14 @@ const columns: GridColDef[] = [
 ];
 
 function ModelDataGrid() {
+  const {data:models} = useGetAllModelsQuery(undefined, {refetchOnMountOrArgChange:true});
   return (
     <Paper sx={paperSx}>
       <div style={{ height: '25.2rem', width: '100%' }}>
         <DataGrid
           sx={datagridSx}
           // rowsPerPageOptions={[5, 10, 25]}
-          rows={modelsJson}
+          rows={models||[]}
           columns={columns}
           pageSize={5}
           getRowId={(row) => row._id}

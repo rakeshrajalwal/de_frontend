@@ -20,6 +20,7 @@ const axios = require('axios');
 import './styles/CreateModel.css';
 import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
+import * as Faker from 'faker';
 
 const Button = styled(MuiButton)(spacing);
 
@@ -42,12 +43,12 @@ function getEmptyModel(p: IProduct): IModel {
                 signals: sf.signals.map(sig => ({
                     name: sig.name,
                     weight: '0',
-                    criteria: {
+                    criteria: [{
                         strong: { min: '', max: '' },
                         good: { min: '', max: '' },
                         satisfactory: { min: '', max: '' },
                         weak: { min: '', max: '' },
-                    }
+                    }]
                 }))
             }))
         }))
@@ -62,7 +63,7 @@ function randomSplit(total: number, count: number): number[] {
 
 function getRandomModel(p: IProduct): IModel {
     return {
-        name: "m1",
+        name: Faker.name.lastName(),
         product: p.name,
         policy: {
             loanRange: { min: 100000, max: 500000 },
@@ -84,18 +85,18 @@ function getRandomModel(p: IProduct): IModel {
                             return {
                                 name: subFactor.signals[i].name,
                                 weight,
-                                criteria: subFactor.signals[i].isReverseScale ? {
+                                criteria: subFactor.signals[i].isReverseScale ? [{
                                     weak: { min: 200, max: 300 },
                                     satisfactory: { min: 100, max: 200 },
                                     good: { min: 10, max: 100 },
                                     strong: { min: 0, max: 10 }
-                                } : {
+                                }] : [{
                                     strong: { min: 200, max: 300 },
                                     good: { min: 100, max: 200 },
                                     satisfactory: { min: 10, max: 100 },
                                     weak: { min: 0, max: 10 }
 
-                                }
+                                }]
                             }
                         })
                     }
@@ -130,12 +131,12 @@ const validationSchema = Yup.object().shape({
             weight: Yup.number().required().min(0).max(100),
             signals: Yup.array().of(Yup.object().shape({
                 weight: Yup.number().required().min(0).max(100),
-                criteria: Yup.object().shape({
+                criteria: Yup.array().of(Yup.object().shape({
                     strong: rangeSchema,
                     good: rangeSchema,
                     satisfactory: rangeSchema,
                     weak: rangeSchema,
-                })
+                }))
             })).test('sum', 'Sum should be 100', (a) => lodash.sumBy(a, 'weight') === 100)
         })).test('sum', 'Sum should be 100', (a) => lodash.sumBy(a, 'weight') === 100)
     })).test('sum', 'Sum should be 100', (a) => lodash.sumBy(a, 'weight') === 100)
@@ -205,7 +206,7 @@ const CreateModel = () => {
                     const product = lodash.find(products, { name: formik.values.product });
                     setProduct(product);
                     if (product) {
-                        formik.setFieldValue("policy", product.policy);
+                        formik.setFieldValue("policy", {...lodash.cloneDeep(product.policy), loanPurpose:[]});
                         formik.setFieldValue("factors", getEmptyModel(product).factors);
                     }
                 }, [formik.values.product]);
@@ -220,7 +221,7 @@ const CreateModel = () => {
                                 >Validate</Button>
 
                                 <Button type="submit" variant={"contained"} disabled={!validateOnChange || !formik.isValid}>Submit</Button>
-                                <Button onClick={() => formik.setValues(getRandomModel(product!))}>Populate</Button>
+                                <Button onClick={() => formik.setValues(getRandomModel(product||products![0]))}>Populate</Button>
                             </div>} />
                         <PolicyEditor products={products!} />
 

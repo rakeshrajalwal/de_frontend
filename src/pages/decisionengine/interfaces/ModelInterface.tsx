@@ -35,12 +35,7 @@ export interface ILastRun {
 export const criteriaRangeNames = ["strong", "good", "satisfactory", "weak"] as const
 type CriteriaRangeName = typeof criteriaRangeNames[number];
 export type TCriteria = Record<CriteriaRangeName, IRange>;
-// export interface ICriteria {
-//     strong: IRange,
-//     good: IRange,
-//     satisfactory: IRange,
-//     weak: IRange
-// }
+
 export interface IModel {
     __v?: number | string,
     _id?: string,
@@ -80,7 +75,7 @@ export interface ISignal {
     name: string,
     weight: number | string,
     overallWeight?: number | string,
-    criteria?: TCriteria,
+    criteria?: TCriteria[],
 }
 
 
