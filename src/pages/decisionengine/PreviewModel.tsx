@@ -110,7 +110,7 @@ function PreviewModel() {
             }}
         >
             {formik => {
-                axios.get(`${backendUrl}/products/all`).
+                axios.get(`${backendUrl}/products/`).
                     then((response: any) => {
                         setProducts(response.data)
                     }).catch((e: any) => {

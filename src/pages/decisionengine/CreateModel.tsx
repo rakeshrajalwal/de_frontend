@@ -16,7 +16,6 @@ import lodash from 'lodash';
 import * as Yup from "yup";
 import { TotalWeight } from "./editors/WeightEditor";
 import { useNavigate } from "react-router-dom";
-const axios = require('axios');
 import './styles/CreateModel.css';
 import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
