@@ -200,9 +200,9 @@ function RunModel() {
   const validationSchema = Yup.object().shape({
     loanDetails: Yup.object().shape({
       product: requiredString,
-      amount: positiveInteger.min(product?.policy.loanRange.min as number).max(product?.policy.loanRange.max as number),
+      amount: positiveInteger.min(product?.policy.loanRange.min as number,`amount should be greater than or equal to product's policy minimum loan ${product?.policy.loanRange.min}`).max(product?.policy.loanRange.max as number, `amount should be less than or equal to in product's policy maximum loan ${product?.policy.loanRange.max}`),
       secured: requiredString,
-      term: positiveInteger.min(product?.policy.loanTermInMonths.min as number).max(product?.policy.loanTermInMonths.max as number),
+      term: positiveInteger.min(product?.policy.loanTermInMonths.min as number,`term should be greater than or equal to product's policy minimum term ${product?.policy.loanTermInMonths.min}`).max(product?.policy.loanTermInMonths.max as number,`term should be less than or equal to product's policy maximum term ${product?.policy.loanTermInMonths.max}`),
       purpose: requiredString,
       customerId: requiredString
     }),
@@ -232,6 +232,8 @@ function RunModel() {
       validateOnChange={validateOnChange}
       validateOnBlur={false}
       onSubmit={(values) => {
+        const {loanDetails, manualInputs : [...manualInputs]} = values;
+        values.manualInputs = manualInputs.map(({name,value}) => ({name,value}));
         console.log(JSON.stringify(values, null, 2))
         alert(JSON.stringify(values, null, 2));
       }}
