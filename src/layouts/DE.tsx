@@ -12,6 +12,8 @@ import Navbar from "../components/navbar/Navbar";
 import dEItems from "../components/sidebar/decisionEngine";
 import Sidebar from "../components/sidebar/Sidebar";
 import Footer from "../components/Footer";
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const drawerWidth = 258;
 
@@ -92,8 +94,21 @@ const DE: React.FC<DEType> = ({ children }) => {
         </MainContent>
         <Footer />
       </AppContent>
+          <ToastContainer
+              position="top-center"
+              autoClose={5000}
+              hideProgressBar
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+              // transition={Zoom}
+          />
+      </Root>
 
-    </Root>
   );
 };
 

@@ -56,8 +56,6 @@ export function ModelDataGrid({model}: { model: IModelInput }) {
 
     let reverseSignalNames = productCollection.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
 
-    console.log('reverseSignalNames: ', reverseSignalNames);
-
     return (
         <TableContainer component={Paper} sx={{marginTop: 5}}>
             <Table sx={{minWidth: '35ex'}} aria-label="preview table">

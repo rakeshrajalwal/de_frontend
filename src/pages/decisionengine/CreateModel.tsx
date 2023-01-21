@@ -3,32 +3,22 @@ import {
     deApi,
     useCreateModelMutation,
     useGetAllProductsQuery,
-    useGetOneModelQuery, useModifyModelMutation,
+    useGetOneModelQuery,
+    useModifyModelMutation,
 } from '../../redux/de';
-import {
-    CardContent,
-    Card,
-    Button as MuiButton,
-    CardHeader,
-    Snackbar,
-    ButtonProps as MuiButtonProps, Alert, AlertColor
-} from "@mui/material";
-import { Form, Formik } from "formik";
-import { PolicyEditor } from './components/Policy';
-import { NodeEditor } from './editors/NodeEditor';
-import {IProduct, IModel, IModelInput} from "./interfaces/ModelInterface"
-import './styles/CreateModel.css';
+import {Button as MuiButton, ButtonProps as MuiButtonProps, Card, CardContent, CardHeader} from "@mui/material";
+import {Form, Formik} from "formik";
+import {PolicyEditor} from './components/Policy';
+import {NodeEditor} from './editors/NodeEditor';
+import {IModelInput, IProduct} from "./interfaces/ModelInterface"
 import lodash from 'lodash';
 import * as Yup from "yup";
-import { TotalWeight } from "./editors/WeightEditor";
+import {TotalWeight} from "./editors/WeightEditor";
 import {useNavigate, useParams} from "react-router-dom";
-const axios = require('axios');
-import './styles/CreateModel.css';
-import styled from "@emotion/styled";
-import { spacing } from "@mui/system";
 import * as Faker from 'faker';
-import formik from "../forms/Formik";
 import {ModelDataGrid} from "./ModelDataGrid";
+import {toast} from 'react-toastify';
+import './styles/CreateModel.css';
 
 interface ButtonProps extends MuiButtonProps {
     show?: boolean
@@ -161,7 +151,6 @@ const CreateModel = () => {
 
     const [product, setProduct] = React.useState<IProduct>();// to populate a select products features etc.
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false); // handling the form validation
-    const [notification, setNotificaiton] = React.useState<{type:AlertColor, message:string}>();
 
     let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
 
@@ -176,18 +165,18 @@ const CreateModel = () => {
     async function submitModel(model: IModelInput) {
         const x = Yup.string().required("Required");
         const iv = await x.isValid("");
-        console.log({iv})
 
         try {
             if (id && !creatingCopy) {
-                await modifyModel({id, model}).unwrap()
-                setNotificaiton({type: "success", message: "Model Saved"})
+                await modifyModel({id, model});
+                toast.success("Model Saved")
             } else {
-                await addNewModel(model).unwrap();
-                setNotificaiton({type: "success", message: "Model Created"})
+                await addNewModel(model);
+                toast.success("Model Created")
             }
+            navigate("/models");
         } catch (e:any) {
-            setNotificaiton({type: "error", message: e.data.message})
+            toast.error(e.data.message)
         }
     }
 
@@ -197,12 +186,14 @@ const CreateModel = () => {
     async function toggleActivation() {
         const activate = !model?.info.isActive;
         await activateModel({id:id!, activate})
-        setNotificaiton({type:'success', message: `Model ${activate ? "Activated" : "De-activated"}`})
+        toast.success(`Model ${activate ? "Activated" : "De-activated"}`);
+        navigate(-1);
     }
 
     async function approve() {
         await approveModel(id!);
-        setNotificaiton({type:'success', message: "Model Approved"})
+        toast.success("Model Approved");
+        navigate(-1);
     }
 
     const title = () => {
@@ -211,12 +202,6 @@ const CreateModel = () => {
         }
         return "New Model"
     }
-    const onNotificationClose = () => {
-        if(notification?.type === "success") {
-            navigate("/models");
-        }
-        setNotificaiton(undefined);
-    };
 
     const isApproved = model?.info.approvalStatus === "approved";
 
@@ -240,7 +225,6 @@ const CreateModel = () => {
             onSubmit={submitModel}
         >
             {formik => {
-                console.log({name:formik.values.name, isValid:formik.isValid, errors: formik.errors});
                 React.useEffect(() => {
                     const product = lodash.find(products, { name: formik.values.product });
                     setProduct(product);
@@ -312,14 +296,6 @@ const CreateModel = () => {
                             <ModelDataGrid model={formik.values} />
                         )}
 
-                        <Snackbar
-                            open={!!notification}
-                            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                            autoHideDuration={2500}
-                            onClose={onNotificationClose}
-                        >
-                            <Alert severity={notification?.type}>{notification?.message}</Alert>
-                        </Snackbar>
                     </Form>
                 );
             }}

@@ -19,7 +19,6 @@
     "not dead",
     "not IE 11"
   ],
- 
   "dependencies": {
     "@auth0/auth0-spa-js": "1.22.4",
     "@craco/craco": "7.0.0-alpha.7",
@@ -77,6 +76,7 @@
     "react-router-dom": "6.3.0",
     "react-scripts": "5.0.1",
     "react-syntax-highlighter": "15.5.0",
+    "react-toastify": "^9.1.1",
     "redux": "4.2.0",
     "redux-thunk": "2.4.1",
     "stream-browserify": "3.0.0",
