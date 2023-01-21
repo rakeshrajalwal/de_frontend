@@ -6,7 +6,6 @@ let baseUrl: string = (process.env.REACT_APP_BACKEND_URL as string);
 
 // Define a service using a base URL and expected endpoints
 export const deApi = createApi({
-
     reducerPath: 'deApi',
     baseQuery: fetchBaseQuery({ baseUrl }),
     endpoints: (builder) => ({
@@ -39,7 +38,25 @@ export const deApi = createApi({
                     'Content-type': 'application/json; charset=UTF-8',
                 },
             }),
-        })
+        }),
+        approveModel: builder.mutation({
+            query: (id:string) => ({
+                url: `/models/${id}/approve`,
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }),
+        }),
+        activateModel: builder.mutation({
+            query: ({id, activate}:{id:string, activate:boolean}) => ({
+                url: `/models/${id}/${activate ? "activate" : "de-activate"}`,
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }),
+        }),
     }),
 })
 
@@ -50,7 +67,7 @@ export const {
     useCreateModelMutation,
     useGetAllModelsQuery,
     useGetOneModelQuery,
-    useModifyModelMutation
+    useModifyModelMutation,
 } = deApi
 
 

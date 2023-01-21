@@ -25,6 +25,7 @@ import MaterialIcons from "./pages/icons/MaterialIcons";
 import RunSummaries from "./pages/decisionengine/RunSummaries";
 import ViewModels from "./pages/decisionengine/ViewModels";
 import CreateModel from "./pages/decisionengine/CreateModel";
+import ViewOrEditModel from "./pages/decisionengine/ViewOrEditModel";
 import RunModel from "./pages/decisionengine/RunModel";
 import Logout from "./pages/decisionengine/Logout";
 
@@ -39,7 +40,7 @@ import Landing from "./pages/presentation/Landing";
 import ProtectedPage from "./pages/protected/ProtectedPage";
 import Page404 from "./pages/auth/Page404";
 import PreviewModel from "./pages/decisionengine/PreviewModel";
-import {Navigate} from "react-router-dom";
+import {Navigate, RouteObject} from "react-router-dom";
 
 //const SaaS = async(() => import("./pages/dashboards/SaaS"));
 
@@ -61,7 +62,7 @@ const ApexCharts = async(() => import("./pages/charts/ApexCharts"));
 const GoogleMaps = async(() => import("./pages/maps/GoogleMaps"));
 const VectorMaps = async(() => import("./pages/maps/VectorMaps"));
 
-const routes = [
+const routes:RouteObject[] = [
   {
     path: "/",
     element: <PresentationLayout />,
@@ -88,29 +89,25 @@ const routes = [
   },
 
   {
-    path: "model",
+    path: "models",
     element: <AuthGuard>
       <DELayout />
     </AuthGuard>,
     children: [
       {
-        path: "/model/create",
+        path: "/models/new",
         element: <CreateModel />,
       },
       {
-        path: "/model/:id/edit",
-        element: <CreateModel />,
+        path: "/models/:id",
+        element: <ViewOrEditModel />,
       },
       {
-        path: "/model/view",
+        path: "/models",
         element: <ViewModels />,
       },
       {
-        path: "/model/preview",
-        element: <PreviewModel />,
-      },
-      {
-        path: "/model/run",
+        path: "/models/run",
         element: <RunModel />,
       },
 

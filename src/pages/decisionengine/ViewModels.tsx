@@ -209,7 +209,7 @@ function ModelDataGrid() {
           onCellClick={(params, event, details) => {
             console.log({params, event, details});
             if(params.field === "name") {
-              navigate(`/model/${params.row._id}/edit`);
+              navigate(`/models/${params.row._id}`);
             }
           }}
         />
@@ -245,7 +245,7 @@ function ViewModels() {
               variant='contained'
               color='primary'
               style={{ backgroundColor: '#434DB0' }}
-              onClick={() => { navigate("/model/create"); }}
+              onClick={() => { navigate("/models/new"); }}
             >
               Create Model
             </Button>

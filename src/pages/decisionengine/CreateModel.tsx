@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+    deApi,
     useCreateModelMutation,
     useGetAllProductsQuery,
     useGetOneModelQuery, useModifyModelMutation,
@@ -25,6 +26,8 @@ import './styles/CreateModel.css';
 import styled from "@emotion/styled";
 import { spacing } from "@mui/system";
 import * as Faker from 'faker';
+import formik from "../forms/Formik";
+import {ModelDataGrid} from "./ModelDataGrid";
 
 const Button = styled(MuiButton)(spacing);
 
@@ -122,8 +125,8 @@ let rangeSchema = Yup.object().shape({
 
 const requiredString = Yup.string().required('Required');
 const validationSchema = Yup.object().shape({
-    name: requiredString,
-    product: requiredString,
+    name: Yup.string().required('Required'),
+    product: Yup.string().required('Required'),
     policy: Yup.object().shape({
         loanRange: positiveIntRangeSchema,
         loanTermInMonths: positiveIntRangeSchema,
@@ -164,12 +167,14 @@ const CreateModel = () => {
 
     const [addNewModel, response] = useCreateModelMutation();// query to create model
     const [modifyModel] = useModifyModelMutation();// query to modify model
+    const [mode, setMode] = React.useState(id ? "view" : "edit");
+    const [creatingCopy, setCreatingCopy] = React.useState(false);
 
     //handles notification popups after submitting
     const handleNotificationClose = () => {
         if (openSuccessNotfication) {
             setOpenSuccessNotfication(false);
-            navigate("/model/view");// navigating to view models screen on successful creation
+            navigate("/models");// navigating to view models screen on successful creation
         }
         if (openErrorNotfication) {
             setOpenErrorNotfication(false); // showing error popup
@@ -178,7 +183,11 @@ const CreateModel = () => {
 
     // function that sends the create model api request
     async function submitModel(model: IModelInput) {
-        if(id) {
+        const x = Yup.string().required("Required");
+        const iv = await x.isValid("");
+        console.log({iv})
+
+        if(id && !creatingCopy) {
             await modifyModel({id, model}).unwrap()
             setOpenSuccessNotfication(true);
         } else {
@@ -193,11 +202,31 @@ const CreateModel = () => {
         }
     }
 
+    const [approveModel] = deApi.useApproveModelMutation();
+    const [activateModel] = deApi.useActivateModelMutation();
+
+    async function toggleActivation() {
+        await activateModel({id:id!, activate:!model?.info.isActive})
+        navigate("/models");
+    }
+
+    async function approve() {
+        await approveModel(id!);
+        navigate("/models");
+    }
+
+    const title = () => {
+        if(id) {
+            return model ? `Model - ${model.name}` : `View model`;
+        }
+        return "New Model"
+    }
+
     return (
         <Formik
             initialValues={model || {
                 name: "",
-                product: '',
+                product: products?.length == 1 ? products[0].name : '',
                 policy: {
                     loanRange: { min: '', max: '' },
                     loanTermInMonths: { min: '', max: '' },
@@ -210,12 +239,10 @@ const CreateModel = () => {
             validationSchema={validationSchema}
             validateOnBlur={false}
             validateOnChange={validateOnChange}
-            onSubmit={(values) => {
-                submitModel(values);
-            }}
+            onSubmit={submitModel}
         >
             {formik => {
-                console.log(formik.values);
+                console.log({name:formik.values.name, isValid:formik.isValid, errors: formik.errors});
                 React.useEffect(() => {
                     const product = lodash.find(products, { name: formik.values.product });
                     setProduct(product);
@@ -226,28 +253,74 @@ const CreateModel = () => {
                 }, [formik.values.product, model]);
                 return (
                     <Form>
-                        <CardHeader title={"Create Model"} titleTypographyProps={{ variant: "h3" }}
+                        <CardHeader title={title()} titleTypographyProps={{ variant: "h3" }}
                             action={<div style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
-                                <Button variant={"contained"} type="submit" disabled={formik.isValid && validateOnChange}
-                                    style={{ backgroundColor: formik.isValid && validateOnChange ? 'green' : 'blue', color: 'white' }}
-                                    onClick={() => { setValidateOnChange(true); formik.validateForm(); }}
-                                >Validate</Button>
-
-                                <Button type="submit" variant={"contained"} disabled={!validateOnChange || !formik.isValid}>Submit</Button>
-                                <Button onClick={() => formik.setValues(getRandomModel(product||products![0]))}>Populate</Button>
+                                {mode === "edit" && (
+                                    <Button
+                                        variant={"contained"}
+                                        color={(validateOnChange && !formik.isValid) ? "warning" : undefined}
+                                        onClick={async () => {
+                                            setValidateOnChange(true);
+                                            const errors =  await formik.validateForm();
+                                            if(lodash.isEmpty(errors)) {
+                                                setMode("preview");
+                                            }
+                                        }}
+                                    >
+                                        Preview
+                                    </Button>
+                                )}
+                                {mode === "preview" && (
+                                    <Button type={"submit"} variant={"contained"} disabled={!formik.isValid}>
+                                        Submit
+                                    </Button>
+                                )}
+                                {mode !== "edit" && (
+                                    <Button variant={"contained"} onClick={() => setMode("edit")}>
+                                        Edit
+                                    </Button>
+                                )}
+                                {(mode === "view") && (
+                                    <>
+                                        <Button variant={"contained"} onClick={() => {
+                                            setMode("edit");
+                                            formik.setFieldValue("name", "");
+                                            setCreatingCopy(true);
+                                        }}>
+                                            Duplicate
+                                        </Button>
+                                        {(model?.info.approvalStatus !== "approved") && (
+                                            <Button variant={"contained"} onClick={approve}>
+                                                Approve
+                                            </Button>
+                                        )}
+                                        {(model?.info.approvalStatus === "approved") && (
+                                            <Button variant={"contained"} onClick={toggleActivation}>
+                                                {model?.info.isActive ? "De-activate" : "Activate"}
+                                            </Button>
+                                        )}
+                                    </>
+                                )}
+                                {!model && <Button onClick={() => formik.setValues(getRandomModel(product||products![0]))}>Populate</Button>}
                             </div>}
                         />
                         <PolicyEditor products={products!} />
 
-                        <Card sx={{ boxShadow: '0px 3px 6px #00000029', marginTop: '15px' }}>
-                            <CardContent>
-                                {formik.values.factors?.map((f, i) => (
-                                    <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} reverseSignalNames={reverseSignalNames} />
-                                ))}
+                        {mode === 'edit' && (
+                            <Card sx={{ boxShadow: '0px 3px 6px #00000029', marginTop: '15px' }}>
+                                <CardContent>
+                                    {formik.values.factors?.map((f, i) => (
+                                        <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} reverseSignalNames={reverseSignalNames} />
+                                    ))}
 
-                                {product && <TotalWeight level={1} nodes={formik.values.factors} />}
-                            </CardContent>
-                        </Card>
+                                    {product && <TotalWeight level={1} nodes={formik.values.factors} />}
+                                </CardContent>
+                            </Card>
+                        )}
+                        {mode !== "edit" && (
+                            <ModelDataGrid model={formik.values} />
+                        )}
+
                         <Snackbar
                             open={openSuccessNotfication}
                             anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
