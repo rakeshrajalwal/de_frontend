@@ -169,8 +169,8 @@ const columns: GridColDef[] = [
     renderCell: ({ value:isActive }) => (
       <Chip
         label={isActive ? "Active" : "Inactive"}
-        color={isActive ? "primary" : 'default'}
-        variant="outlined"
+        color={isActive ? "success" : 'default'}
+        variant={isActive ? "filled" : "outlined"}
         m={1}
         size="small"
         style={{ borderRadius: "0.3rem", blockSize: "2.6ex" }}

@@ -11,6 +11,7 @@ import {
     Button as MuiButton,
     CardHeader,
     Snackbar,
+    ButtonProps as MuiButtonProps, Alert, AlertColor
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
@@ -29,7 +30,10 @@ import * as Faker from 'faker';
 import formik from "../forms/Formik";
 import {ModelDataGrid} from "./ModelDataGrid";
 
-const Button = styled(MuiButton)(spacing);
+interface ButtonProps extends MuiButtonProps {
+    show?: boolean
+}
+const Button = ({show=true, ...props}:ButtonProps) => show ? <MuiButton {...props} /> : <></>;
 
 function getEmptyModel(p: IProduct): IModelInput {
     return {
@@ -157,9 +161,7 @@ const CreateModel = () => {
 
     const [product, setProduct] = React.useState<IProduct>();// to populate a select products features etc.
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false); // handling the form validation
-    const [openSuccessNotfication, setOpenSuccessNotfication] = React.useState<boolean>(false);// notification for success model creation
-    const [openErrorNotfication, setOpenErrorNotfication] = React.useState<boolean>(false);//notification for error in model creation
-    const [createModelError, setcreateModelError] = React.useState<string>('');// set the error from api response
+    const [notification, setNotificaiton] = React.useState<{type:AlertColor, message:string}>();
 
     let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
 
@@ -170,35 +172,22 @@ const CreateModel = () => {
     const [mode, setMode] = React.useState(id ? "view" : "edit");
     const [creatingCopy, setCreatingCopy] = React.useState(false);
 
-    //handles notification popups after submitting
-    const handleNotificationClose = () => {
-        if (openSuccessNotfication) {
-            setOpenSuccessNotfication(false);
-            navigate("/models");// navigating to view models screen on successful creation
-        }
-        if (openErrorNotfication) {
-            setOpenErrorNotfication(false); // showing error popup
-        }
-    };
-
     // function that sends the create model api request
     async function submitModel(model: IModelInput) {
         const x = Yup.string().required("Required");
         const iv = await x.isValid("");
         console.log({iv})
 
-        if(id && !creatingCopy) {
-            await modifyModel({id, model}).unwrap()
-            setOpenSuccessNotfication(true);
-        } else {
-            await addNewModel(model).unwrap()
-                .then(() => {
-                    setOpenSuccessNotfication(true);
-                })
-                .catch((error) => {
-                    setcreateModelError(error.data)
-                    setOpenErrorNotfication(true);
-                })
+        try {
+            if (id && !creatingCopy) {
+                await modifyModel({id, model}).unwrap()
+                setNotificaiton({type: "success", message: "Model Saved"})
+            } else {
+                await addNewModel(model).unwrap();
+                setNotificaiton({type: "success", message: "Model Created"})
+            }
+        } catch (e:any) {
+            setNotificaiton({type: "error", message: e.data.message})
         }
     }
 
@@ -206,13 +195,14 @@ const CreateModel = () => {
     const [activateModel] = deApi.useActivateModelMutation();
 
     async function toggleActivation() {
-        await activateModel({id:id!, activate:!model?.info.isActive})
-        navigate("/models");
+        const activate = !model?.info.isActive;
+        await activateModel({id:id!, activate})
+        setNotificaiton({type:'success', message: `Model ${activate ? "Activated" : "De-activated"}`})
     }
 
     async function approve() {
         await approveModel(id!);
-        navigate("/models");
+        setNotificaiton({type:'success', message: "Model Approved"})
     }
 
     const title = () => {
@@ -221,6 +211,14 @@ const CreateModel = () => {
         }
         return "New Model"
     }
+    const onNotificationClose = () => {
+        if(notification?.type === "success") {
+            navigate("/models");
+        }
+        setNotificaiton(undefined);
+    };
+
+    const isApproved = model?.info.approvalStatus === "approved";
 
     return (
         <Formik
@@ -255,31 +253,28 @@ const CreateModel = () => {
                     <Form>
                         <CardHeader title={title()} titleTypographyProps={{ variant: "h3" }}
                             action={<div style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
-                                {mode === "edit" && (
-                                    <Button
-                                        variant={"contained"}
-                                        color={(validateOnChange && !formik.isValid) ? "warning" : undefined}
-                                        onClick={async () => {
-                                            setValidateOnChange(true);
-                                            const errors =  await formik.validateForm();
-                                            if(lodash.isEmpty(errors)) {
-                                                setMode("preview");
-                                            }
-                                        }}
-                                    >
-                                        Preview
-                                    </Button>
-                                )}
-                                {mode === "preview" && (
-                                    <Button type={"submit"} variant={"contained"} disabled={!formik.isValid}>
-                                        Submit
-                                    </Button>
-                                )}
-                                {mode !== "edit" && (
-                                    <Button variant={"contained"} onClick={() => setMode("edit")}>
-                                        Edit
-                                    </Button>
-                                )}
+                                <Button
+                                    show={mode === "edit"}
+                                    variant={"contained"}
+                                    color={(validateOnChange && !formik.isValid) ? "warning" : undefined}
+                                    onClick={async () => {
+                                        setValidateOnChange(true);
+                                        const errors =  await formik.validateForm();
+                                        if(lodash.isEmpty(errors)) {
+                                            setMode("preview");
+                                        }
+                                    }}
+                                >
+                                    Preview
+                                </Button>
+
+                                <Button show={mode !== "edit" && !isApproved } variant={"contained"} onClick={() => setMode("edit")}>
+                                    Edit
+                                </Button>
+                                <Button show={mode === "preview"} type={"submit"} variant={"contained"} disabled={!formik.isValid} color={"success"}>
+                                    Save
+                                </Button>
+
                                 {(mode === "view") && (
                                     <>
                                         <Button variant={"contained"} onClick={() => {
@@ -289,19 +284,15 @@ const CreateModel = () => {
                                         }}>
                                             Duplicate
                                         </Button>
-                                        {(model?.info.approvalStatus !== "approved") && (
-                                            <Button variant={"contained"} onClick={approve}>
-                                                Approve
-                                            </Button>
-                                        )}
-                                        {(model?.info.approvalStatus === "approved") && (
-                                            <Button variant={"contained"} onClick={toggleActivation}>
-                                                {model?.info.isActive ? "De-activate" : "Activate"}
-                                            </Button>
-                                        )}
+                                        <Button show={!isApproved} variant={"contained"} onClick={approve}>
+                                            Approve
+                                        </Button>
+                                        <Button show={isApproved} variant={"contained"} onClick={toggleActivation}>
+                                            {model?.info.isActive ? "De-activate" : "Activate"}
+                                        </Button>
                                     </>
                                 )}
-                                {!model && <Button onClick={() => formik.setValues(getRandomModel(product||products![0]))}>Populate</Button>}
+                                <Button show={!model} onClick={() => formik.setValues(getRandomModel(product||products![0]))}>Populate</Button>
                             </div>}
                         />
                         <PolicyEditor products={products!} />
@@ -322,29 +313,13 @@ const CreateModel = () => {
                         )}
 
                         <Snackbar
-                            open={openSuccessNotfication}
-                            anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+                            open={!!notification}
+                            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
                             autoHideDuration={2500}
-                            onClose={handleNotificationClose}
-                            message={`Model ${id ? "created" : "updated"} successfully`}
-                            ContentProps={{
-                                sx: {
-                                    background: "green"
-                                }
-                            }}
-                        />
-                        <Snackbar
-                            open={openErrorNotfication}
-                            anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
-                            autoHideDuration={2500}
-                            onClose={handleNotificationClose}
-                            message={createModelError}
-                            ContentProps={{
-                                sx: {
-                                    background: "red"
-                                }
-                            }}
-                        />
+                            onClose={onNotificationClose}
+                        >
+                            <Alert severity={notification?.type}>{notification?.message}</Alert>
+                        </Snackbar>
                     </Form>
                 );
             }}
