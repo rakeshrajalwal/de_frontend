@@ -39,6 +39,7 @@ import Landing from "./pages/presentation/Landing";
 import ProtectedPage from "./pages/protected/ProtectedPage";
 import Page404 from "./pages/auth/Page404";
 import PreviewModel from "./pages/decisionengine/PreviewModel";
+import {Navigate} from "react-router-dom";
 
 //const SaaS = async(() => import("./pages/dashboards/SaaS"));
 
@@ -67,7 +68,8 @@ const routes = [
     children: [
       {
         path: "",
-        element: <Landing />,
+        element: <Navigate to="/home" />,
+        // element: <Landing />,
       },
     ],
   },

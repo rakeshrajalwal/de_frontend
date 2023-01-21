@@ -36,24 +36,28 @@ export const criteriaRangeNames = ["strong", "good", "satisfactory", "weak"] as 
 type CriteriaRangeName = typeof criteriaRangeNames[number];
 export type TCriteria = Record<CriteriaRangeName, IRange>;
 
-export interface IModel {
-    __v?: number | string,
-    _id?: string,
-    modelId?: string,
+export interface IModelInput {
     name: string,
     product: string,
-    createdBy?: string,
-    createdAt?: string,
-    approvalStatus?: string,
-    isActive?: boolean,
-    approvedBy?: string,
-    approvedAt?: string,
-    activatedBy?: string,
-    activatedAt?: string,
-    runCount?: number,
-    lastRun?: ILastRun,
     policy: IPolicy,
-    factors: IFactor[],
+    factors: IFactor[]
+}
+
+export interface IModel extends IModelInput{
+    __v?: number | string,
+    _id?: string,
+    info: {
+        createdBy?: string,
+        createdAt?: string,
+        approvalStatus?: string,
+        isActive?: boolean,
+        approvedBy?: string,
+        approvedAt?: string,
+        activatedBy?: string,
+        activatedAt?: string,
+        runCount?: number,
+        lastRun?: ILastRun,
+    }
 }
 
 export interface IFactor {

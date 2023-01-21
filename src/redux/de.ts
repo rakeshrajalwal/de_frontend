@@ -1,6 +1,6 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { IModel, IProduct } from '../pages/decisionengine/interfaces/ModelInterface'
+import {IModel, IModelInput, IProduct} from '../pages/decisionengine/interfaces/ModelInterface'
 
 let baseUrl: string = (process.env.REACT_APP_BACKEND_URL as string);
 
@@ -16,6 +16,9 @@ export const deApi = createApi({
         getAllModels: builder.query<IModel[], void>({
             query: () => `/models`,
         }),
+        getOneModel: builder.query<IModel, string>({
+            query: (id:string) => `/models/${id}`,
+        }),
         createModel: builder.mutation({
             query: (payload) => ({
                 url: '/models/',
@@ -27,6 +30,16 @@ export const deApi = createApi({
             }),
             //invalidatesTags: ['Post'],
         }),
+        modifyModel: builder.mutation({
+            query: ({id, model}:{id:string, model:IModelInput}) => ({
+                url: `/models/${id}`,
+                method: 'PUT',
+                body: model,
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }),
+        })
     }),
 })
 
@@ -35,7 +48,9 @@ export const deApi = createApi({
 export const {
     useGetAllProductsQuery,
     useCreateModelMutation,
-    useGetAllModelsQuery
+    useGetAllModelsQuery,
+    useGetOneModelQuery,
+    useModifyModelMutation
 } = deApi
 
 

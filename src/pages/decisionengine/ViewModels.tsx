@@ -19,6 +19,7 @@ import lodash from "lodash";
 import { INode, IProduct, IModel, IRange, IPolicy } from "./interfaces/ModelInterface";
 import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
 import { useGetAllModelsQuery } from "../../redux/de";
+import './styles/ViewModel.css'
 
 const Chip = styled(MuiChip)(spacing);
 
@@ -47,10 +48,7 @@ const statusIcons = {
 const columns: GridColDef[] = [
   {
     field: "_id",
-    headerName: "ID",
-    // width: 10,
     hide: true,
-    headerAlign: "center",
   },
   {
     field: "info.approvalStatus",
@@ -74,6 +72,7 @@ const columns: GridColDef[] = [
     flex: 7,
     headerAlign: "center",
     align: "center",
+    cellClassName: "anchor"
   },
   {
     field: "product",
@@ -182,6 +181,8 @@ const columns: GridColDef[] = [
 
 function ModelDataGrid() {
   const {data:models} = useGetAllModelsQuery(undefined, {refetchOnMountOrArgChange:true});
+  const navigate = useNavigate();
+
   return (
     <Paper sx={paperSx}>
       <div style={{ height: '25.2rem', width: '100%' }}>
@@ -204,6 +205,12 @@ function ModelDataGrid() {
               showQuickFilter: true,
               quickFilterProps: { debounceMs: 500 },
             },
+          }}
+          onCellClick={(params, event, details) => {
+            console.log({params, event, details});
+            if(params.field === "name") {
+              navigate(`/model/${params.row._id}/edit`);
+            }
           }}
         />
       </div>

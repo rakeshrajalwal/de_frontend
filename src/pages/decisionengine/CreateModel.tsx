@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { useCreateModelMutation, useGetAllProductsQuery } from '../../redux/de';
+import {
+    useCreateModelMutation,
+    useGetAllProductsQuery,
+    useGetOneModelQuery, useModifyModelMutation,
+} from '../../redux/de';
 import {
     CardContent,
     Card,
@@ -10,12 +14,12 @@ import {
 import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
-import { IProduct, IModel } from "./interfaces/ModelInterface"
+import {IProduct, IModel, IModelInput} from "./interfaces/ModelInterface"
 import './styles/CreateModel.css';
 import lodash from 'lodash';
 import * as Yup from "yup";
 import { TotalWeight } from "./editors/WeightEditor";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 const axios = require('axios');
 import './styles/CreateModel.css';
 import styled from "@emotion/styled";
@@ -24,7 +28,7 @@ import * as Faker from 'faker';
 
 const Button = styled(MuiButton)(spacing);
 
-function getEmptyModel(p: IProduct): IModel {
+function getEmptyModel(p: IProduct): IModelInput {
     return {
         name: '',//modelname
         product: '',
@@ -61,7 +65,7 @@ function randomSplit(total: number, count: number): number[] {
     return [part, ...randomSplit(total - part, count - 1)]
 }
 
-function getRandomModel(p: IProduct): IModel {
+function getRandomModel(p: IProduct): IModelInput {
     return {
         name: Faker.name.lastName(),
         product: p.name,
@@ -144,6 +148,9 @@ const validationSchema = Yup.object().shape({
 
 const CreateModel = () => {
     const navigate = useNavigate();
+    let { id } = useParams();
+    const {data:model, isLoading:isModelLoading} = useGetOneModelQuery(id||'', {skip:!id, refetchOnMountOrArgChange:true})
+
 
     const [product, setProduct] = React.useState<IProduct>();// to populate a select products features etc.
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false); // handling the form validation
@@ -156,6 +163,7 @@ const CreateModel = () => {
     const { data: products, error, isLoading } = useGetAllProductsQuery();// fetching all the products
 
     const [addNewModel, response] = useCreateModelMutation();// query to create model
+    const [modifyModel] = useModifyModelMutation();// query to modify model
 
     //handles notification popups after submitting
     const handleNotificationClose = () => {
@@ -169,21 +177,25 @@ const CreateModel = () => {
     };
 
     // function that sends the create model api request
-    async function submitModel(values: IModel) {
-
-        await addNewModel(values).unwrap()
-            .then(() => {
-                setOpenSuccessNotfication(true);
-            })
-            .catch((error) => {
-                setcreateModelError(error.data)
-                setOpenErrorNotfication(true);
-            })
+    async function submitModel(model: IModelInput) {
+        if(id) {
+            await modifyModel({id, model}).unwrap()
+            setOpenSuccessNotfication(true);
+        } else {
+            await addNewModel(model).unwrap()
+                .then(() => {
+                    setOpenSuccessNotfication(true);
+                })
+                .catch((error) => {
+                    setcreateModelError(error.data)
+                    setOpenErrorNotfication(true);
+                })
+        }
     }
 
     return (
         <Formik
-            initialValues={{
+            initialValues={model || {
                 name: "",
                 product: '',
                 policy: {
@@ -193,7 +205,8 @@ const CreateModel = () => {
                     isSecured: false,
                 },
                 factors: []
-            } as IModel}
+            } as IModelInput}
+            enableReinitialize
             validationSchema={validationSchema}
             validateOnBlur={false}
             validateOnChange={validateOnChange}
@@ -202,15 +215,15 @@ const CreateModel = () => {
             }}
         >
             {formik => {
+                console.log(formik.values);
                 React.useEffect(() => {
                     const product = lodash.find(products, { name: formik.values.product });
                     setProduct(product);
-                    if (product) {
+                    if (product && !model) {
                         formik.setFieldValue("policy", {...lodash.cloneDeep(product.policy), loanPurpose:[]});
                         formik.setFieldValue("factors", getEmptyModel(product).factors);
                     }
-                }, [formik.values.product]);
-                const v = formik.values;
+                }, [formik.values.product, model]);
                 return (
                     <Form>
                         <CardHeader title={"Create Model"} titleTypographyProps={{ variant: "h3" }}
@@ -222,7 +235,8 @@ const CreateModel = () => {
 
                                 <Button type="submit" variant={"contained"} disabled={!validateOnChange || !formik.isValid}>Submit</Button>
                                 <Button onClick={() => formik.setValues(getRandomModel(product||products![0]))}>Populate</Button>
-                            </div>} />
+                            </div>}
+                        />
                         <PolicyEditor products={products!} />
 
                         <Card sx={{ boxShadow: '0px 3px 6px #00000029', marginTop: '15px' }}>
@@ -239,7 +253,7 @@ const CreateModel = () => {
                             anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
                             autoHideDuration={2500}
                             onClose={handleNotificationClose}
-                            message="model is created successfully"
+                            message={`Model ${id ? "created" : "updated"} successfully`}
                             ContentProps={{
                                 sx: {
                                     background: "green"
