@@ -10,7 +10,7 @@ import {Button as MuiButton, ButtonProps as MuiButtonProps, Card, CardContent, C
 import {Form, Formik} from "formik";
 import {PolicyEditor} from './components/Policy';
 import {NodeEditor} from './editors/NodeEditor';
-import {IModelInput, IProduct} from "./interfaces/ModelInterface"
+import {IModelInput, IProduct, IRange} from "./interfaces/ModelInterface"
 import lodash from 'lodash';
 import * as Yup from "yup";
 import {TotalWeight} from "./editors/WeightEditor";
@@ -62,13 +62,26 @@ function randomSplit(total: number, count: number): number[] {
     return [part, ...randomSplit(total - part, count - 1)]
 }
 
+function randomNumberBetween({min, max}: IRange):number {
+    return (+min + Math.floor((+max - +min)*Math.random()))
+}
+function randomRangeBetween(range: IRange, multipleOf?:number):IRange {
+    if(multipleOf) {
+        const {min, max}= randomRangeBetween({min:Math.ceil(+range.min/multipleOf), max:Math.floor(+range.max/multipleOf)})
+        return {min:+min* multipleOf, max:+max*multipleOf}
+    }
+    const min = randomNumberBetween(range);
+    const max = randomNumberBetween({...range, min:min+1});
+    return {min, max};
+}
+
 function getRandomModel(p: IProduct): IModelInput {
     return {
-        name: Faker.name.lastName(),
+        name: Faker.lorem.words(),
         product: p.name,
         policy: {
-            loanRange: { min: 100000, max: 500000 },
-            loanTermInMonths: { min: 12, max: 24 },
+            loanRange: randomRangeBetween(p.policy.loanRange, 1e4),
+            loanTermInMonths: randomRangeBetween(p.policy.loanTermInMonths, 6),
             loanPurpose: [lodash.shuffle(p.policy.loanPurpose)[0]],
             isSecured: false,
         },
