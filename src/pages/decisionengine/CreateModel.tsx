@@ -279,7 +279,9 @@ const CreateModel = () => {
                                 <Button show={!model} onClick={() => formik.setValues(getRandomModel(product||products![0]))}>Populate</Button>
                             </div>}
                         />
-                        <PolicyEditor products={products!} />
+                        <div style={mode !== "edit" ? {pointerEvents: "none"} : undefined}>
+                            <PolicyEditor products={products!}/>
+                        </div>
 
                         {mode === 'edit' && (
                             <Card sx={{ boxShadow: '0px 3px 6px #00000029', marginTop: '15px' }}>
