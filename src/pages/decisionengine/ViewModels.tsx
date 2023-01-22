@@ -92,7 +92,7 @@ const columns: GridColDef[] = [
     headerAlign: "center",
     align: "center",
     valueGetter: ({ row, field }) => lodash.get(row, field),
-    valueFormatter: ({ value: { min, max } }) => [min, max].join(' - '),
+    valueFormatter: ({ value: { min, max } }) => ["£"+min.toLocaleString(), "£"+max.toLocaleString()].join(' - '),
   },
   {
     field: "policy.loanTermInMonths",
