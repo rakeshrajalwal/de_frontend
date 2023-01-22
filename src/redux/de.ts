@@ -18,6 +18,9 @@ export const deApi = createApi({
         getOneModel: builder.query<IModel, string>({
             query: (id:string) => `/models/${id}`,
         }),
+        getManualInputsByProductName: builder.query<string[], string>({
+            query: (productName) => `/products/${productName}/manualInputs`,
+        }),
         createModel: builder.mutation({
             query: (payload) => ({
                 url: '/models/',
@@ -66,7 +69,9 @@ export const {
     useGetAllProductsQuery,
     useCreateModelMutation,
     useGetAllModelsQuery,
-    useGetOneModelQuery,
+    useGetOneModelQuery,   
+    useGetManualInputsByProductNameQuery,
+    useLazyGetManualInputsByProductNameQuery,
     useModifyModelMutation,
 } = deApi
 

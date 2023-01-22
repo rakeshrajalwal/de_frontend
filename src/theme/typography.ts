@@ -2,7 +2,7 @@ import { TypographyOptions } from "@mui/material/styles/createTypography";
 
 const typography: TypographyOptions = {
   fontFamily: [
-      'Verdana'
+    'Verdana'
   ].join(","),
   fontSize: 13,
   fontWeightLight: 300,

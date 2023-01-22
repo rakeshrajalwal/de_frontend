@@ -1,4 +1,5 @@
 export interface IProduct {
+    _id?: string,
     name: string,
     policy: IPolicy,
     factors: {
@@ -6,12 +7,48 @@ export interface IProduct {
         subFactors: {
             name: string,
             signals: {
-                name: string
+                name: string,
                 isReverseScale?: boolean
             }[]
         }[]
     }[]
 }
+
+// export interface IManualInputs {
+//     name : string,
+//     value : number | string
+// }
+
+export interface IRunModel {
+    model?: IModel,
+    loanDetails: {
+        product: string,
+        amount: string,
+        secured: boolean,
+        term: string,
+        purpose: string,
+        customerId: string
+    },
+    manualInputs: {
+        name: string,
+        value: number | string
+    }[]
+
+}
+
+// export interface IRunModel {
+//     model?: IModel,
+//     loanDetails: {
+//         product: string,
+//         amount: string,
+//         secured: boolean,
+//         term: string,
+//         purpose: string,
+//         customerId: string
+//     },
+//     manualInputs: string[]
+
+// }
 
 
 export interface IRange {
@@ -59,6 +96,7 @@ export interface IModel extends IModelInput{
         lastRun?: ILastRun,
     }
 }
+
 
 export interface IFactor {
     _id?: string,
