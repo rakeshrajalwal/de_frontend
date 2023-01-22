@@ -18,6 +18,8 @@ import {CriteriaBar} from "./editors/NodeEditor";
 
 const Paper = styled(MuiPaper)(spacing);
 const TableCell = styled(MuiTableCell)(({theme}) => ({
+    borderBottom: 'unset',
+    verticalAlign: 'top',
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: '#D9F1FC',
         color: '#1B2430',
@@ -28,8 +30,12 @@ const TableCell = styled(MuiTableCell)(({theme}) => ({
     },
 }));
 
-export function ModelDataGrid({model}: { model: IModelInput }) {
+function overallWeight(signal: ISignal, subFactor: ISubFactor, factor: IFactor) {
+    const ow:number = signal.overallWeight ? +signal.overallWeight:  +factor.weight/100 * +subFactor.weight/100 * +signal.weight/100 * 100;
+    return ow.toFixed(2);
+}
 
+export function ModelDataGrid({model}: { model: IModelInput }) {
     // Convert into flatSignals - {factor, subfactor, signal}
     const flatSignals = model.factors.flatMap(factor =>
         factor.subFactors.flatMap(subFactor =>
@@ -58,12 +64,12 @@ export function ModelDataGrid({model}: { model: IModelInput }) {
 
     return (
         <TableContainer component={Paper} sx={{marginTop: 5}}>
-            <Table sx={{minWidth: '35ex'}} aria-label="preview table">
+            <Table sx={{minWidth: '35ex'}} aria-label="preview table" border={1}>
                 <TableHead>
                     <TableRow>
-                        <TableCell align="center" width="15%">Factor</TableCell>
+                        <TableCell align="center" width="10%">Factor</TableCell>
                         <TableCell align="center" width="5%">Weight</TableCell>
-                        <TableCell align="center" width="15%">Sub-Factor</TableCell>
+                        <TableCell align="center" width="15%">Sub Factor</TableCell>
                         <TableCell align="center" width="5%">Weight</TableCell>
                         <TableCell align="center" width="15%">Signal</TableCell>
                         <TableCell align="center" width="5%">Weight</TableCell>
@@ -75,18 +81,18 @@ export function ModelDataGrid({model}: { model: IModelInput }) {
                     {flatSignals.map(({factor, subFactor, signal}, i) => (
                         <TableRow key={i}>
                             {(i == 0 || factor !== flatSignals[i - 1].factor) && (
-                                <><TableCell align="center"
+                                <><TableCell
                                              rowSpan={rowSpanOfNode(factor)}>{factor.name}</TableCell><TableCell
                                     align="right" rowSpan={rowSpanOfNode(factor)}>{factor.weight}%</TableCell></>
                             )}
                             {(i == 0 || subFactor !== flatSignals[i - 1].subFactor) && (
-                                <><TableCell align="center"
+                                <><TableCell
                                              rowSpan={rowSpanOfNode(subFactor)}>{subFactor.name}</TableCell><TableCell
                                     align="right" rowSpan={rowSpanOfNode(subFactor)}>{subFactor.weight}%</TableCell></>
                             )}
-                            <TableCell align="center">{signal.name}</TableCell>
+                            <TableCell>{signal.name.replace(/([a-z])([A-Z])/g, '$1 $2').replace('_', ' - ')}</TableCell>
                             <TableCell align="right">{signal.weight}%</TableCell>
-                            <TableCell align="right">{signal.overallWeight}%</TableCell>
+                            <TableCell align="right">{overallWeight(signal, subFactor, factor)}%</TableCell>
                             <TableCell align="right" sx={{paddingLeft: '5ex'}}><CriteriaBar
                                 path={getSignalPath(factor, subFactor, signal)}
                                 isReverseScale={reverseSignalNames.includes(signal.name)}/></TableCell>
