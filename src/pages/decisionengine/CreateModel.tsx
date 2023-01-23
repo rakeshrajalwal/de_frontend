@@ -329,7 +329,7 @@ const CreateModel = () => {
                             </Card>
                         )}
                         {mode !== "edit" && (
-                            <ModelDataGrid model={formik.values} />
+                            <ModelDataGrid model={formik.values} reverseSignalNames={reverseSignalNames} />
                         )}
 
                     </Form>

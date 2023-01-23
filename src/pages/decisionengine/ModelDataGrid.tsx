@@ -13,7 +13,6 @@ import {
 import {spacing} from "@mui/system";
 import {IFactor, IModelInput, INode, ISignal, ISubFactor} from "./interfaces/ModelInterface";
 import lodash from "lodash";
-import productCollection from "./product_collection.json";
 import {CriteriaBar} from "./editors/NodeEditor";
 
 const Paper = styled(MuiPaper)(spacing);
@@ -35,7 +34,7 @@ function overallWeight(signal: ISignal, subFactor: ISubFactor, factor: IFactor) 
     return ow.toFixed(2);
 }
 
-export function ModelDataGrid({model}: { model: IModelInput }) {
+export function ModelDataGrid({model, reverseSignalNames}: { model: IModelInput, reverseSignalNames: string[] }) {
     // Convert into flatSignals - {factor, subfactor, signal}
     const flatSignals = model.factors.flatMap(factor =>
         factor.subFactors.flatMap(subFactor =>
@@ -59,8 +58,6 @@ export function ModelDataGrid({model}: { model: IModelInput }) {
         });
         return `factors[${factorIndex}].subFactors[${subFactorIndex}].signals[${signalIndex}]`;
     }
-
-    let reverseSignalNames = productCollection.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
 
     return (
         <TableContainer component={Paper} sx={{marginTop: 5}}>
@@ -92,10 +89,17 @@ export function ModelDataGrid({model}: { model: IModelInput }) {
                             )}
                             <TableCell>{signal.name.replace(/([a-z])([A-Z])/g, '$1 $2').replace('_', ' - ')}</TableCell>
                             <TableCell align="right">{signal.weight}%</TableCell>
-                            <TableCell align="right">{overallWeight(signal, subFactor, factor)}%</TableCell>
-                            <TableCell align="right" sx={{paddingLeft: '5ex'}}><CriteriaBar
-                                path={getSignalPath(factor, subFactor, signal)}
-                                isReverseScale={reverseSignalNames.includes(signal.name)}/></TableCell>
+                            <TableCell align="right">{overallWeight(signal, subFactor, factor)}%</TableCell>                            
+                            <TableCell sx={{paddingLeft: '5ex'}}>
+                                {signal.criteria?.map((c,ci) => (
+                                    <CriteriaBar
+                                        key={ci}
+                                        path={getSignalPath(factor, subFactor, signal)}
+                                        isReverseScale={reverseSignalNames.includes(signal.name)}
+                                        index={ci}
+                                    />
+                                ))}
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
