@@ -1,6 +1,6 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {IModel, IModelInput, IProduct} from '../pages/decisionengine/interfaces/ModelInterface'
+import { IModel, IModelInput, IProduct, IRunModel } from '../pages/decisionengine/interfaces/ModelInterface'
 
 let baseUrl: string = (process.env.REACT_APP_BACKEND_URL as string);
 
@@ -20,7 +20,7 @@ export const deApi = createApi({
             query: () => `/models`,
         }),
         getOneModel: builder.query<IModel, string>({
-            query: (id:string) => `/models/${id}`,
+            query: (id: string) => `/models/${id}`,
         }),
         createModel: builder.mutation({
             query: (payload) => ({
@@ -34,7 +34,7 @@ export const deApi = createApi({
             //invalidatesTags: ['Post'],
         }),
         modifyModel: builder.mutation({
-            query: ({id, model}:{id:string, model:IModelInput}) => ({
+            query: ({ id, model }: { id: string, model: IModelInput }) => ({
                 url: `/models/${id}`,
                 method: 'PUT',
                 body: model,
@@ -44,7 +44,7 @@ export const deApi = createApi({
             }),
         }),
         approveModel: builder.mutation({
-            query: (id:string) => ({
+            query: (id: string) => ({
                 url: `/models/${id}/approve`,
                 method: 'POST',
                 headers: {
@@ -53,7 +53,7 @@ export const deApi = createApi({
             }),
         }),
         activateModel: builder.mutation({
-            query: ({id, activate}:{id:string, activate:boolean}) => ({
+            query: ({ id, activate }: { id: string, activate: boolean }) => ({
                 url: `/models/${id}/${activate ? "activate" : "de-activate"}`,
                 method: 'POST',
                 headers: {
@@ -71,6 +71,9 @@ export const deApi = createApi({
                 },
             }),
         }),
+        getRunSummaries: builder.query<IRunModel[], void>({
+            query: () => `/model-runs`,
+        }),
     }),
 })
 
@@ -80,10 +83,11 @@ export const {
     useGetAllProductsQuery,
     useCreateModelMutation,
     useGetAllModelsQuery,
-    useGetOneModelQuery,   
+    useGetOneModelQuery,
     useGetManualInputsByProductNameQuery,
     useLazyGetManualInputsByProductNameQuery,
     useModifyModelMutation,
+    useGetRunSummariesQuery,
 } = deApi
 
 

@@ -92,7 +92,7 @@ const columns: GridColDef[] = [
     headerAlign: "center",
     align: "center",
     valueGetter: ({ row, field }) => lodash.get(row, field),
-    valueFormatter: ({ value: { min, max } }) => ["£"+min.toLocaleString(), "£"+max.toLocaleString()].join(' - '),
+    valueFormatter: ({ value: { min, max } }) => ["£" + min.toLocaleString(), "£" + max.toLocaleString()].join(' - '),
   },
   {
     field: "policy.loanTermInMonths",
@@ -156,7 +156,7 @@ const columns: GridColDef[] = [
     flex: 7,
     headerAlign: "center",
     align: "center",
-    valueGetter: ({ row: { info:{createdBy, createdOn} } }) => [createdBy, createdOn],
+    valueGetter: ({ row: { info: { createdBy, createdOn } } }) => [createdBy, createdOn],
     renderCell: MultiStringCell,
   },
   {
@@ -166,7 +166,7 @@ const columns: GridColDef[] = [
     // width: 100,
     flex: 5,
     align: "center",
-    renderCell: ({ value:isActive }) => (
+    renderCell: ({ value: isActive }) => (
       <Chip
         label={isActive ? "Active" : "Inactive"}
         color={isActive ? "success" : 'default'}
@@ -180,16 +180,16 @@ const columns: GridColDef[] = [
 ];
 
 function ModelDataGrid() {
-  const {data:models} = useGetAllModelsQuery(undefined, {refetchOnMountOrArgChange:true});
+  const { data: models } = useGetAllModelsQuery(undefined, { refetchOnMountOrArgChange: true });
   const navigate = useNavigate();
-
+  console.log(models);
   return (
     <Paper sx={paperSx}>
       <div style={{ height: '25.2rem', width: '100%' }}>
         <DataGrid
           sx={datagridSx}
           // rowsPerPageOptions={[5, 10, 25]}
-          rows={models||[]}
+          rows={models || []}
           columns={columns}
           pageSize={5}
           getRowId={(row) => row._id}
@@ -207,8 +207,8 @@ function ModelDataGrid() {
             },
           }}
           onCellClick={(params, event, details) => {
-            console.log({params, event, details});
-            if(params.field === "name") {
+            console.log({ params, event, details });
+            if (params.field === "name") {
               navigate(`/models/${params.row._id}`);
             }
           }}

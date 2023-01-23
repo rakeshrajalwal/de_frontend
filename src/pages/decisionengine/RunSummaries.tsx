@@ -19,6 +19,8 @@ import Tooltip from "@mui/material/Tooltip";
 import runSummariesJson from './runsummaries.json';
 import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
 import lodash from "lodash";
+import { useGetRunSummariesQuery } from '../../redux/de';
+import { useNavigate } from 'react-router-dom';
 
 const Paper = styled(MuiPaper)(spacing);
 
@@ -42,14 +44,14 @@ const Icons = {
 }
 
 const columns: GridColDef[] = [
-  // {
-  //   field: "_id",
-  //   headerName: "ID",
-  //   description: "ID",
-  //   headerAlign: 'center',
-  //   flex: 2,
-  //   align: 'center'
-  // },
+  {
+    field: "_id",
+    headerName: "ID",
+    description: "ID",
+    headerAlign: 'center',
+    flex: 2,
+    align: 'center'
+  },
   {
     field: "model.name",
     headerName: "Name",
@@ -172,13 +174,15 @@ const columns: GridColDef[] = [
 ];
 
 function RunSummariesGrid() {
+  const { data: runSummaries } = useGetRunSummariesQuery(undefined, { refetchOnMountOrArgChange: true })
+  const navigate = useNavigate();
   return (
     <Paper sx={{ paperSx }}>
 
       <div style={{ height: "25.2rem", width: "100%" }}>
         <DataGrid
           sx={datagridSx}
-          rows={runSummariesJson}
+          rows={runSummaries || []}
           columns={columns}
           pageSize={5}
           getRowId={(row) => row._id}
