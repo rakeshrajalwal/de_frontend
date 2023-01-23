@@ -62,7 +62,7 @@ function randomSplit(total: number, count: number): number[] {
     return [part, ...randomSplit(total - part, count - 1)]
 }
 
-function randomNumberBetween({min, max}: IRange):number {
+export function randomNumberBetween({min, max}: IRange):number {
     return (+min + Math.floor((+max - +min)*Math.random()))
 }
 function randomRangeBetween(range: IRange, multipleOf?:number):IRange {
@@ -181,15 +181,15 @@ const CreateModel = () => {
 
         try {
             if (id && !creatingCopy) {
-                await modifyModel({id, model});
+                await modifyModel({id, model}).unwrap();
                 toast.success("Model Saved")
             } else {
-                await addNewModel(model);
+                await addNewModel(model).unwrap();
                 toast.success("Model Created")
             }
             navigate("/models");
         } catch (e:any) {
-            toast.error(e.data.message)
+            // toast.error(e.data.message)
         }
     }
 

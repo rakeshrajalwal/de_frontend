@@ -10,9 +10,11 @@ import {
 import styled from "@emotion/styled";
 import { Form, Formik, useField } from "formik";
 import { IProduct, IRunModel } from './interfaces/ModelInterface';
-import { useGetAllProductsQuery, useGetManualInputsByProductNameQuery, useLazyGetManualInputsByProductNameQuery } from '../../redux/de';
+import { deApi, useGetAllProductsQuery, useGetManualInputsByProductNameQuery, useLazyGetManualInputsByProductNameQuery } from '../../redux/de';
 import lodash from 'lodash';
 import * as Yup from "yup";
+import { randomNumberBetween } from './CreateModel';
+import { toast } from 'react-toastify';
 
 const CustomStyledSwitch = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -196,7 +198,7 @@ function RunModel() {
   const { data: products } = useGetAllProductsQuery();// fetching all the products
   const [product, setProduct] = React.useState<IProduct>();
   const [fetchManualInputs, { data: manualInputNames }] = useLazyGetManualInputsByProductNameQuery();// query to fetch manualinputs
-
+  const [runModel] = deApi.useRunModelMutation();
   const validationSchema = Yup.object().shape({
     loanDetails: Yup.object().shape({
       product: requiredString,
@@ -215,6 +217,21 @@ function RunModel() {
     }))
   });
   
+  function getRandomInput(): React.SetStateAction<IRunModel> {
+    const product = products![0];
+    const {loanPurpose, loanRange, loanTermInMonths, isSecured} = product.policy;
+    return {
+      loanDetails: {
+        product: product.name,
+        amount: randomNumberBetween(loanRange),
+        secured: isSecured,
+        term: randomNumberBetween(loanTermInMonths),
+        purpose: lodash.shuffle(loanPurpose)[0],
+        customerId: '0012z00000ByMxNAAV'
+      },
+      manualInputs: (manualInputNames||[]).map(name => ({ name, value: randomNumberBetween({min:10, max:100}), switchstate: true }))
+    }
+  }
   return (
     <Formik
       initialValues={{
@@ -231,11 +248,13 @@ function RunModel() {
       validationSchema={validationSchema}
       validateOnChange={validateOnChange}
       validateOnBlur={false}
-      onSubmit={(values) => {
-        const {loanDetails, manualInputs : [...manualInputs]} = values;
-        values.manualInputs = manualInputs.map(({name,value}) => ({name,value}));
-        console.log(JSON.stringify(values, null, 2))
-        alert(JSON.stringify(values, null, 2));
+      onSubmit={async ({manualInputs, loanDetails}) => {
+        const manualInputsObj = Object.fromEntries(manualInputs.map(({name,value}) => [name,value]));
+        const runModelInput:any = { loanDetails, manualInput: manualInputsObj };
+        console.log(JSON.stringify(runModelInput, null, 2))
+        alert(JSON.stringify(runModelInput, null, 2));
+        await runModel(runModelInput).unwrap();
+        toast.success("Model run successfull");
       }}
     >
       {formik => {
@@ -256,6 +275,8 @@ function RunModel() {
           setValidateOnChange(true);
           formik.validateForm();
         };
+
+
         return (
           <Form>
             <CardHeader title={"Run Model"} titleTypographyProps={{ variant: "h3" }}
@@ -263,6 +284,7 @@ function RunModel() {
                 <Button type="submit" variant={"contained"} onClick={handleSubmit}>
                     Submit
                 </Button>
+                <Button onClick={() => formik.setValues(getRandomInput())}>Populate</Button>
               </div>} />
 
             <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>

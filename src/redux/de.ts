@@ -12,14 +12,15 @@ export const deApi = createApi({
         getAllProducts: builder.query<IProduct[], void>({
             query: () => `/products`,
         }),
+        getManualInputsByProductName: builder.query<string[], string>({
+            query: (productName) => `/products/${productName}/manualInputs`,
+        }),
+
         getAllModels: builder.query<IModel[], void>({
             query: () => `/models`,
         }),
         getOneModel: builder.query<IModel, string>({
             query: (id:string) => `/models/${id}`,
-        }),
-        getManualInputsByProductName: builder.query<string[], string>({
-            query: (productName) => `/products/${productName}/manualInputs`,
         }),
         createModel: builder.mutation({
             query: (payload) => ({
@@ -55,6 +56,16 @@ export const deApi = createApi({
             query: ({id, activate}:{id:string, activate:boolean}) => ({
                 url: `/models/${id}/${activate ? "activate" : "de-activate"}`,
                 method: 'POST',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }),
+        }),
+        runModel: builder.mutation({
+            query: (input) => ({
+                url: `/model-runs`,
+                method: 'POST',
+                body: input,
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
                 },

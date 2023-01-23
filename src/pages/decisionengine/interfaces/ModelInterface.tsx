@@ -23,9 +23,9 @@ export interface IRunModel {
     model?: IModel,
     loanDetails: {
         product: string,
-        amount: string,
+        amount: number | string,
         secured: boolean,
-        term: string,
+        term: number| string,
         purpose: string,
         customerId: string
     },
