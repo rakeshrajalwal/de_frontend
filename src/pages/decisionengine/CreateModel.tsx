@@ -10,7 +10,7 @@ import {Button as MuiButton, ButtonProps as MuiButtonProps, Card, CardContent, C
 import {Form, Formik} from "formik";
 import {PolicyEditor} from './components/Policy';
 import {NodeEditor} from './editors/NodeEditor';
-import {IModelInput, IProduct, IRange} from "./interfaces/ModelInterface"
+import {criteriaRangeNames, IModelInput, IProduct, IRange, TCriteria} from "./interfaces/ModelInterface"
 import lodash from 'lodash';
 import * as Yup from "yup";
 import {TotalWeight} from "./editors/WeightEditor";
@@ -76,13 +76,15 @@ function randomRangeBetween(range: IRange, multipleOf?:number):IRange {
 }
 
 function getRandomModel(p: IProduct): IModelInput {
+    const purposes = lodash.shuffle(p.policy.loanPurpose).slice(0, randomNumberBetween({min:1, max:5}))
+    const termRange = randomRangeBetween(p.policy.loanTermInMonths, 6);
     return {
         name: Faker.lorem.words(),
         product: p.name,
         policy: {
             loanRange: randomRangeBetween(p.policy.loanRange, 1e4),
-            loanTermInMonths: randomRangeBetween(p.policy.loanTermInMonths, 6),
-            loanPurpose: [lodash.shuffle(p.policy.loanPurpose)[0]],
+            loanTermInMonths: termRange,
+            loanPurpose: purposes,
             isSecured: false,
         },
         factors: randomSplit(100, p.factors.length).map((weight, i) => {
@@ -96,6 +98,25 @@ function getRandomModel(p: IProduct): IModelInput {
                         name: subFactor.name,
                         weight,
                         signals: randomSplit(100, subFactor.signals.length).map((weight, i) => {
+                            if(subFactor.signals[i].name === "TermVsPurpose") {
+                                return {
+                                    name: subFactor.signals[i].name,
+                                    weight,
+                                    criteria: purposes.map((p) => {
+                                        let r = randomSplit(100, 4);
+                                        r = r.map((_,i) => lodash.sum(r.slice(0,i+1)))
+                                        const {min, max} = termRange;
+                                        const rangeLength = +max - +min;
+                                        return {
+                                            weak: { min: min, max: +min+Math.ceil(rangeLength*r[0]/100) },
+                                            satisfactory: { min: +min+Math.ceil(rangeLength*r[0]/100), max: +min+Math.ceil(rangeLength*r[1]/100)},
+                                            good: { min: +min+Math.ceil(rangeLength*r[1]/100), max: +min+Math.ceil(rangeLength*r[2]/100)},
+                                            strong: { min: +min+Math.ceil(rangeLength*r[2]/100), max: max},
+                                            condition: `purpose == "${p}"`
+                                        }
+                                    })
+                                }
+                            }
                             return {
                                 name: subFactor.signals[i].name,
                                 weight,

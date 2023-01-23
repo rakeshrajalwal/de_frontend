@@ -126,5 +126,5 @@ export interface INode {
     subFactors?: INode[],
     signals?: INode[],
     weight: number | string,
-    criteria?: TCriteria
+    criteria?: TCriteria[]
 }
