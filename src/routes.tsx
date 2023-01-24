@@ -39,7 +39,7 @@ import Landing from "./pages/presentation/Landing";
 // Protected routes
 import ProtectedPage from "./pages/protected/ProtectedPage";
 import Page404 from "./pages/auth/Page404";
-import {Navigate, RouteObject} from "react-router-dom";
+import { Navigate, RouteObject } from "react-router-dom";
 
 //const SaaS = async(() => import("./pages/dashboards/SaaS"));
 
@@ -61,15 +61,15 @@ const ApexCharts = async(() => import("./pages/charts/ApexCharts"));
 const GoogleMaps = async(() => import("./pages/maps/GoogleMaps"));
 const VectorMaps = async(() => import("./pages/maps/VectorMaps"));
 
-const routes:RouteObject[] = [
+const routes: RouteObject[] = [
   {
     path: "/",
     element: <PresentationLayout />,
     children: [
       {
         path: "",
-        element: <Navigate to="/home" />,
-        // element: <Landing />,
+        // element: <Navigate to="/home" />,
+        element: <Landing />,
       },
     ],
   },
