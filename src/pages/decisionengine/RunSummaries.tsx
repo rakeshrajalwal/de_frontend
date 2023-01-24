@@ -213,7 +213,6 @@ function RunSummariesGrid() {
             },
           }}
           onCellClick={(params, event) => {
-            console.log(runSummaries, " the run summaries")
             if (params.row.status == 'failed' && params.colDef.field == 'status') {
               setOpenDialog(true);
               setModelId(params.row._id);

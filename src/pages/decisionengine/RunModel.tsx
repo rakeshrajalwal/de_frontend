@@ -10,7 +10,7 @@ import {
 import styled from "@emotion/styled";
 import { Form, Formik, useField } from "formik";
 import { IProduct, IRunModel } from './interfaces/ModelInterface';
-import { deApi, useGetAllProductsQuery, useGetManualInputsByProductNameQuery, useLazyGetManualInputsByProductNameQuery } from '../../redux/de';
+import { deApi, useGetAllProductsQuery, useLazyGetManualInputsByProductNameQuery } from '../../redux/de';
 import lodash from 'lodash';
 import * as Yup from "yup";
 import { randomNumberBetween } from './CreateModel';
