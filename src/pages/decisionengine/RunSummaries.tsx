@@ -34,7 +34,6 @@ const Label = styled(Typography)`
     text-transform: capitalize;
 `;
 
-
 const Icons = {
   User: {
     text: "DE User",
@@ -189,7 +188,7 @@ function RunSummariesGrid() {
   const [RunModel, setRunModel] = React.useState<IRunModel>();
 
   const { data: runSummaries } = useGetRunSummariesQuery(undefined, { refetchOnMountOrArgChange: true })
-  const navigate = useNavigate();
+ 
   return (
     <Paper sx={{ paperSx }}>
 
@@ -296,10 +295,12 @@ const newitem = {
 
 const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, disabled: boolean, setValue: any }) => {
 
+  const navigate = useNavigate();
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
   const [runModelApi] = deApi.useRunModelMutation();
 
   const [fetchRunSummary, { data: runSummary }] = useLazyGetModelRunByIdQuery();
+  
 
   const requiredString = Yup.string().required('Required');
   // const validationSchema = Yup.object().shape({
@@ -333,6 +334,7 @@ return (
       alert(JSON.stringify(runModelInput, null, 2));
       await runModelApi(runModelInput).unwrap();
       toast.success("Model run successfull");
+      navigate("/home")
     }}
   >
     {formik => {

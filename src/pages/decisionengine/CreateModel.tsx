@@ -182,7 +182,6 @@ const CreateModel = () => {
     let { id } = useParams();
     const {data:model, isLoading:isModelLoading} = useGetOneModelQuery(id||'', {skip:!id, refetchOnMountOrArgChange:true})
 
-
     const [product, setProduct] = React.useState<IProduct>();// to populate a select products features etc.
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false); // handling the form validation
 

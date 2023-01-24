@@ -15,6 +15,7 @@ import lodash from 'lodash';
 import * as Yup from "yup";
 import { randomNumberBetween } from './CreateModel';
 import { toast } from 'react-toastify';
+import {useNavigate} from "react-router-dom";
 
 const CustomStyledSwitch = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -194,11 +195,13 @@ const requiredString = Yup.string().required('Required');
 
 
 function RunModel() {
+  const navigate = useNavigate();
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
   const { data: products } = useGetAllProductsQuery();// fetching all the products
   const [product, setProduct] = React.useState<IProduct>();
   const [fetchManualInputs, { data: manualInputNames }] = useLazyGetManualInputsByProductNameQuery();// query to fetch manualinputs
   const [runModel] = deApi.useRunModelMutation();
+
   const validationSchema = Yup.object().shape({
     loanDetails: Yup.object().shape({
       product: requiredString,
@@ -255,6 +258,7 @@ function RunModel() {
         alert(JSON.stringify(runModelInput, null, 2));
         await runModel(runModelInput).unwrap();
         toast.success("Model run successfull");
+        navigate("/home");
       }}
     >
       {formik => {
