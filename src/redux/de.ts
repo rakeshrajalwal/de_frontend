@@ -74,7 +74,7 @@ export const deApi = createApi({
         getRunSummaries: builder.query<IRunModel[], void>({
             query: () => `/model-runs`,
         }),
-        getModelRunssById: builder.query<IRunModel, string>({
+        getModelRunById: builder.query<IRunModel, string>({
             query: (id) => `/model-runs/${id}`,
         }),
     }),
@@ -91,7 +91,7 @@ export const {
     useLazyGetManualInputsByProductNameQuery,
     useModifyModelMutation,
     useGetRunSummariesQuery,
-    useLazyGetModelRunssByIdQuery
+    useLazyGetModelRunByIdQuery
 } = deApi
 
 

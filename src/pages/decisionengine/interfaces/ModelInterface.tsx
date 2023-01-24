@@ -20,6 +20,7 @@ export interface IProduct {
 // }
 
 export interface IRunModel {
+    _id?: string,
     model?: IModel,
     loanDetails: {
         product: string,
@@ -32,7 +33,13 @@ export interface IRunModel {
     manualInputs: {
         name: string,
         value: number | string
-    }[]
+    }[],
+    failedOperations? : {
+        type: string,
+        name: string,
+        source: string,
+        measuresNotProvided: string[]
+      }[],
 
 }
 

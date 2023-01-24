@@ -3,9 +3,9 @@ import styled from "@emotion/styled";
 import { Helmet } from "react-helmet-async";
 import {
   Paper as MuiPaper,
-  Typography,Card, Grid,
+  Typography, Card, Grid,
   IconButton,
-  Chip,Button,
+  Chip, Button,
   CardHeader, Dialog, DialogContent, DialogContentText, DialogTitle, TextField
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
@@ -21,9 +21,11 @@ import Tooltip from "@mui/material/Tooltip";
 import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
 import lodash from "lodash";
 import { Form, Formik, useField } from "formik";
-import { useGetRunSummariesQuery } from '../../redux/de';
+import { deApi, useGetRunSummariesQuery, useLazyGetModelRunByIdQuery } from '../../redux/de';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
+import { IRunModel } from './interfaces/ModelInterface';
+import { toast } from 'react-toastify';
 
 const Paper = styled(MuiPaper)(spacing);
 
@@ -177,14 +179,14 @@ const columns: GridColDef[] = [
     align: 'center',
     renderCell: (params) => {
       const { Icon } = Icons[(params.row.status == "success") ? 'Eye' : 'RefreshCw' as keyof typeof Icons];
-      return <Icon sx={{ cursor: 'pointer' }}/>
+      return <Icon sx={{ cursor: 'pointer' }} />
     },
   },
 ];
 
 function RunSummariesGrid() {
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
-  const [modelId, setModelId] = React.useState<string>('');
+  const [RunModel, setRunModel] = React.useState<IRunModel>();
 
   const { data: runSummaries } = useGetRunSummariesQuery(undefined, { refetchOnMountOrArgChange: true })
   const navigate = useNavigate();
@@ -215,18 +217,18 @@ function RunSummariesGrid() {
           onCellClick={(params, event) => {
             if (params.row.status == 'failed' && params.colDef.field == 'status') {
               setOpenDialog(true);
-              setModelId(params.row._id);
+              setRunModel(params.row)
             }
           }}
         />
-        <ReRunPopup id={modelId} disabled={openDialog} setValue={setOpenDialog} />
+        <ReRunPopup runModel={RunModel} disabled={openDialog} setValue={setOpenDialog} />
       </div>
     </Paper >
   );
 }
 
 const positiveInteger = Yup.number().required('Required').positive("Should be positive").integer('Should be integer');
-const requiredString = Yup.string().required('Required');
+
 
 const newitem = {
   info: [
@@ -292,150 +294,121 @@ const newitem = {
 }
 
 
-const ReRunPopup = ({ id, disabled, setValue }: { id?: string, disabled: boolean, setValue: any }) => {
+const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, disabled: boolean, setValue: any }) => {
 
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
+  const [runModelApi] = deApi.useRunModelMutation();
 
-  const validationSchema = Yup.object().shape({
+  const [fetchRunSummary, { data: runSummary }] = useLazyGetModelRunByIdQuery();
 
-    missingMeasures: Yup.array().of(Yup.object().shape({
-      value: requiredString
-    }))
-  });
+  const requiredString = Yup.string().required('Required');
+  // const validationSchema = Yup.object().shape({
+  // (
+  //   manualInputs: Yup.array().of(Yup.object().shape({
+  //     value: requiredString
+  //   }))
+  //   });
 
-  return (
-    <Formik
-      initialValues={{
-        info: [
-          {
-            name: 'Run Id',
-            value: ''
-          },
-          {
-            name: 'Loan Amount',
-            value: '5000000'
-          },
-          {
-            name: 'Run By',
-            value: 'Sahil'
-          },
-          {
-            name: 'Term',
-            value: '5 yrs'
-          }, {
-            name: 'Customer',
-            value: 'customer1'
-          },
-          {
-            name: 'Secured',
-            value: 'yes'
-          },
-          {
-            name: 'Product',
-            value: 'working capital loan'
-          },
-          {
-            name: 'Trigger Source',
-            value: 'ncino'
-          }
-        ],
-        missingMeasures: [
-          {
-            name: 'EBITDA : DSC(%)',
-            info: '(EBITDA - Dividends)/(Total Debt Service + Applied Loan)',
-            value: ''
-          },
-          {
-            name: 'Stressed EBITDA',
-            info: 'used in calculating 1',
-            value: ''
-          },
-          {
-            name: 'Turnover change year on year',
-            info: 'used in calculating2',
-            value: ''
-          },
-          {
-            name: 'Retained Profits',
-            info: 'used in calculating3',
-            value: ''
-          },
-          {
-            name: 'Sector Appetite ',
-            info: 'used in calculating4',
-            value: ''
-          }
-        ]
-      }}
-      validateOnChange={validateOnChange}
-      validateOnBlur={false}
-      validationSchema={validationSchema}
-      onSubmit={(values) => {
-        console.log("in form submit")
-        console.log(JSON.stringify(values, null, 2))
-        alert(JSON.stringify(values, null, 2));
+return (
+  <Formik
+    initialValues={{
+      _id: '',
+      loanDetails: {
+        product: '',
+        amount: '',
+        secured: false,
+        term: '',
+        purpose: '',
+        customerId: ''
+      },
+      manualInputs: []
+    } as IRunModel}
+    validateOnChange={validateOnChange}
+    validateOnBlur={false}
+   // validationSchema={validationSchema}
+    onSubmit={async ({ manualInputs, loanDetails }) => {
+      const manualInputsObj = Object.fromEntries(manualInputs.map(({ name, value }) => [name, value]));
+      const runModelInput: any = { loanDetails, manualInput: manualInputsObj };
+      console.log(JSON.stringify(runModelInput, null, 2))
+      alert(JSON.stringify(runModelInput, null, 2));
+      await runModelApi(runModelInput).unwrap();
+      toast.success("Model run successfull");
+    }}
+  >
+    {formik => {
+      React.useEffect(() => {
+        formik.setFieldValue("_id", runModel?._id)
+        formik.setFieldValue("loanDetails", runModel?.loanDetails);
+        formik.setFieldValue("manualInputs", runModel?.manualInputs);
+        if (runModel?.failedOperations) {
 
-      }}
-    >
-      {formik => {
-        React.useEffect(() => {
-          formik.setFieldValue("info", newitem.info);
-          formik.setFieldValue("missing_measures", newitem.missing_measures);
-          formik.setFieldValue("info[0].value", id);
-        }, [id]);
+          const mergedEarlyCumNewManualInputs = [...runModel.manualInputs, ...runModel.failedOperations.filter(operation => operation.type === 'external').
+            reduce((measures: string[], operation) => [...measures, ...operation.measuresNotProvided], []).
+            map(name => ({ name, value: '' }))]
+          formik.setFieldValue("manualInputs", mergedEarlyCumNewManualInputs);
+        } else {
+          formik.setFieldValue("manualInputs", runModel?.manualInputs);
+        }
+      }, [runModel]);
 
-        const handleSubmit = () => {
-          setValidateOnChange(true);
-          formik.validateForm();
-        };
+      const handleSubmit = () => {
+        setValidateOnChange(true);
+        formik.validateForm();
+      };
 
-        return (
+      return (
 
-          <Dialog fullWidth open={disabled} maxWidth={'md'} >
-            <Form>
-              <DialogTitle style={{ backgroundColor: '#434DB0' }}>
+        <Dialog fullWidth open={disabled} maxWidth={'md'} >
+          <Form>
+            <DialogTitle style={{ backgroundColor: '#434DB0' }}>
 
-                <Card style={{ backgroundColor: '#434DB0', padding: '20px 30px 20px 30px' }}>
-                  <Grid container>
-                    <div style={{ float: 'right', position: 'absolute', right: '30px', top: '10px' }}>
-                      <CloseIcon style={{ color: 'white', cursor: 'pointer' }} onClick={() => setValue(false)} /></div>
+              <Card style={{ backgroundColor: '#434DB0', padding: '20px 30px 20px 30px' }}>
+                <Grid container>
+                  <div style={{ float: 'right', position: 'absolute', right: '30px', top: '10px' }}>
+                    <CloseIcon style={{ color: 'white', cursor: 'pointer' }} onClick={() => setValue(false)} /></div>
+                  <>
 
-                    {formik.values.info.map((f, i) => (
-                      <CustomInfoField key={i} fieldname={f.name} fieldvalue={f.value} />
+                    <CustomInfoField fieldname={'id'} fieldvalue={'1'} />
+
+                    {Object.entries(formik.values.loanDetails || {}).map(([key, val], i) => (
+                      <CustomInfoField key={`${key}`} fieldname={`${key}`} fieldvalue={`${val}`} />
                     ))}
 
+                  </>
+                </Grid>
+              </Card>
+            </DialogTitle>
+
+            <DialogContent>
+              <DialogContentText>
+                <Card style={{ padding: '10px 30px 5px 30px', backgroundColor: '#FFD4D4', marginTop: '5px' }}>
+                  <Typography color={'red'}> Failed due to missing data for the following signals. Please input the necessary fields to perform re-run
+                  </Typography>
+                </Card>
+                <Card style={{ padding: '20px 30px 20px 30px' }}>
+                  <Grid container>
+                    {(formik.values.manualInputs || []).map((f, i) => (
+                      <CustomInputField key={i} fieldname={f.name} path={`manualInputs[${i}].value`} />
+                    ))}
                   </Grid>
                 </Card>
-              </DialogTitle>
-
-              <DialogContent>
-                <DialogContentText>
-                  <Card style={{ padding: '10px 30px 5px 30px', backgroundColor: '#FFD4D4', marginTop: '5px' }}>
-                    <Typography color={'red'}> Failed due to missing data for the following signals. Please input the necessary fields to perform re-run
-                    </Typography>
-                  </Card>
-                  <Card style={{ padding: '20px 30px 20px 30px' }}>
-                    <Grid container>
-                      {formik.values.missingMeasures.map((f, i) => (
-                        <CustomInputField key={i} fieldname={f.name} path={`missingMeasures[${i}].value`} description={f.info} />
-                      ))}
-                    </Grid>
-                  </Card>
-                  <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button type="submit" variant={"contained"} onClick={handleSubmit}>Re-Run</Button>
-                  </div>
-                </DialogContentText>
-              </DialogContent>
-            </Form>
-          </Dialog>
-        )
-      }}
-    </Formik>
-  )
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button type="submit" variant={"contained"} onClick={handleSubmit}>Re-Run</Button>
+                </div>
+              </DialogContentText>
+            </DialogContent>
+          </Form>
+        </Dialog>
+      )
+    }}
+  </Formik>
+)
 }
 
 const CustomInfoField = ({ fieldname, fieldvalue }: { fieldname: string, fieldvalue: string }) => {
 
+  console.log(fieldname, " the field name");
+  console.log(fieldvalue, " the field value")
   return (
     <Grid item md={6} mt={3}>
       <ControlContainer>
@@ -454,7 +427,7 @@ const CustomInfoField = ({ fieldname, fieldvalue }: { fieldname: string, fieldva
 
 }
 
-const CustomInputField = ({ fieldname, description, path }: { fieldname: string, description: string, path: string }) => {
+const CustomInputField = ({ fieldname, description, path }: { fieldname: string, description?: string, path: string }) => {
 
   const [field, meta, helpers] = useField(`${path}`);
   console.log(meta.value)
@@ -464,12 +437,12 @@ const CustomInputField = ({ fieldname, description, path }: { fieldname: string,
         <Grid item md={5} >
           <Label > {fieldname} </Label>
         </Grid>
-        <Grid item md={0.5} marginTop='5px'>
-          <Tooltip title={description} style={{ backgroundColor: 'transparent' }}>
+        {/* <Grid item md={0.5} marginTop='5px'>
+          <Tooltip title={description || } style={{ backgroundColor: 'transparent' }}>
             <InfoIcon fontSize={'small'} ></InfoIcon>
           </Tooltip>
 
-        </Grid>
+        </Grid> */}
         <Grid item md={0.5}>
           <Typography >:</Typography>
         </Grid>
