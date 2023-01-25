@@ -26,6 +26,7 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
 import { IRunModel } from './interfaces/ModelInterface';
 import { toast } from 'react-toastify';
+import './styles/RunSummaries.css';
 
 const Paper = styled(MuiPaper)(spacing);
 
@@ -188,7 +189,7 @@ function RunSummariesGrid() {
   const [RunModel, setRunModel] = React.useState<IRunModel>();
 
   const { data: runSummaries } = useGetRunSummariesQuery(undefined, { refetchOnMountOrArgChange: true })
- 
+
   return (
     <Paper sx={{ paperSx }}>
 
@@ -203,7 +204,7 @@ function RunSummariesGrid() {
           disableColumnSelector
           disableDensitySelector
           hideFooterSelectedRowCount
-          getRowClassName={(params) => `super-app-theme--${params.row.status}`}
+          getRowClassName={(params) => params.row.status == 'failed' ? 'failed-runs' : ''}
           components={{ Toolbar: GridToolbar }}
           componentsProps={{
             toolbar: {
@@ -300,7 +301,7 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
   const [runModelApi] = deApi.useRunModelMutation();
 
   const [fetchRunSummary, { data: runSummary }] = useLazyGetModelRunByIdQuery();
-  
+
 
   const requiredString = Yup.string().required('Required');
   // const validationSchema = Yup.object().shape({
@@ -310,101 +311,101 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
   //   }))
   //   });
 
-return (
-  <Formik
-    initialValues={{
-      _id: '',
-      loanDetails: {
-        product: '',
-        amount: '',
-        secured: false,
-        term: '',
-        purpose: '',
-        customerId: ''
-      },
-      manualInputs: []
-    } as IRunModel}
-    validateOnChange={validateOnChange}
-    validateOnBlur={false}
-   // validationSchema={validationSchema}
-    onSubmit={async ({ manualInputs, loanDetails }) => {
-      const manualInputsObj = Object.fromEntries(manualInputs.map(({ name, value }) => [name, value]));
-      const runModelInput: any = { loanDetails, manualInput: manualInputsObj };
-      console.log(JSON.stringify(runModelInput, null, 2))
-      alert(JSON.stringify(runModelInput, null, 2));
-      await runModelApi(runModelInput).unwrap();
-      toast.success("Model run successfull");
-      navigate("/home")
-    }}
-  >
-    {formik => {
-      React.useEffect(() => {
-        formik.setFieldValue("_id", runModel?._id)
-        formik.setFieldValue("loanDetails", runModel?.loanDetails);
-        formik.setFieldValue("manualInputs", runModel?.manualInputs);
-        if (runModel?.failedOperations) {
-
-          const mergedEarlyCumNewManualInputs = [...runModel.manualInputs, ...runModel.failedOperations.filter(operation => operation.type === 'external').
-            reduce((measures: string[], operation) => [...measures, ...operation.measuresNotProvided], []).
-            map(name => ({ name, value: '' }))]
-          formik.setFieldValue("manualInputs", mergedEarlyCumNewManualInputs);
-        } else {
+  return (
+    <Formik
+      initialValues={{
+        _id: '',
+        loanDetails: {
+          product: '',
+          amount: '',
+          secured: false,
+          term: '',
+          purpose: '',
+          customerId: ''
+        },
+        manualInputs: []
+      } as IRunModel}
+      validateOnChange={validateOnChange}
+      validateOnBlur={false}
+      // validationSchema={validationSchema}
+      onSubmit={async ({ manualInputs, loanDetails }) => {
+        const manualInputsObj = Object.fromEntries(manualInputs.map(({ name, value }) => [name, value]));
+        const runModelInput: any = { loanDetails, manualInput: manualInputsObj };
+        console.log(JSON.stringify(runModelInput, null, 2))
+        alert(JSON.stringify(runModelInput, null, 2));
+        await runModelApi(runModelInput).unwrap();
+        toast.success("Model run successfull");
+        navigate("/home")
+      }}
+    >
+      {formik => {
+        React.useEffect(() => {
+          formik.setFieldValue("_id", runModel?._id)
+          formik.setFieldValue("loanDetails", runModel?.loanDetails);
           formik.setFieldValue("manualInputs", runModel?.manualInputs);
-        }
-      }, [runModel]);
+          if (runModel?.failedOperations) {
 
-      const handleSubmit = () => {
-        setValidateOnChange(true);
-        formik.validateForm();
-      };
+            const mergedEarlyCumNewManualInputs = [...runModel.manualInputs, ...runModel.failedOperations.filter(operation => operation.type === 'external').
+              reduce((measures: string[], operation) => [...measures, ...operation.measuresNotProvided], []).
+              map(name => ({ name, value: '' }))]
+            formik.setFieldValue("manualInputs", mergedEarlyCumNewManualInputs);
+          } else {
+            formik.setFieldValue("manualInputs", runModel?.manualInputs);
+          }
+        }, [runModel]);
 
-      return (
+        const handleSubmit = () => {
+          setValidateOnChange(true);
+          formik.validateForm();
+        };
 
-        <Dialog fullWidth open={disabled} maxWidth={'md'} >
-          <Form>
-            <DialogTitle style={{ backgroundColor: '#434DB0' }}>
+        return (
 
-              <Card style={{ backgroundColor: '#434DB0', padding: '20px 30px 20px 30px' }}>
-                <Grid container>
-                  <div style={{ float: 'right', position: 'absolute', right: '30px', top: '10px' }}>
-                    <CloseIcon style={{ color: 'white', cursor: 'pointer' }} onClick={() => setValue(false)} /></div>
-                  <>
+          <Dialog fullWidth open={disabled} maxWidth={'md'} >
+            <Form>
+              <DialogTitle style={{ backgroundColor: '#434DB0' }}>
 
-                    <CustomInfoField fieldname={'id'} fieldvalue={'1'} />
-
-                    {Object.entries(formik.values.loanDetails || {}).map(([key, val], i) => (
-                      <CustomInfoField key={`${key}`} fieldname={`${key}`} fieldvalue={`${val}`} />
-                    ))}
-
-                  </>
-                </Grid>
-              </Card>
-            </DialogTitle>
-
-            <DialogContent>
-              <DialogContentText>
-                <Card style={{ padding: '10px 30px 5px 30px', backgroundColor: '#FFD4D4', marginTop: '5px' }}>
-                  <Typography color={'red'}> Failed due to missing data for the following signals. Please input the necessary fields to perform re-run
-                  </Typography>
-                </Card>
-                <Card style={{ padding: '20px 30px 20px 30px' }}>
+                <Card style={{ backgroundColor: '#434DB0', padding: '20px 30px 20px 30px' }}>
                   <Grid container>
-                    {(formik.values.manualInputs || []).map((f, i) => (
-                      <CustomInputField key={i} fieldname={f.name} path={`manualInputs[${i}].value`} />
-                    ))}
+                    <div style={{ float: 'right', position: 'absolute', right: '30px', top: '10px' }}>
+                      <CloseIcon style={{ color: 'white', cursor: 'pointer' }} onClick={() => setValue(false)} /></div>
+                    <>
+
+                      <CustomInfoField fieldname={'id'} fieldvalue={'1'} />
+
+                      {Object.entries(formik.values.loanDetails || {}).map(([key, val], i) => (
+                        <CustomInfoField key={`${key}`} fieldname={`${key}`} fieldvalue={`${val}`} />
+                      ))}
+
+                    </>
                   </Grid>
                 </Card>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <Button type="submit" variant={"contained"} onClick={handleSubmit}>Re-Run</Button>
-                </div>
-              </DialogContentText>
-            </DialogContent>
-          </Form>
-        </Dialog>
-      )
-    }}
-  </Formik>
-)
+              </DialogTitle>
+
+              <DialogContent>
+                <DialogContentText>
+                  <Card style={{ padding: '10px 30px 5px 30px', backgroundColor: '#FFD4D4', marginTop: '5px' }}>
+                    <Typography color={'red'}> Failed due to missing data for the following signals. Please input the necessary fields to perform re-run
+                    </Typography>
+                  </Card>
+                  <Card style={{ padding: '20px 30px 20px 30px' }}>
+                    <Grid container>
+                      {(formik.values.manualInputs || []).map((f, i) => (
+                        <CustomInputField key={i} fieldname={f.name} path={`manualInputs[${i}].value`} />
+                      ))}
+                    </Grid>
+                  </Card>
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button type="submit" variant={"contained"} onClick={handleSubmit}>Re-Run</Button>
+                  </div>
+                </DialogContentText>
+              </DialogContent>
+            </Form>
+          </Dialog>
+        )
+      }}
+    </Formik>
+  )
 }
 
 const CustomInfoField = ({ fieldname, fieldvalue }: { fieldname: string, fieldvalue: string }) => {
