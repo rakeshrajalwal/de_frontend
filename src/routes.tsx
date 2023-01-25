@@ -68,8 +68,8 @@ const routes:RouteObject[] = [
     children: [
       {
         path: "",
-        element: <Navigate to="/home" />,
-        // element: <Landing />,
+        // element: <Navigate to="/home" />,
+        element: <Landing />,
       },
     ],
   },
