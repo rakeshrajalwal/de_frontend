@@ -1,0 +1,627 @@
+[
+  {  "policy": {
+      "loanRange": {
+        "min": 1000,
+        "max": 5000,
+        "_id": "63a409f70190b0642ac2eb07"
+      },
+      "loanTermInMonths": {
+        "min": 24,
+        "max": 30,
+        "_id": "63a409f70190b0642ac2eb08"
+      },
+      "loanPurpose": [
+        "biz growth",
+        "expansion"
+      ],
+      "isSecured": true
+    },
+    "_id": "63a409f70190b0642ac2ea90",
+    "modelID": "model1",
+    "name": "model-1",
+    "product": "Working Capital Loan",
+    "factors": [
+      {
+        "name": "Financial Strength",
+        "weight": 60,
+        "subFactors": [
+          {
+            "name": "Market Conditions",
+            "weight": 20,
+            "signals": [
+              {
+                "name": "Sector Appetite",
+                "weight": 50,
+                "criteria": {
+                  "weak": {
+                    "min": 5.9,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2ea95"
+                  },
+                  "satisfactory": {
+                    "min": 4.1,
+                    "max": 5.9,
+                    "_id": "63a409f70190b0642ac2ea96"
+                  },
+                  "good": {
+                    "min": 3,
+                    "max": 4.1,
+                    "_id": "63a409f70190b0642ac2ea97"
+                  },
+                  "strong": {
+                    "min": null,
+                    "max": 3,
+                    "_id": "63a409f70190b0642ac2ea98"
+                  },
+                  "_id": "63a409f70190b0642ac2ea94"
+                },
+                "overallWeight": 6,
+                "_id": "63a409f70190b0642ac2ea93"
+              },
+              {
+                "name": "GP%vsSector",
+                "weight": 12.5,
+                "criteria": {
+                  "weak": {
+                    "min": null,
+                    "max": -5,
+                    "_id": "63a409f70190b0642ac2ea9b"
+                  },
+                  "satisfactory": {
+                    "min": -5,
+                    "max": 5,
+                    "_id": "63a409f70190b0642ac2ea9c"
+                  },
+                  "good": {
+                    "min": 5,
+                    "max": 10,
+                    "_id": "63a409f70190b0642ac2ea9d"
+                  },
+                  "strong": {
+                    "min": 10,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2ea9e"
+                  },
+                  "_id": "63a409f70190b0642ac2ea9a"
+                },
+                "overallWeight": 1.5,
+                "_id": "63a409f70190b0642ac2ea99"
+              },
+              {
+                "name": "NP%vsSector",
+                "weight": 12.5,
+                "criteria": {
+                  "weak": {
+                    "min": null,
+                    "max": -5,
+                    "_id": "63a409f70190b0642ac2eaa1"
+                  },
+                  "satisfactory": {
+                    "min": -5,
+                    "max": 5,
+                    "_id": "63a409f70190b0642ac2eaa2"
+                  },
+                  "good": {
+                    "min": 5,
+                    "max": 10,
+                    "_id": "63a409f70190b0642ac2eaa3"
+                  },
+                  "strong": {
+                    "min": 10,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eaa4"
+                  },
+                  "_id": "63a409f70190b0642ac2eaa0"
+                },
+                "overallWeight": 1.5,
+                "_id": "63a409f70190b0642ac2ea9f"
+              },
+              {
+                "name": "LeveragevsSector",
+                "weight": 12.5,
+                "criteria": {
+                  "weak": {
+                    "min": 110,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eaa7"
+                  },
+                  "satisfactory": {
+                    "min": 90,
+                    "max": 110,
+                    "_id": "63a409f70190b0642ac2eaa8"
+                  },
+                  "good": {
+                    "min": 75,
+                    "max": 90,
+                    "_id": "63a409f70190b0642ac2eaa9"
+                  },
+                  "strong": {
+                    "min": null,
+                    "max": 75,
+                    "_id": "63a409f70190b0642ac2eaaa"
+                  },
+                  "_id": "63a409f70190b0642ac2eaa6"
+                },
+                "overallWeight": 1.5,
+                "_id": "63a409f70190b0642ac2eaa5"
+              },
+              {
+                "name": "GearingvsSector",
+                "weight": 12.5,
+                "criteria": {
+                  "weak": {
+                    "min": 110,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eaad"
+                  },
+                  "satisfactory": {
+                    "min": 90,
+                    "max": 110,
+                    "_id": "63a409f70190b0642ac2eaae"
+                  },
+                  "good": {
+                    "min": 75,
+                    "max": 90,
+                    "_id": "63a409f70190b0642ac2eaaf"
+                  },
+                  "strong": {
+                    "min": null,
+                    "max": 75,
+                    "_id": "63a409f70190b0642ac2eab0"
+                  },
+                  "_id": "63a409f70190b0642ac2eaac"
+                },
+                "overallWeight": 1.5,
+                "_id": "63a409f70190b0642ac2eaab"
+              }
+            ],
+            "_id": "63a409f70190b0642ac2ea92"
+          },
+          {
+            "name": "Debt Service",
+            "weight": 20,
+            "signals": [
+              {
+                "name": "EBITDA:DSC",
+                "weight": 100,
+                "criteria": {
+                  "weak": {
+                    "min": null,
+                    "max": 130,
+                    "_id": "63a409f70190b0642ac2eab4"
+                  },
+                  "satisfactory": {
+                    "min": 130,
+                    "max": 160,
+                    "_id": "63a409f70190b0642ac2eab5"
+                  },
+                  "good": {
+                    "min": 160,
+                    "max": 200,
+                    "_id": "63a409f70190b0642ac2eab6"
+                  },
+                  "strong": {
+                    "min": 200,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eab7"
+                  },
+                  "_id": "63a409f70190b0642ac2eab3"
+                },
+                "overallWeight": 12,
+                "_id": "63a409f70190b0642ac2eab2"
+              }
+            ],
+            "_id": "63a409f70190b0642ac2eab1"
+          },
+          {
+            "name": "Financial stability",
+            "weight": 30,
+            "signals": [
+              {
+                "name": "%ChgTurnover",
+                "weight": 15,
+                "criteria": {
+                  "weak": {
+                    "min": null,
+                    "max": 10,
+                    "_id": "63a409f70190b0642ac2eabb"
+                  },
+                  "satisfactory": {
+                    "min": 10,
+                    "max": 15,
+                    "_id": "63a409f70190b0642ac2eabc"
+                  },
+                  "good": {
+                    "min": 15,
+                    "max": 20,
+                    "_id": "63a409f70190b0642ac2eabd"
+                  },
+                  "strong": {
+                    "min": 20,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eabe"
+                  },
+                  "_id": "63a409f70190b0642ac2eaba"
+                },
+                "overallWeight": 2.7,
+                "_id": "63a409f70190b0642ac2eab9"
+              },
+              {
+                "name": "EBITDA%ratio",
+                "weight": 20,
+                "criteria": {
+                  "weak": {
+                    "min": null,
+                    "max": 5,
+                    "_id": "63a409f70190b0642ac2eac1"
+                  },
+                  "satisfactory": {
+                    "min": 5,
+                    "max": 10,
+                    "_id": "63a409f70190b0642ac2eac2"
+                  },
+                  "good": {
+                    "min": 10,
+                    "max": 20,
+                    "_id": "63a409f70190b0642ac2eac3"
+                  },
+                  "strong": {
+                    "min": 20,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eac4"
+                  },
+                  "_id": "63a409f70190b0642ac2eac0"
+                },
+                "overallWeight": 3.5999999999999996,
+                "_id": "63a409f70190b0642ac2eabf"
+              },
+              {
+                "name": "Stressed EBITDA:DSC",
+                "weight": 50,
+                "criteria": {
+                  "weak": {
+                    "min": null,
+                    "max": 75,
+                    "_id": "63a409f70190b0642ac2eac7"
+                  },
+                  "satisfactory": {
+                    "min": 75,
+                    "max": 100,
+                    "_id": "63a409f70190b0642ac2eac8"
+                  },
+                  "good": {
+                    "min": 100,
+                    "max": 150,
+                    "_id": "63a409f70190b0642ac2eac9"
+                  },
+                  "strong": {
+                    "min": 150,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eaca"
+                  },
+                  "_id": "63a409f70190b0642ac2eac6"
+                },
+                "overallWeight": 9,
+                "_id": "63a409f70190b0642ac2eac5"
+              },
+              {
+                "name": "%ChgRetainedProfits",
+                "weight": 15,
+                "criteria": {
+                  "weak": {
+                    "min": null,
+                    "max": 50,
+                    "_id": "63a409f70190b0642ac2eacd"
+                  },
+                  "satisfactory": {
+                    "min": 50,
+                    "max": 100,
+                    "_id": "63a409f70190b0642ac2eace"
+                  },
+                  "good": {
+                    "min": 100,
+                    "max": 150,
+                    "_id": "63a409f70190b0642ac2eacf"
+                  },
+                  "strong": {
+                    "min": 150,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2ead0"
+                  },
+                  "_id": "63a409f70190b0642ac2eacc"
+                },
+                "overallWeight": 2.7,
+                "_id": "63a409f70190b0642ac2eacb"
+              }
+            ],
+            "_id": "63a409f70190b0642ac2eab8"
+          },
+          {
+            "name": "Gearing ratio",
+            "weight": 15,
+            "signals": [
+              {
+                "name": "Gearing-Non Property Owner Borrower",
+                "weight": 100,
+                "criteria": {
+                  "weak": {
+                    "min": 250,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2ead4"
+                  },
+                  "satisfactory": {
+                    "min": 150,
+                    "max": 250,
+                    "_id": "63a409f70190b0642ac2ead5"
+                  },
+                  "good": {
+                    "min": 75,
+                    "max": 150,
+                    "_id": "63a409f70190b0642ac2ead6"
+                  },
+                  "strong": {
+                    "min": null,
+                    "max": 75,
+                    "_id": "63a409f70190b0642ac2ead7"
+                  },
+                  "_id": "63a409f70190b0642ac2ead3"
+                },
+                "overallWeight": 9,
+                "_id": "63a409f70190b0642ac2ead2"
+              }
+            ],
+            "_id": "63a409f70190b0642ac2ead1"
+          },
+          {
+            "name": "Leverage",
+            "weight": 15,
+            "signals": [
+              {
+                "name": "Leverage-Non Property Owner Borrower",
+                "weight": 100,
+                "criteria": {
+                  "weak": {
+                    "min": 250,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eadb"
+                  },
+                  "satisfactory": {
+                    "min": 150,
+                    "max": 250,
+                    "_id": "63a409f70190b0642ac2eadc"
+                  },
+                  "good": {
+                    "min": 75,
+                    "max": 150,
+                    "_id": "63a409f70190b0642ac2eadd"
+                  },
+                  "strong": {
+                    "min": null,
+                    "max": 75,
+                    "_id": "63a409f70190b0642ac2eade"
+                  },
+                  "_id": "63a409f70190b0642ac2eada"
+                },
+                "overallWeight": 9,
+                "_id": "63a409f70190b0642ac2ead9"
+              }
+            ],
+            "_id": "63a409f70190b0642ac2ead8"
+          }
+        ],
+        "_id": "63a409f70190b0642ac2ea91"
+      },
+      {
+        "name": "Strength of Business Owner/Guarantor & Security Package",
+        "weight": 30,
+        "subFactors": [
+          {
+            "name": "Financial Capacity & Willingness to Support",
+            "weight": 100,
+            "signals": [
+              {
+                "name": "Sponsors Debt",
+                "weight": 20,
+                "criteria": {
+                  "weak": {
+                    "min": null,
+                    "max": 75,
+                    "_id": "63a409f70190b0642ac2eae3"
+                  },
+                  "satisfactory": {
+                    "min": 75,
+                    "max": 100,
+                    "_id": "63a409f70190b0642ac2eae4"
+                  },
+                  "good": {
+                    "min": 100,
+                    "max": 150,
+                    "_id": "63a409f70190b0642ac2eae5"
+                  },
+                  "strong": {
+                    "min": 150,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eae6"
+                  },
+                  "_id": "63a409f70190b0642ac2eae2"
+                },
+                "overallWeight": 6,
+                "_id": "63a409f70190b0642ac2eae1"
+              },
+              {
+                "name": "Sponsors Net Worth",
+                "weight": 25,
+                "criteria": {
+                  "weak": {
+                    "min": null,
+                    "max": 100,
+                    "_id": "63a409f70190b0642ac2eae9"
+                  },
+                  "satisfactory": {
+                    "min": 100,
+                    "max": 150,
+                    "_id": "63a409f70190b0642ac2eaea"
+                  },
+                  "good": {
+                    "min": 150,
+                    "max": 200,
+                    "_id": "63a409f70190b0642ac2eaeb"
+                  },
+                  "strong": {
+                    "min": 200,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eaec"
+                  },
+                  "_id": "63a409f70190b0642ac2eae8"
+                },
+                "overallWeight": 7.5,
+                "_id": "63a409f70190b0642ac2eae7"
+              },
+              {
+                "name": "Sponsor Credit Score",
+                "weight": 20,
+                "criteria": {
+                  "weak": {
+                    "min": null,
+                    "max": 600,
+                    "_id": "63a409f70190b0642ac2eaef"
+                  },
+                  "satisfactory": {
+                    "min": 600,
+                    "max": 700,
+                    "_id": "63a409f70190b0642ac2eaf0"
+                  },
+                  "good": {
+                    "min": 700,
+                    "max": 800,
+                    "_id": "63a409f70190b0642ac2eaf1"
+                  },
+                  "strong": {
+                    "min": 800,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eaf2"
+                  },
+                  "_id": "63a409f70190b0642ac2eaee"
+                },
+                "overallWeight": 6,
+                "_id": "63a409f70190b0642ac2eaed"
+              },
+              {
+                "name": "Sponsor PG liablities",
+                "weight": 25,
+                "criteria": {
+                  "weak": {
+                    "min": null,
+                    "max": 100,
+                    "_id": "63a409f70190b0642ac2eaf5"
+                  },
+                  "satisfactory": {
+                    "min": 100,
+                    "max": 150,
+                    "_id": "63a409f70190b0642ac2eaf6"
+                  },
+                  "good": {
+                    "min": 150,
+                    "max": 200,
+                    "_id": "63a409f70190b0642ac2eaf7"
+                  },
+                  "strong": {
+                    "min": 200,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eaf8"
+                  },
+                  "_id": "63a409f70190b0642ac2eaf4"
+                },
+                "overallWeight": 7.5,
+                "_id": "63a409f70190b0642ac2eaf3"
+              },
+              {
+                "name": "Business Interuption Insurance",
+                "weight": 10,
+                "criteria": {
+                  "weak": {
+                    "min": null,
+                    "max": 3,
+                    "_id": "63a409f70190b0642ac2eafb"
+                  },
+                  "satisfactory": {
+                    "min": 3,
+                    "max": 6,
+                    "_id": "63a409f70190b0642ac2eafc"
+                  },
+                  "good": {
+                    "min": 6,
+                    "max": 12,
+                    "_id": "63a409f70190b0642ac2eafd"
+                  },
+                  "strong": {
+                    "min": 12,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eafe"
+                  },
+                  "_id": "63a409f70190b0642ac2eafa"
+                },
+                "overallWeight": 3,
+                "_id": "63a409f70190b0642ac2eaf9"
+              }
+            ],
+            "_id": "63a409f70190b0642ac2eae0"
+          }
+        ],
+        "_id": "63a409f70190b0642ac2eadf"
+      },
+      {
+        "name": "Transaction Characteristics ",
+        "weight": 10,
+        "subFactors": [
+          {
+            "name": "Term of Loan vs. Purpose",
+            "weight": 100,
+            "signals": [
+              {
+                "name": "TermvsPurpose",
+                "weight": 100,
+                "criteria": {
+                  "weak": {
+                    "min": null,
+                    "max": 1,
+                    "_id": "63a409f70190b0642ac2eb03"
+                  },
+                  "satisfactory": {
+                    "min": 1,
+                    "max": 2,
+                    "_id": "63a409f70190b0642ac2eb04"
+                  },
+                  "good": {
+                    "min": 2,
+                    "max": 3,
+                    "_id": "63a409f70190b0642ac2eb05"
+                  },
+                  "strong": {
+                    "min": 3,
+                    "max": null,
+                    "_id": "63a409f70190b0642ac2eb06"
+                  },
+                  "_id": "63a409f70190b0642ac2eb02"
+                },
+                "overallWeight": 10,
+                "_id": "63a409f70190b0642ac2eb01"
+              }
+            ],
+            "_id": "63a409f70190b0642ac2eb00"
+          }
+        ],
+        "_id": "63a409f70190b0642ac2eaff"
+      }
+    ],
+    "__v": 0,
+    "isActive": false,
+    "approvalStatus": "rejected",
+    "runCount": 234,
+    "lastRun": {
+      "source": "ncino",
+      "runAt": "15/12/22 11:45:23"
+    },
+    "createdBy": "Chris",
+    "createdAt": "10/12/22 11:45:12"
+  }]

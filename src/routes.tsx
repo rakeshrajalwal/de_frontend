@@ -27,6 +27,7 @@ import ViewModels from "./pages/decisionengine/ViewModels";
 import CreateModel from "./pages/decisionengine/CreateModel";
 import ViewOrEditModel from "./pages/decisionengine/ViewOrEditModel";
 import RunModel from "./pages/decisionengine/RunModel";
+import ModelEvaluation from "./pages/decisionengine/ModelEvaluation";
 import Logout from "./pages/decisionengine/Logout";
 
 // Table components
@@ -108,6 +109,10 @@ const routes: RouteObject[] = [
       {
         path: "/models/run",
         element: <RunModel />,
+      },
+      {
+        path: "/models/modelevaluation",
+        element: <ModelEvaluation />,
       },
 
     ],

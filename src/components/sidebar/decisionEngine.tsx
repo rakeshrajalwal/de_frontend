@@ -29,6 +29,10 @@ const pagesSection = [
         href: "/models/run",
         title: "Run Model",
       },
+      {
+        href: "/models/modelevaluation",
+        title: "Model Evalution Dashboard",
+      },
     ],
   },
   {
