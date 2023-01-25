@@ -75,33 +75,25 @@ const columns: GridColDef[] = [
         align: "center",
     },
     {
-        field: "score",
-        headerName: "Weight",
-        description: "Weight",
-        flex: 10,
-        headerAlign: "center",
-        align: "center",
-    },
-    {
         field: "numericValue",
-        headerName: "Value",
+        headerName: "Numeric Value",
         description: "Value",
         flex: 20,
         headerAlign: "center",
         align: "center",
     },
     {
-        field: "weighted",
-        headerName: "Weighted",
-        description: "Weighted",
-        flex: 20,
+        field: "signalValue",
+        headerName: "Singal Value",
+        description: "signalValue",
+        flex: 10,
         headerAlign: "center",
         align: "center",
     },
     {
-        field: "unweighted",
-        headerName: "Unweighted",
-        description: "Unweighted",
+        field: "score",
+        headerName: "Score",
+        description: "score",
         flex: 20,
         headerAlign: "center",
         align: "center",
@@ -111,7 +103,7 @@ const columns: GridColDef[] = [
 function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
 
     const summarySubBodySx = {
-        fontSize: '5ex',
+        fontSize: '3ex',
         fontWeight: 'bold'
     }
     const summarySubHeadSx = {
@@ -148,7 +140,7 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                     </Typography>
                     <InfoOutlinedIcon style={{ fontSize: 'medium' }} />
                 </div>
-                <Typography sx={{ fontSize: '10ex', fontWeight: 'bold' }}>
+                <Typography sx={{ fontSize: '8ex', fontWeight: 'bold' }}>
                     {modelRun?.score?.toString().slice(0, 4)}
                 </Typography>
             </div>
