@@ -240,12 +240,12 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
   const [runModelApi] = deApi.useRunModelMutation();
 
   const requiredString = Yup.string().required('Required');
-  // const validationSchema = Yup.object().shape({
-  // (
-  //   manualInputs: Yup.array().of(Yup.object().shape({
-  //     value: requiredString
-  //   }))
-  //   });
+  
+  const validationSchema = Yup.object().shape({
+    manualInputs :  Yup.array().of(Yup.object().shape({
+      value : requiredString
+    }))
+  });
 
   return (
     <Formik
@@ -263,15 +263,14 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
       } as IRunModel}
       validateOnChange={validateOnChange}
       validateOnBlur={false}
-      // validationSchema={validationSchema}
+      validationSchema={validationSchema}
       onSubmit={async ({ manualInputs, loanDetails }) => {
         const manualInputsObj = Object.fromEntries(manualInputs.map(({ name, value }) => [name, value]));
         const runModelInput: any = { loanDetails, manualInput: manualInputsObj };
         console.log(JSON.stringify(runModelInput, null, 2))
-        alert(JSON.stringify(runModelInput, null, 2));
         await runModelApi(runModelInput).unwrap();
         toast.success("Model run successfull");
-        navigate("/home")
+        setValue(false)
       }}
     >
       {formik => {
@@ -280,7 +279,6 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
           formik.setFieldValue("loanDetails", runModel?.loanDetails);
           formik.setFieldValue("manualInputs", runModel?.manualInputs);
           if (runModel?.failedOperations) {
-
             const mergedEarlyCumNewManualInputs = [...runModel.manualInputs, ...runModel.failedOperations.filter(operation => operation.type === 'external').
               reduce((measures: string[], operation) => [...measures, ...operation.measuresNotProvided], []).
               map(name => ({ name, value: '' }))]
@@ -321,7 +319,7 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
               <DialogContent>
                 <DialogContentText>
                   <Card style={{ padding: '10px 30px 5px 30px', backgroundColor: '#FFD4D4', marginTop: '5px' }}>
-                    <Typography color={'red'}> Failed due to missing data for the following signals. Please input the necessary fields to perform re-run
+                    <Typography color={'red'}> Failed due to missing data for the following measures. Please input the necessary fields to re-run
                     </Typography>
                   </Card>
                   <Card style={{ padding: '20px 30px 20px 30px' }}>
