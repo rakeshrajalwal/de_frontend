@@ -91,7 +91,7 @@ export const {
     useLazyGetManualInputsByProductNameQuery,
     useModifyModelMutation,
     useGetRunSummariesQuery,
-    useLazyGetModelRunByIdQuery
+    useGetModelRunByIdQuery
 } = deApi
 
 

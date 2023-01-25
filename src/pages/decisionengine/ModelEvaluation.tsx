@@ -1,7 +1,7 @@
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { Helmet } from "react-helmet-async";
+import {useParams} from "react-router-dom";
 import {
     Paper as MuiPaper,
     CardHeader,
@@ -10,10 +10,10 @@ import {
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
-import modelJson from "./getModelRun.json";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import './ModelEvaluation.css';
-
+import { useGetModelRunByIdQuery } from "../../redux/de";
+import { IRunModel } from "./interfaces/ModelInterface";
 
 const Paper = styled(MuiPaper)(spacing);
 
@@ -108,7 +108,7 @@ const columns: GridColDef[] = [
     },
 ];
 
-function ModelEvaluatioSummary() {
+function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
 
     const summarySubBodySx = {
         fontSize: '5ex',
@@ -149,7 +149,7 @@ function ModelEvaluatioSummary() {
                     <InfoOutlinedIcon style={{ fontSize: 'medium' }} />
                 </div>
                 <Typography sx={{ fontSize: '10ex', fontWeight: 'bold' }}>
-                    {modelJson.score}
+                    {modelRun?.score?.toString().slice(0, 4)}
                 </Typography>
             </div>
             <div className="CSS-Summary"
@@ -161,7 +161,7 @@ function ModelEvaluatioSummary() {
                     Company Id
                 </Typography>
                 <Typography sx={summarySubBodySx}>
-                    {modelJson.loanDetails.customerId}
+                    {modelRun?.loanDetails.customerId}
                 </Typography>
 
             </div>
@@ -174,7 +174,7 @@ function ModelEvaluatioSummary() {
                     Loan Amount
                 </Typography>
                 <Typography sx={summarySubBodySx}>
-                    £{modelJson.loanDetails.amount}
+                    £{modelRun?.loanDetails.amount}
                 </Typography>
             </div>
             <Divider orientation="vertical" variant="middle" flexItem sx={{ backgroundColor: '#000000' }} />
@@ -186,22 +186,23 @@ function ModelEvaluatioSummary() {
                     Term
                 </Typography>
                 <Typography sx={summarySubBodySx}>
-                    {modelJson.loanDetails.term} Months
+                    {modelRun?.loanDetails.term} Months
                 </Typography>
             </div>
         </div >
     )
 }
 
-function ModelEvaluationTable() {
+function ModelEvaluationTable({modelRun}:{modelRun : IRunModel}) {
+    
     return (
         <Paper sx={paperSx}>
             <div style={{ width: '100%' }}>
                 <DataGrid
                     sx={datagridSx}
-                    rows={modelJson.signals}
+                    rows={modelRun?.signals || []}
                     columns={columns}
-                    getRowId={(row) => row._id}
+                    getRowId={(row) => row.name}
                     rowsPerPageOptions={[]}
                     hideFooter
                     autoHeight
@@ -210,7 +211,10 @@ function ModelEvaluationTable() {
         </Paper>
     )
 }
+
 function ModelEvaluation() {
+    let { id } = useParams();
+    const { data: modelRun } = useGetModelRunByIdQuery(id!, { refetchOnMountOrArgChange: true });
     return (
         <React.Fragment>
             <Helmet title='Model Evaluation Dashboard' />
@@ -221,8 +225,8 @@ function ModelEvaluation() {
                     gap: '3ex'
                 }}>
                 <CardHeader title={"Model Evaluation Dashboard"} titleTypographyProps={{ variant: "h3" }} />
-                <ModelEvaluatioSummary />
-                <ModelEvaluationTable />
+                <ModelEvaluationSummary modelRun={modelRun!} />
+                <ModelEvaluationTable modelRun={modelRun!} />
             </div>
         </React.Fragment>
     );

@@ -21,7 +21,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
 import lodash from "lodash";
 import { Form, Formik, useField } from "formik";
-import { deApi, useGetRunSummariesQuery, useLazyGetModelRunByIdQuery } from '../../redux/de';
+import { deApi, useGetRunSummariesQuery } from '../../redux/de';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
 import { IRunModel } from './interfaces/ModelInterface';
@@ -185,6 +185,7 @@ const columns: GridColDef[] = [
 ];
 
 function RunSummariesGrid() {
+  const navigate = useNavigate();
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   const [RunModel, setRunModel] = React.useState<IRunModel>();
 
@@ -219,6 +220,9 @@ function RunSummariesGrid() {
               setOpenDialog(true);
               setRunModel(params.row)
             }
+            else if(params.row.status == 'success' && params.colDef.field == 'status'){
+              navigate(`/models/modelresult/${params.row._id}`)
+            }
           }}
         />
         <ReRunPopup runModel={RunModel} disabled={openDialog} setValue={setOpenDialog} />
@@ -229,79 +233,11 @@ function RunSummariesGrid() {
 
 const positiveInteger = Yup.number().required('Required').positive("Should be positive").integer('Should be integer');
 
-
-const newitem = {
-  info: [
-    {
-      name: 'Run Id',
-      value: ''
-    },
-    {
-      name: 'Loan Amount',
-      value: '5000000'
-    },
-    {
-      name: 'Run By',
-      value: 'Sahil'
-    },
-    {
-      name: 'Term',
-      value: '5 yrs'
-    }, {
-      name: 'Customer',
-      value: 'customer2'
-    },
-    {
-      name: 'Secured',
-      value: 'yes'
-    },
-    {
-      name: 'Product',
-      value: 'working capital loan'
-    },
-    {
-      name: 'Trigger Source',
-      value: 'ncino'
-    }
-  ],
-  missing_measures: [
-    {
-      name: 'EBITDA : DSC(%)',
-      info: '(EBITDA - Dividends)/(Total Debt Service + Applied Loan)',
-      value: ''
-    },
-    {
-      name: 'Stressed EBITDA',
-      info: 'used in calculating 1',
-      value: ''
-    },
-    {
-      name: 'Turnover change year on year',
-      info: 'used in calculating2',
-      value: ''
-    },
-    {
-      name: 'Retained Profits',
-      info: 'used in calculating3',
-      value: ''
-    },
-    {
-      name: 'Sector Appetite ',
-      info: 'used in calculating4',
-      value: ''
-    }
-  ]
-}
-
-
 const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, disabled: boolean, setValue: any }) => {
 
   const navigate = useNavigate();
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
   const [runModelApi] = deApi.useRunModelMutation();
-
-  const [fetchRunSummary, { data: runSummary }] = useLazyGetModelRunByIdQuery();
-
 
   const requiredString = Yup.string().required('Required');
   // const validationSchema = Yup.object().shape({

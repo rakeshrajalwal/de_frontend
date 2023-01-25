@@ -14,11 +14,6 @@ export interface IProduct {
     }[]
 }
 
-// export interface IManualInputs {
-//     name : string,
-//     value : number | string
-// }
-
 export interface IRunModel {
     _id?: string,
     model?: IModel,
@@ -26,7 +21,7 @@ export interface IRunModel {
         product: string,
         amount: number | string,
         secured: boolean,
-        term: number| string,
+        term: number | string,
         purpose: string,
         customerId: string
     },
@@ -34,29 +29,24 @@ export interface IRunModel {
         name: string,
         value: number | string
     }[],
-    failedOperations? : {
+    failedOperations?: {
         type: string,
         name: string,
         source: string,
         measuresNotProvided: string[]
-      }[],
+    }[],
+    signals?: {
+        name: string,
+        numericValue: number,
+        signalValue: string,
+        score: number,
+        weightedValue: number
+    }[],
+    score?: string,
+    result?: string,
+    status?: string
 
 }
-
-// export interface IRunModel {
-//     model?: IModel,
-//     loanDetails: {
-//         product: string,
-//         amount: string,
-//         secured: boolean,
-//         term: string,
-//         purpose: string,
-//         customerId: string
-//     },
-//     manualInputs: string[]
-
-// }
-
 
 export interface IRange {
     min: number | string,
@@ -87,7 +77,7 @@ export interface IModelInput {
     factors: IFactor[]
 }
 
-export interface IModel extends IModelInput{
+export interface IModel extends IModelInput {
     __v?: number | string,
     _id?: string,
     info: {
@@ -103,7 +93,6 @@ export interface IModel extends IModelInput{
         lastRun?: ILastRun,
     }
 }
-
 
 export interface IFactor {
     _id?: string,

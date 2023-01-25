@@ -111,7 +111,7 @@ const routes: RouteObject[] = [
         element: <RunModel />,
       },
       {
-        path: "/models/modelevaluation",
+        path: "/models/modelresult/:id",
         element: <ModelEvaluation />,
       },
 
