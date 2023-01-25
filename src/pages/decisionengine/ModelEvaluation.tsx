@@ -149,7 +149,7 @@ function ModelEvaluatioSummary() {
                     <InfoOutlinedIcon style={{ fontSize: 'medium' }} />
                 </div>
                 <Typography sx={{ fontSize: '10ex', fontWeight: 'bold' }}>
-                    {/* {modelJson.score} */}
+                    {modelJson.score}
                 </Typography>
             </div>
             <div className="CSS-Summary"
@@ -161,7 +161,7 @@ function ModelEvaluatioSummary() {
                     Company Id
                 </Typography>
                 <Typography sx={summarySubBodySx}>
-                    {/* {modelJson.loanDetails.customerId} */}
+                    {modelJson.loanDetails.customerId}
                 </Typography>
 
             </div>
@@ -174,7 +174,7 @@ function ModelEvaluatioSummary() {
                     Loan Amount
                 </Typography>
                 <Typography sx={summarySubBodySx}>
-                    {/* £{modelJson.loanDetails.amount} */}
+                    £{modelJson.loanDetails.amount}
                 </Typography>
             </div>
             <Divider orientation="vertical" variant="middle" flexItem sx={{ backgroundColor: '#000000' }} />
@@ -186,7 +186,7 @@ function ModelEvaluatioSummary() {
                     Term
                 </Typography>
                 <Typography sx={summarySubBodySx}>
-                    {/* {modelJson.loanDetails.term} Months */}
+                    {modelJson.loanDetails.term} Months
                 </Typography>
             </div>
         </div >
@@ -199,8 +199,7 @@ function ModelEvaluationTable() {
             <div style={{ width: '100%' }}>
                 <DataGrid
                     sx={datagridSx}
-                    rows={modelJson}
-                   // rows={[]}
+                    rows={modelJson.signals}
                     columns={columns}
                     getRowId={(row) => row._id}
                     rowsPerPageOptions={[]}
