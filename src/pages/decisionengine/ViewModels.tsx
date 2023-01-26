@@ -14,9 +14,7 @@ import {
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
 import AccessTime from "@mui/icons-material/AccessTime";
-// import modelsJson from "./getmodels.json";
 import lodash from "lodash";
-import { INode, IProduct, IModel, IRange, IPolicy } from "./interfaces/ModelInterface";
 import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
 import { useGetAllModelsQuery } from "../../redux/de";
 import './styles/ViewModel.css'
