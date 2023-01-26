@@ -182,7 +182,6 @@ const columns: GridColDef[] = [
 function ModelDataGrid() {
   const { data: models } = useGetAllModelsQuery(undefined, { refetchOnMountOrArgChange: true });
   const navigate = useNavigate();
-  console.log(models);
   return (
     <Paper sx={paperSx}>
       <div style={{ height: '25.2rem', width: '100%' }}>

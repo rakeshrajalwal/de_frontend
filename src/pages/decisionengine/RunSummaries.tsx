@@ -133,7 +133,7 @@ const columns: GridColDef[] = [
       if (params.row.status == "success") {
         return (
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "left" }}>
-            <strong style={{ paddingRight: '1ex', }}>{params.row.score}</strong>
+            <strong style={{ paddingRight: '1ex', }}>{params.row.score.toString().slice(0,5)}</strong>
             <Chip label={status_params.text} color="primary" variant="outlined" size="small" style={{ borderRadius: '2.2ex', color: status_params.color, borderColor: status_params.color }}></Chip>
           </div>
         )
