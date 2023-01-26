@@ -254,8 +254,8 @@ function RunModel() {
       onSubmit={async ({manualInputs, loanDetails}) => {
         const manualInputsObj = Object.fromEntries(manualInputs.map(({name,value}) => [name,value]));
         const runModelInput:any = { loanDetails, manualInput: manualInputsObj };
-        console.log(JSON.stringify(runModelInput, null, 2))
-        alert(JSON.stringify(runModelInput, null, 2));
+        // console.log(JSON.stringify(runModelInput, null, 2))
+        // alert(JSON.stringify(runModelInput, null, 2));
         await runModel(runModelInput).unwrap();
         toast.success("Model run successfull");
         navigate("/home");

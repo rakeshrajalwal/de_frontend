@@ -125,7 +125,8 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                 className="CSS-Summary"
                 style={{
                     flex: 4,
-                    backgroundColor: '#078F08',
+                    backgroundColor: modelRun?.result == 'strong' ? '#078F08' : modelRun?.result == 'good' ? '#9DD566'
+                                     : modelRun?.result == 'satisfactory' ? '#FEC401' : '#FB0102',
                     borderRadius: '2ex',
                     color: '#ffffff',
                 }}>
