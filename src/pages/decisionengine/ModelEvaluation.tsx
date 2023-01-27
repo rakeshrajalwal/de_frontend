@@ -167,7 +167,7 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                     Loan Amount
                 </Typography>
                 <Typography sx={summarySubBodySx}>
-                    £{modelRun?.loanDetails.amount}
+                    £{modelRun?.loanDetails.amount.toLocaleString()}
                 </Typography>
             </div>
             <Divider orientation="vertical" variant="middle" flexItem sx={{ backgroundColor: '#000000' }} />

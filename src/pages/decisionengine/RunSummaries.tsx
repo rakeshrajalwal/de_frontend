@@ -101,7 +101,7 @@ const columns: GridColDef[] = [
     flex: 5,
     align: 'center',
     valueGetter: ({ row, field }) => lodash.get(row, field),
-    valueFormatter: ({ value }) => value,
+    valueFormatter: ({ value }) => [ "£" + value.toLocaleString()],
   },
   {
     field: "loanDetails.term",
