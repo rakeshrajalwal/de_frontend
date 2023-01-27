@@ -305,7 +305,7 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
                       <CloseIcon style={{ color: 'white', cursor: 'pointer' }} onClick={() => setValue(false)} /></div>
                     <>
 
-                      <CustomInfoField fieldname={'id'} fieldvalue={'1'} />
+                      <CustomInfoField fieldname={'id'} fieldvalue={formik.values._id!} />
 
                       {Object.entries(formik.values.loanDetails || {}).map(([key, val], i) => (
                         <CustomInfoField key={`${key}`} fieldname={`${key}`} fieldvalue={`${val}`} />
