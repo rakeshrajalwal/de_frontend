@@ -133,7 +133,7 @@ const columns: GridColDef[] = [
       if (params.row.status == "success") {
         return (
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "left" }}>
-            <strong style={{ paddingRight: '1ex', }}>{params.row.score.toString().slice(0,5)}</strong>
+            <strong style={{ paddingRight: '1ex', }}>{parseFloat(params.row.score.toString()).toFixed(2)}</strong>
             <Chip label={status_params.text} color="primary" variant="outlined" size="small" style={{ borderRadius: '2.2ex', color: status_params.color, borderColor: status_params.color }}></Chip>
           </div>
         )
@@ -231,16 +231,12 @@ function RunSummariesGrid() {
   );
 }
 
-const positiveInteger = Yup.number().required('Required').positive("Should be positive").integer('Should be integer');
-
 const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, disabled: boolean, setValue: any }) => {
 
-  const navigate = useNavigate();
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
   const [runModelApi] = deApi.useRunModelMutation();
 
   const requiredString = Yup.string().required('Required');
-  
   const validationSchema = Yup.object().shape({
     manualInputs :  Yup.array().of(Yup.object().shape({
       value : requiredString
@@ -267,7 +263,6 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
       onSubmit={async ({ manualInputs, loanDetails }) => {
         const manualInputsObj = Object.fromEntries(manualInputs.map(({ name, value }) => [name, value]));
         const runModelInput: any = { loanDetails, manualInput: manualInputsObj };
-        console.log(JSON.stringify(runModelInput, null, 2))
         await runModelApi(runModelInput).unwrap();
         toast.success("Model run successfull");
         setValue(false)

@@ -81,6 +81,7 @@ const columns: GridColDef[] = [
         flex: 20,
         headerAlign: "center",
         align: "center",
+        valueFormatter: ({ value }) => [ parseFloat(value.toString()).toFixed(2)],
     },
     {
         field: "signalValue",
@@ -97,6 +98,7 @@ const columns: GridColDef[] = [
         flex: 20,
         headerAlign: "center",
         align: "center",
+        valueFormatter: ({ value }) => [ parseFloat(value.toString()).toFixed(2)],
     },
 ];
 
@@ -142,7 +144,7 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                     <InfoOutlinedIcon style={{ fontSize: 'medium' }} />
                 </div>
                 <Typography sx={{ fontSize: '8ex', fontWeight: 'bold' }}>
-                    {modelRun?.score?.toString().slice(0, 4)}
+                    {parseFloat(modelRun?.score!.toString()).toFixed(2)}
                 </Typography>
             </div>
             <div className="CSS-Summary"
