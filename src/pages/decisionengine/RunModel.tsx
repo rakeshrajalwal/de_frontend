@@ -138,7 +138,7 @@ const TextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path
     <Grid item md={8} mt={3}>
       <ControlContainer>
         <Grid item md={3}>
-          <Label>{fieldname}</Label>
+          <Label>{fieldname.replace(/([a-z])([A-Z])/g, '$1 $2').replace('_', ' - ')}</Label>
         </Grid>
         <Grid item md={1}>
           <Typography>:</Typography>
@@ -314,7 +314,7 @@ function RunModel() {
 
                 <Grid container>
                   <Grid item md={2}>
-                    <h3 style={{ color: '#434DB0', margin: '0px' }}> Additonal Details</h3>
+                    <h3 style={{ color: '#434DB0', margin: '0px' }}> Additional Details</h3>
                   </Grid>
                   <Grid item md={10} mt={1}>
                     <ColoredLine color={'#434DB0'} />

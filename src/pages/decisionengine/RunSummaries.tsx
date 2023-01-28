@@ -101,7 +101,7 @@ const columns: GridColDef[] = [
     flex: 5,
     align: 'center',
     valueGetter: ({ row, field }) => lodash.get(row, field),
-    valueFormatter: ({ value }) => [ "£" + value.toLocaleString()],
+    valueFormatter: ({ value }) => ["£" + value.toLocaleString()],
   },
   {
     field: "loanDetails.term",
@@ -220,7 +220,7 @@ function RunSummariesGrid() {
               setOpenDialog(true);
               setRunModel(params.row)
             }
-            else if(params.row.status == 'success' && params.colDef.field == 'status'){
+            else if (params.row.status == 'success' && params.colDef.field == 'status') {
               navigate(`/models/modelresult/${params.row._id}`)
             }
           }}
@@ -238,8 +238,8 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
 
   const requiredString = Yup.string().required('Required');
   const validationSchema = Yup.object().shape({
-    manualInputs :  Yup.array().of(Yup.object().shape({
-      value : requiredString
+    manualInputs: Yup.array().of(Yup.object().shape({
+      value: requiredString
     }))
   });
 
@@ -300,7 +300,7 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
                       <CloseIcon style={{ color: 'white', cursor: 'pointer' }} onClick={() => setValue(false)} /></div>
                     <>
 
-                      <CustomInfoField fieldname={'id'} fieldvalue={formik.values._id!} />
+                      <CustomInfoField fieldname={'Model Run Id'} fieldvalue={formik.values._id!} />
 
                       {Object.entries(formik.values.loanDetails || {}).map(([key, val], i) => (
                         <CustomInfoField key={`${key}`} fieldname={`${key}`} fieldvalue={`${val}`} />
@@ -345,7 +345,9 @@ const CustomInfoField = ({ fieldname, fieldvalue }: { fieldname: string, fieldva
     <Grid item md={6} mt={3}>
       <ControlContainer>
         <Grid item md={4} >
-          <Typography color={'#fff'} > {fieldname} </Typography>
+          <Typography color={'#fff'} > {
+            fieldname.charAt(0).toUpperCase() +
+            fieldname.slice(1).replace(/([a-z])([A-Z])/g, '$1 $2').replace('_', ' - ')} </Typography>
         </Grid>
         <Grid item md={1}>
           <Typography color={'#fff'}>:</Typography>
@@ -367,7 +369,7 @@ const CustomInputField = ({ fieldname, description, path }: { fieldname: string,
     <Grid item md={6} mt={3}>
       <ControlContainer>
         <Grid item md={5} >
-          <Label > {fieldname} </Label>
+          <Label>{fieldname.replace(/([a-z])([A-Z])/g, '$1 $2').replace('_', ' - ')}</Label>
         </Grid>
         {/* <Grid item md={0.5} marginTop='5px'>
           <Tooltip title={description || } style={{ backgroundColor: 'transparent' }}>
