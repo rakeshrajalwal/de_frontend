@@ -267,10 +267,10 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
         const runModelInput: any = { loanDetails, manualInput: manualInputsObj };
         await runModelApi(runModelInput).unwrap().then(() => {
           setIsSubmitting(false);
-        toast.success("Model run successfull");
-        setValue(false)
-        }).catch(() => setIsSubmitting(false) );
-        
+          toast.success("Model run successfull");
+          setValue(false)
+        }).catch(() => setIsSubmitting(false));
+
       }}
     >
       {formik => {
@@ -298,7 +298,7 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
           <Dialog fullWidth open={disabled} maxWidth={'md'} >
             <Form>
               <DialogTitle style={{ backgroundColor: '#434DB0' }}>
-               { isSubmitting && <LinearProgress />}
+                {isSubmitting && <LinearProgress />}
 
                 <Card style={{ backgroundColor: '#434DB0', padding: '20px 30px 20px 30px' }}>
                   <Grid container>
