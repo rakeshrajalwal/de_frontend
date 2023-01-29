@@ -5,7 +5,7 @@ import {
   Paper as MuiPaper,
   Typography, Card, Grid,
   IconButton,
-  Chip, Button,
+  Chip, Button, LinearProgress,
   CardHeader, Dialog, DialogContent, DialogContentText, DialogTitle, TextField
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
@@ -234,6 +234,7 @@ function RunSummariesGrid() {
 const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, disabled: boolean, setValue: any }) => {
 
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
   const [runModelApi] = deApi.useRunModelMutation();
 
   const requiredString = Yup.string().required('Required');
@@ -261,11 +262,15 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
       validateOnBlur={false}
       validationSchema={validationSchema}
       onSubmit={async ({ manualInputs, loanDetails }) => {
+        setIsSubmitting(true);
         const manualInputsObj = Object.fromEntries(manualInputs.map(({ name, value }) => [name, value]));
         const runModelInput: any = { loanDetails, manualInput: manualInputsObj };
-        await runModelApi(runModelInput).unwrap();
+        await runModelApi(runModelInput).unwrap().then(() => {
+          setIsSubmitting(false);
         toast.success("Model run successfull");
         setValue(false)
+        }).catch(() => setIsSubmitting(false) );
+        
       }}
     >
       {formik => {
@@ -293,6 +298,7 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
           <Dialog fullWidth open={disabled} maxWidth={'md'} >
             <Form>
               <DialogTitle style={{ backgroundColor: '#434DB0' }}>
+               { isSubmitting && <LinearProgress />}
 
                 <Card style={{ backgroundColor: '#434DB0', padding: '20px 30px 20px 30px' }}>
                   <Grid container>
