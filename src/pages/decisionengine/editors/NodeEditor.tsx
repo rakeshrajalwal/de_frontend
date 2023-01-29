@@ -2,8 +2,7 @@ import * as React from 'react';
 import {Accordion, AccordionDetails, AccordionSummary, Button, IconButton} from "@mui/material";
 import { CriteriaEditor } from '../components/Criteria';
 import { WeightEditor, TotalWeight } from './WeightEditor';
-
-import { INode, IProduct, IModel, IRange, IPolicy } from "../interfaces/ModelInterface";
+import { INode } from "../interfaces/ModelInterface";
 import '../styles/CreateModel.css';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import EditIcon from '@mui/icons-material/Edit';
@@ -76,7 +75,7 @@ export const NodeEditor: React.FC<{ node: INode, path: string, level: number, re
                                     <div key={i} style={{ display: 'flex', alignItems: 'center', marginBottom: 10, borderBottom:"0.25px solid rgba(0, 0, 0, 0.3)", paddingBottom: 5 }}>
                                         <WeightEditor node={sig} level={level + 1}
                                             path={`${path}.signals[${i}]`} type={'white'} />
-                                        <div style={{ display: "flex", gap: 2 }}>
+                                        <div style={{ display: "flex", gap: 5 }}>
                                             {/*<CriteriaBar key={i} path={`${path}.signals[${i}]`} isReverseScale={reverseSignalNames.includes(sig.name)}/>*/}
                                             <div>
                                                 {sig.criteria?.map((c,ci) => (

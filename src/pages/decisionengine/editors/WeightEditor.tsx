@@ -115,7 +115,7 @@ export const WeightEditor = ({
                     borderRadius: 8,
                     ...colors[type]
                 }}>
-                <Typography style={{ flexGrow: 1, font }}>{node.name}</Typography>
+                <Typography style={{ flexGrow: 1, font }}>{node.name.replace(/([a-z])([A-Z])/g, '$1 $2').replace('_', ' - ')}</Typography>
                 <HealthIndicator node={node} />
             </Paper>
 

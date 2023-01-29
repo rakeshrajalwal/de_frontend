@@ -6,7 +6,8 @@ import {
   Typography, Card, Grid,
   IconButton,
   Chip, Button, LinearProgress,
-  CardHeader, Dialog, DialogContent, DialogContentText, DialogTitle, TextField
+  CardHeader, Dialog, DialogContent, DialogContentText, DialogTitle,
+  TextField
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
@@ -84,7 +85,7 @@ const columns: GridColDef[] = [
     valueFormatter: ({ value }) => value,
   },
   {
-    field: "loanDetails.customer.name",
+    field: "loanDetails.customerId",
     headerName: "Customer",
     description: "Customer",
     headerAlign: 'center',
@@ -188,8 +189,7 @@ function RunSummariesGrid() {
   const navigate = useNavigate();
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   const [RunModel, setRunModel] = React.useState<IRunModel>();
-
-  const { data: runSummaries } = useGetRunSummariesQuery(undefined, { refetchOnMountOrArgChange: true })
+  const { data: runSummaries } = useGetRunSummariesQuery(undefined, { refetchOnMountOrArgChange: true });
 
   return (
     <Paper sx={{ paperSx }}>
@@ -345,8 +345,6 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
 
 const CustomInfoField = ({ fieldname, fieldvalue }: { fieldname: string, fieldvalue: string }) => {
 
-  console.log(fieldname, " the field name");
-  console.log(fieldvalue, " the field value")
   return (
     <Grid item md={6} mt={3}>
       <ControlContainer>
@@ -370,7 +368,7 @@ const CustomInfoField = ({ fieldname, fieldvalue }: { fieldname: string, fieldva
 const CustomInputField = ({ fieldname, description, path }: { fieldname: string, description?: string, path: string }) => {
 
   const [field, meta, helpers] = useField(`${path}`);
-  console.log(meta.value)
+
   return (
     <Grid item md={6} mt={3}>
       <ControlContainer>

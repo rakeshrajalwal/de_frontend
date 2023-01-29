@@ -46,12 +46,12 @@ export const CriteriaEditor = ({ node, path, isReverseScale, close, index, showC
 
     const [conditionField] = useField(`${path}.criteria.${index}.condition`);
     return (
-        <Card variant={"outlined"} style={{ borderColor: '#434DB0' }}>
+        <Card variant={"outlined"} style={{ borderColor: '#434DB0' , marginLeft: '10px'}}>
             {!showCondition? (
                 <CardHeader
                     action={<IconButton size={"small"} onClick={close}><CloseIcon/></IconButton>}
                     title={'Edit Criteria'}
-                    subheader={node.name}
+                    subheader={node.name.replace(/([a-z])([A-Z])/g, '$1 $2').replace('_', ' - ')}
                     titleTypographyProps={{
                         style: {
                             textAlign: 'center',

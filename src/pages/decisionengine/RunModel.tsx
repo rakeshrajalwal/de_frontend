@@ -3,7 +3,7 @@ import {
   Grid,
   CardContent,
   Card,
-  TextField,
+  TextField,TextFieldProps,
   Typography, CardHeader, Button, LinearProgress,
   MenuItem, Switch, Select, FormControl, FormHelperText
 } from "@mui/material";
@@ -16,6 +16,7 @@ import * as Yup from "yup";
 import { randomNumberBetween } from './CreateModel';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { NumberFormatCustom } from './editors/NumberFormatCustom';
 
 const CustomStyledSwitch = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -67,7 +68,7 @@ const ColoredLine = ({ color }: { color: string }) => {
   />)
 };
 
-const CustomTextField = ({ fieldname, type, path }: { fieldname: string, type: string, path: string }) => {
+const CustomTextField = ({ fieldname, type, textFieldProps, path }: { fieldname: string, type: string, textFieldProps?: TextFieldProps, path: string }) => {
 
   const [field, meta, helpers] = useField(`${path}`);
 
@@ -88,6 +89,7 @@ const CustomTextField = ({ fieldname, type, path }: { fieldname: string, type: s
             helperText={meta.error}
             error={!!meta.error}
             {...field}
+            {...textFieldProps}
           />
         </Grid>
       </ControlContainer >
@@ -231,7 +233,7 @@ function RunModel() {
         secured: isSecured,
         term: randomNumberBetween(loanTermInMonths),
         purpose: lodash.shuffle(loanPurpose)[0],
-        customerId: '0012z00000ByMxNAAV'
+        customerId: '0012z00000FPCeRAAX'
       },
       manualInputs: (manualInputNames || []).map(name => ({ name, value: randomNumberBetween({ min: 10, max: 100 }), switchstate: true }))
     }
@@ -256,8 +258,6 @@ function RunModel() {
         setIsSubmitting(true);
         const manualInputsObj = Object.fromEntries(manualInputs.map(({ name, value }) => [name, value]));
         const runModelInput: any = { loanDetails, manualInput: manualInputsObj };
-        // console.log(JSON.stringify(runModelInput, null, 2))
-        // alert(JSON.stringify(runModelInput, null, 2));
         await runModel(runModelInput).unwrap().
           then(() => {
             toast.success("Model run successfull");
@@ -307,7 +307,14 @@ function RunModel() {
 
                     <SelectDropdown fieldname={'Product'} path={'loanDetails.product'} options={products?.map((i) => i.name)!} />
 
-                    <CustomTextField fieldname={'Loan Amount(£)'} path={'loanDetails.amount'} type={'number'} />
+                    <CustomTextField fieldname={'Loan Amount(£)'} path={'loanDetails.amount'} type={'number'} 
+                    textFieldProps={{
+                      variant: 'standard',
+                      InputProps: {
+                        inputComponent: NumberFormatCustom as any,
+                      },
+                      type: "unset"
+                    }} />
 
                     <CustomSwitch fieldname={'Is Secured?'} path={'loanDetails.secured'} />
 
