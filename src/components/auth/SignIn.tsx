@@ -27,13 +27,13 @@ function SignIn() {
   return (
     <Formik
       initialValues={{
-        email: "deadmin@recognisebank.co.uk",
-        password: "deadmin@123",
+        email: "de1",
+        password: "123123123",
         submit: false,
       }}
       validationSchema={Yup.object().shape({
         email: Yup.string()
-          .email("Must be a valid email")
+          // .email("Must be a valid email")
           .max(255)
           .required("Email is required"),
         password: Yup.string().max(255).required("Password is required"),
@@ -72,7 +72,7 @@ function SignIn() {
             </Alert>
           )}
           <TextField
-            type="email"
+            // type="email"
             name="email"
             label="Email Address"
             value={values.email}
