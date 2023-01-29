@@ -4,7 +4,7 @@ import {
   CardContent,
   Card,
   TextField,
-  Typography, CardHeader, Button,
+  Typography, CardHeader, Button, LinearProgress,
   MenuItem, Switch, Select, FormControl, FormHelperText
 } from "@mui/material";
 import styled from "@emotion/styled";
@@ -15,7 +15,7 @@ import lodash from 'lodash';
 import * as Yup from "yup";
 import { randomNumberBetween } from './CreateModel';
 import { toast } from 'react-toastify';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CustomStyledSwitch = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -133,7 +133,7 @@ const TextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path
     name: `${path}.switchstate`,
     type: 'checkbox'
   });
-  
+
   return (
     <Grid item md={8} mt={3}>
       <ControlContainer>
@@ -197,6 +197,7 @@ const requiredString = Yup.string().required('Required');
 function RunModel() {
   const navigate = useNavigate();
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
   const { data: products } = useGetAllProductsQuery();// fetching all the products
   const [product, setProduct] = React.useState<IProduct>();
   const [fetchManualInputs, { data: manualInputNames }] = useLazyGetManualInputsByProductNameQuery();// query to fetch manualinputs
@@ -205,24 +206,24 @@ function RunModel() {
   const validationSchema = Yup.object().shape({
     loanDetails: Yup.object().shape({
       product: requiredString,
-      amount: positiveInteger.min(product?.policy.loanRange.min as number,`amount should be greater than or equal to product's policy minimum loan ${product?.policy.loanRange.min}`).max(product?.policy.loanRange.max as number, `amount should be less than or equal to in product's policy maximum loan ${product?.policy.loanRange.max}`),
+      amount: positiveInteger.min(product?.policy.loanRange.min as number, `amount should be greater than or equal to product's policy minimum loan ${product?.policy.loanRange.min}`).max(product?.policy.loanRange.max as number, `amount should be less than or equal to in product's policy maximum loan ${product?.policy.loanRange.max}`),
       secured: requiredString,
-      term: positiveInteger.min(product?.policy.loanTermInMonths.min as number,`term should be greater than or equal to product's policy minimum term ${product?.policy.loanTermInMonths.min}`).max(product?.policy.loanTermInMonths.max as number,`term should be less than or equal to product's policy maximum term ${product?.policy.loanTermInMonths.max}`),
+      term: positiveInteger.min(product?.policy.loanTermInMonths.min as number, `term should be greater than or equal to product's policy minimum term ${product?.policy.loanTermInMonths.min}`).max(product?.policy.loanTermInMonths.max as number, `term should be less than or equal to product's policy maximum term ${product?.policy.loanTermInMonths.max}`),
       purpose: requiredString,
       customerId: requiredString
     }),
-    manualInputs :  Yup.array().of(Yup.object().shape({
-      switchstate : Yup.boolean(),
-      value : Yup.string().when("switchstate", {
-        is:true,
+    manualInputs: Yup.array().of(Yup.object().shape({
+      switchstate: Yup.boolean(),
+      value: Yup.string().when("switchstate", {
+        is: true,
         then: Yup.string().required('required')
       })
     }))
   });
-  
+
   function getRandomInput(): React.SetStateAction<IRunModel> {
     const product = products![0];
-    const {loanPurpose, loanRange, loanTermInMonths, isSecured} = product.policy;
+    const { loanPurpose, loanRange, loanTermInMonths, isSecured } = product.policy;
     return {
       loanDetails: {
         product: product.name,
@@ -232,7 +233,7 @@ function RunModel() {
         purpose: lodash.shuffle(loanPurpose)[0],
         customerId: '0012z00000ByMxNAAV'
       },
-      manualInputs: (manualInputNames||[]).map(name => ({ name, value: randomNumberBetween({min:10, max:100}), switchstate: true }))
+      manualInputs: (manualInputNames || []).map(name => ({ name, value: randomNumberBetween({ min: 10, max: 100 }), switchstate: true }))
     }
   }
   return (
@@ -251,21 +252,26 @@ function RunModel() {
       validationSchema={validationSchema}
       validateOnChange={validateOnChange}
       validateOnBlur={false}
-      onSubmit={async ({manualInputs, loanDetails}) => {
-        const manualInputsObj = Object.fromEntries(manualInputs.map(({name,value}) => [name,value]));
-        const runModelInput:any = { loanDetails, manualInput: manualInputsObj };
+      onSubmit={async ({ manualInputs, loanDetails }) => {
+        setIsSubmitting(true);
+        const manualInputsObj = Object.fromEntries(manualInputs.map(({ name, value }) => [name, value]));
+        const runModelInput: any = { loanDetails, manualInput: manualInputsObj };
         // console.log(JSON.stringify(runModelInput, null, 2))
         // alert(JSON.stringify(runModelInput, null, 2));
-        await runModel(runModelInput).unwrap();
-        toast.success("Model run successfull");
-        navigate("/home");
+        await runModel(runModelInput).unwrap().
+          then(() => {
+            toast.success("Model run successfull");
+            navigate("/home");
+          }).catch(() => {
+            setIsSubmitting(false);
+          });
       }}
     >
       {formik => {
         React.useEffect(() => {
           const product = lodash.find(products, { name: formik.values.loanDetails.product });
           setProduct(product);
-          if(product) {
+          if (product) {
             fetchManualInputs(product._id!) // triggering api to get the manual inputs for the selected product
           }
         }, [formik.values.loanDetails.product])
@@ -276,21 +282,23 @@ function RunModel() {
 
 
         const handleSubmit = () => {
+          setIsSubmitting(false);
           setValidateOnChange(true);
           formik.validateForm();
         };
-
 
         return (
           <Form>
             <CardHeader title={"Run Model"} titleTypographyProps={{ variant: "h3" }}
               action={<div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Button type="submit" variant={"contained"} onClick={handleSubmit}>
-                    Submit
+                  Submit
                 </Button>
+
                 <Button onClick={() => formik.setValues(getRandomInput())}>Populate</Button>
               </div>} />
 
+            {validateOnChange && isSubmitting && <LinearProgress />}
             <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
               <CardContent>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
