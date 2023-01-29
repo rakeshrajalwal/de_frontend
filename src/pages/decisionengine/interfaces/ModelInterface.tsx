@@ -44,6 +44,7 @@ export interface IRunModel {
     }[],
     score?: string,
     result?: string,
+    loanStatus?: string,
     status?: string
 
 }

@@ -1,12 +1,12 @@
 import * as React from "react";
 import styled from "@emotion/styled";
 import { Helmet } from "react-helmet-async";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
     Paper as MuiPaper,
     CardHeader,
     Typography,
-    Divider
+    Divider, Chip
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
@@ -44,7 +44,7 @@ const datagridSx = {
         fontFamily: "Verdana",
         wordWrap: "break-word !important",
         textAlign: "center",
-        fontSize: "1.5ex",
+        fontSize: "1.8ex",
         justifyContent: "center",
         color: "#1B2430",
         letterSpacing: "0.05ex",
@@ -70,35 +70,53 @@ const columns: GridColDef[] = [
     {
         field: "name",
         headerName: "Signal Name",
-        flex: 20,
+        flex: 10,
         headerAlign: "center",
-        align: "center",
+        align: "left",
+        valueFormatter: ({ value }) => [value.replace(/([a-z])([A-Z])/g, '$1 $2').replace('_', ' - ')]
     },
     {
         field: "numericValue",
         headerName: "Numeric Value",
         description: "Value",
-        flex: 20,
+        flex: 10,
         headerAlign: "center",
-        align: "center",
-        valueFormatter: ({ value }) => [ parseFloat(value.toString()).toFixed(2)],
+        align: "right",
+        valueFormatter: ({ value }) => [parseFloat(value.toString()).toFixed(2)],
     },
     {
         field: "signalValue",
-        headerName: "Singal Value",
+        headerName: "Signal Value",
         description: "signalValue",
         flex: 10,
         headerAlign: "center",
         align: "center",
+        renderCell: (params) => {
+            const status_params = (params.value == 'strong') ? {
+                text: 'Strong', color: '#078F08',
+            } : (params.value == 'good') ? {
+                text: 'Good', color: '#9DD566',
+            } : (params.value == 'satisfactory') ? {
+                text: 'Satisfactory', color: '#FEC401',
+            } : {
+                text: 'Weak', color: '#FB0102',
+            }
+            return (
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: "left" }}>
+                    <Chip label={status_params.text} color="primary" variant="outlined" size="small"
+                        style={{ borderRadius: '2.2ex', color: status_params.color, borderColor: status_params.color }}></Chip>
+                </div>
+            )
+        }
     },
     {
         field: "score",
         headerName: "Score",
         description: "score",
-        flex: 20,
+        flex: 10,
         headerAlign: "center",
         align: "center",
-        valueFormatter: ({ value }) => [ parseFloat(value.toString()).toFixed(2)],
+        valueFormatter: ({ value }) => [parseFloat(value.toString()).toFixed(2)],
     },
 ];
 
@@ -128,7 +146,7 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                 style={{
                     flex: 4,
                     backgroundColor: modelRun?.result == 'strong' ? '#078F08' : modelRun?.result == 'good' ? '#9DD566'
-                                     : modelRun?.result == 'satisfactory' ? '#FEC401' : '#FB0102',
+                        : modelRun?.result == 'satisfactory' ? '#FEC401' : '#FB0102',
                     borderRadius: '2ex',
                     color: '#ffffff',
                 }}>
@@ -143,9 +161,10 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                     </Typography>
                     <InfoOutlinedIcon style={{ fontSize: 'medium' }} />
                 </div>
-                <Typography sx={{ fontSize: '8ex', fontWeight: 'bold' }}>
+                <Typography sx={{ fontSize: '7ex', fontWeight: 'bold' }}>
                     {parseFloat(modelRun?.score!.toString()).toFixed(2)}
                 </Typography>
+
             </div>
             <div className="CSS-Summary"
                 style={{
@@ -184,12 +203,24 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                     {modelRun?.loanDetails.term} Months
                 </Typography>
             </div>
+            <Divider orientation="vertical" variant="middle" flexItem sx={{ backgroundColor: '#000000' }} />
+            <div className="CSS-Summary"
+                style={{
+                    flex: 4,
+                }}>
+                <Typography sx={summarySubHeadSx}>
+                    Loan Status
+                </Typography>
+                <Typography sx={summarySubBodySx}>
+                    {modelRun?.loanStatus}
+                </Typography>
+            </div> 
         </div >
     )
 }
 
-function ModelEvaluationTable({modelRun}:{modelRun : IRunModel}) {
-    
+function ModelEvaluationTable({ modelRun }: { modelRun: IRunModel }) {
+
     return (
         <Paper sx={paperSx}>
             <div style={{ width: '100%' }}>

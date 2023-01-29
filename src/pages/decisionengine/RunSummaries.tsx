@@ -141,7 +141,7 @@ const columns: GridColDef[] = [
       else {
         return (
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
-            <p>{params.row.status}</p>
+            <p>{params.row.status[0].toUpperCase() + params.row.status.slice(1)}</p>
             <Tooltip title={params.row.failedOperations.error} placement='right'>
               <IconButton aria-label="Info" size="small">
                 <InfoOutlinedIcon />
