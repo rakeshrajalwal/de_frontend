@@ -6,24 +6,24 @@ import {
     useGetOneModelQuery,
     useModifyModelMutation,
 } from '../../redux/de';
-import {Button as MuiButton, ButtonProps as MuiButtonProps, Card, CardContent, CardHeader} from "@mui/material";
-import {Form, Formik} from "formik";
-import {PolicyEditor} from './components/Policy';
-import {NodeEditor} from './editors/NodeEditor';
-import {criteriaRangeNames, IModelInput, IProduct, IRange, TCriteria} from "./interfaces/ModelInterface"
+import { Button as MuiButton, ButtonProps as MuiButtonProps, Card, CardContent, CardHeader } from "@mui/material";
+import { Form, Formik } from "formik";
+import { PolicyEditor } from './components/Policy';
+import { NodeEditor } from './editors/NodeEditor';
+import { criteriaRangeNames, IModelInput, IProduct, IRange, TCriteria } from "./interfaces/ModelInterface"
 import lodash from 'lodash';
 import * as Yup from "yup";
-import {TotalWeight} from "./editors/WeightEditor";
-import {useNavigate, useParams} from "react-router-dom";
+import { TotalWeight } from "./editors/WeightEditor";
+import { useNavigate, useParams } from "react-router-dom";
 import * as Faker from 'faker';
-import {ModelDataGrid} from "./ModelDataGrid";
-import {toast} from 'react-toastify';
+import { ModelDataGrid } from "./ModelDataGrid";
+import { toast } from 'react-toastify';
 import './styles/CreateModel.css';
 
 interface ButtonProps extends MuiButtonProps {
     show?: boolean
 }
-const Button = ({show=true, ...props}:ButtonProps) => show ? <MuiButton {...props} /> : <></>;
+const Button = ({ show = true, ...props }: ButtonProps) => show ? <MuiButton {...props} /> : <></>;
 
 function getEmptyModel(p: IProduct): IModelInput {
     return {
@@ -62,21 +62,21 @@ function randomSplit(total: number, count: number): number[] {
     return [part, ...randomSplit(total - part, count - 1)]
 }
 
-export function randomNumberBetween({min, max}: IRange):number {
-    return (+min + Math.floor((+max - +min)*Math.random()))
+export function randomNumberBetween({ min, max }: IRange): number {
+    return (+min + Math.floor((+max - +min) * Math.random()))
 }
-function randomRangeBetween(range: IRange, multipleOf?:number):IRange {
-    if(multipleOf) {
-        const {min, max}= randomRangeBetween({min:Math.ceil(+range.min/multipleOf), max:Math.floor(+range.max/multipleOf)})
-        return {min:+min* multipleOf, max:+max*multipleOf}
+function randomRangeBetween(range: IRange, multipleOf?: number): IRange {
+    if (multipleOf) {
+        const { min, max } = randomRangeBetween({ min: Math.ceil(+range.min / multipleOf), max: Math.floor(+range.max / multipleOf) })
+        return { min: +min * multipleOf, max: +max * multipleOf }
     }
     const min = randomNumberBetween(range);
-    const max = randomNumberBetween({...range, min:min+1});
-    return {min, max};
+    const max = randomNumberBetween({ ...range, min: min + 1 });
+    return { min, max };
 }
 
 function getRandomModel(p: IProduct): IModelInput {
-    const purposes = lodash.shuffle(p.policy.loanPurpose).slice(0, randomNumberBetween({min:1, max:5}))
+    const purposes = lodash.shuffle(p.policy.loanPurpose).slice(0, randomNumberBetween({ min: 1, max: 5 }))
     const termRange = randomRangeBetween(p.policy.loanTermInMonths, 6);
     return {
         name: Faker.lorem.words(),
@@ -98,20 +98,20 @@ function getRandomModel(p: IProduct): IModelInput {
                         name: subFactor.name,
                         weight,
                         signals: randomSplit(100, subFactor.signals.length).map((weight, i) => {
-                            if(subFactor.signals[i].name === "TermVsPurpose") {
+                            if (subFactor.signals[i].name === "TermVsPurpose") {
                                 return {
                                     name: subFactor.signals[i].name,
                                     weight,
                                     criteria: purposes.map((p) => {
                                         let r = randomSplit(100, 4);
-                                        r = r.map((_,i) => lodash.sum(r.slice(0,i+1)))
-                                        const {min, max} = termRange;
+                                        r = r.map((_, i) => lodash.sum(r.slice(0, i + 1)))
+                                        const { min, max } = termRange;
                                         const rangeLength = +max - +min;
                                         return {
-                                            weak: { min: min, max: +min+Math.ceil(rangeLength*r[0]/100) },
-                                            satisfactory: { min: +min+Math.ceil(rangeLength*r[0]/100), max: +min+Math.ceil(rangeLength*r[1]/100)},
-                                            good: { min: +min+Math.ceil(rangeLength*r[1]/100), max: +min+Math.ceil(rangeLength*r[2]/100)},
-                                            strong: { min: +min+Math.ceil(rangeLength*r[2]/100), max: max},
+                                            weak: { min: min, max: +min + Math.ceil(rangeLength * r[0] / 100) },
+                                            satisfactory: { min: +min + Math.ceil(rangeLength * r[0] / 100), max: +min + Math.ceil(rangeLength * r[1] / 100) },
+                                            good: { min: +min + Math.ceil(rangeLength * r[1] / 100), max: +min + Math.ceil(rangeLength * r[2] / 100) },
+                                            strong: { min: +min + Math.ceil(rangeLength * r[2] / 100), max: max },
                                             condition: `purpose == "${p}"`
                                         }
                                     })
@@ -180,7 +180,7 @@ const validationSchema = Yup.object().shape({
 const CreateModel = () => {
     const navigate = useNavigate();
     let { id } = useParams();
-    const {data:model, isLoading:isModelLoading} = useGetOneModelQuery(id||'', {skip:!id, refetchOnMountOrArgChange:true})
+    const { data: model, isLoading: isModelLoading } = useGetOneModelQuery(id || '', { skip: !id, refetchOnMountOrArgChange: true })
 
     const [product, setProduct] = React.useState<IProduct>();// to populate a select products features etc.
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false); // handling the form validation
@@ -201,14 +201,14 @@ const CreateModel = () => {
 
         try {
             if (id && !creatingCopy) {
-                await modifyModel({id, model}).unwrap();
+                await modifyModel({ id, model }).unwrap();
                 toast.success("Model Saved")
             } else {
                 await addNewModel(model).unwrap();
                 toast.success("Model Created")
             }
             navigate("/models");
-        } catch (e:any) {
+        } catch (e: any) {
             // toast.error(e.data.message)
         }
     }
@@ -218,7 +218,7 @@ const CreateModel = () => {
 
     async function toggleActivation() {
         const activate = !model?.info.isActive;
-        await activateModel({id:id!, activate})
+        await activateModel({ id: id!, activate })
         toast.success(`Model ${activate ? "Activated" : "De-activated"}`);
         navigate(-1);
     }
@@ -230,8 +230,9 @@ const CreateModel = () => {
     }
 
     const title = () => {
-        if(id) {
-            return model ? `Model - ${model.name}` : `View model`;
+        if (id) {
+            if(creatingCopy) return `Copy of Model - ${model?.name}`;
+            else  return model ? `Model - ${model.name}` : `View model`;
         }
         return "New Model"
     }
@@ -262,7 +263,7 @@ const CreateModel = () => {
                     const product = lodash.find(products, { name: formik.values.product });
                     setProduct(product);
                     if (product && !model) {
-                        formik.setFieldValue("policy", {...lodash.cloneDeep(product.policy), loanPurpose:[]});
+                        formik.setFieldValue("policy", { ...lodash.cloneDeep(product.policy), loanPurpose: [] });
                         formik.setFieldValue("factors", getEmptyModel(product).factors);
                     }
                 }, [formik.values.product, model]);
@@ -276,8 +277,8 @@ const CreateModel = () => {
                                     color={(validateOnChange && !formik.isValid) ? "warning" : undefined}
                                     onClick={async () => {
                                         setValidateOnChange(true);
-                                        const errors =  await formik.validateForm();
-                                        if(lodash.isEmpty(errors)) {
+                                        const errors = await formik.validateForm();
+                                        if (lodash.isEmpty(errors)) {
                                             setMode("preview");
                                         }
                                     }}
@@ -285,7 +286,7 @@ const CreateModel = () => {
                                     Preview
                                 </Button>
 
-                                <Button show={mode !== "edit" && !isApproved } variant={"contained"} onClick={() => setMode("edit")}>
+                                <Button show={mode !== "edit" && !isApproved} variant={"contained"} onClick={() => setMode("edit")}>
                                     Edit
                                 </Button>
                                 <Button show={mode === "preview"} type={"submit"} variant={"contained"} disabled={!formik.isValid} color={"success"}>
@@ -309,11 +310,11 @@ const CreateModel = () => {
                                         </Button>
                                     </>
                                 )}
-                                <Button show={!model} onClick={() => formik.setValues(getRandomModel(product||products![0]))}>Populate</Button>
+                                <Button show={!model} onClick={() => formik.setValues(getRandomModel(product || products![0]))}>Populate</Button>
                             </div>}
                         />
-                        <div style={mode !== "edit" ? {pointerEvents: "none"} : undefined}>
-                            <PolicyEditor products={products!}/>
+                        <div style={mode !== "edit" ? { pointerEvents: "none" } : undefined}>
+                            <PolicyEditor products={products!} />
                         </div>
 
                         {mode === 'edit' && (
