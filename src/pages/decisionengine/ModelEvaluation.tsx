@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import './ModelEvaluation.css';
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import "./styles/ModelEvaluation.css";
 import { useGetModelRunByIdQuery } from "../../redux/de";
 import { IRunModel } from "./interfaces/ModelInterface";
 
@@ -142,7 +142,7 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                 padding: '2ex'
             }}>
             <div
-                className="CSS-Summary"
+                className="model-evaluation-header"
                 style={{
                     flex: 4,
                     backgroundColor: modelRun?.result == 'strong' ? '#078F08' : modelRun?.result == 'good' ? '#9DD566'
@@ -166,7 +166,7 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                 </Typography>
 
             </div>
-            <div className="CSS-Summary"
+            <div className="model-evaluation-header"
                 style={{
                     flex: 7,
                 }}>
@@ -180,7 +180,7 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
 
             </div>
             <Divider orientation="vertical" variant="middle" flexItem sx={{ backgroundColor: '#000000' }} />
-            <div className="CSS-Summary"
+            <div className="model-evaluation-header"
                 style={{
                     flex: 4,
                 }}>
@@ -192,7 +192,7 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                 </Typography>
             </div>
             <Divider orientation="vertical" variant="middle" flexItem sx={{ backgroundColor: '#000000' }} />
-            <div className="CSS-Summary"
+            <div className="model-evaluation-header"
                 style={{
                     flex: 4,
                 }}>
@@ -204,7 +204,7 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                 </Typography>
             </div>
             <Divider orientation="vertical" variant="middle" flexItem sx={{ backgroundColor: '#000000' }} />
-            <div className="CSS-Summary"
+            <div className="model-evaluation-header"
                 style={{
                     flex: 4,
                 }}>
@@ -214,13 +214,12 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                 <Typography sx={summarySubBodySx}>
                     {modelRun?.loanStatus}
                 </Typography>
-            </div> 
+            </div>
         </div >
     )
 }
 
 function ModelEvaluationTable({ modelRun }: { modelRun: IRunModel }) {
-
     return (
         <Paper sx={paperSx}>
             <div style={{ width: '100%' }}>

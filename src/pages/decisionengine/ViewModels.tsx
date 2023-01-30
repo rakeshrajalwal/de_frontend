@@ -17,7 +17,7 @@ import AccessTime from "@mui/icons-material/AccessTime";
 import lodash from "lodash";
 import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
 import { useGetAllModelsQuery } from "../../redux/de";
-import './styles/ViewModel.css'
+import "./styles/ViewModel.css";
 
 const Chip = styled(MuiChip)(spacing);
 
@@ -143,7 +143,7 @@ const columns: GridColDef[] = [
     flex: 7,
     headerAlign: "center",
     align: "center",
-    valueGetter: ({ row : { info : { lastRun : {source , runAt}}} }) =>  [source, runAt],
+    valueGetter: ({ row: { info: { lastRun: { source, runAt } } } }) => [source, runAt],
     renderCell: MultiStringCell,
   },
   {
