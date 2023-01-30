@@ -145,10 +145,10 @@ const TextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path
         <Grid item md={1}>
           <Typography>:</Typography>
         </Grid>
-        <Grid item md={2}>
+        {/* <Grid item md={2}>
           <CustomStyledSwitch {...switchField} />
-        </Grid>
-        {switchField.checked && <Grid item md={5} >
+        </Grid> */}
+        {<Grid item md={5} >
           <TextField
             fullWidth
             variant="standard"
