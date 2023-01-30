@@ -145,8 +145,8 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                 className="model-evaluation-header"
                 style={{
                     flex: 4,
-                    backgroundColor: modelRun?.result == 'strong' ? '#078F08' : modelRun?.result == 'good' ? '#9DD566'
-                        : modelRun?.result == 'satisfactory' ? '#FEC401' : '#FB0102',
+                    backgroundColor: modelRun?.loanStatus == 'pass' ? '#078F08' :
+                        modelRun?.loanStatus == 'refer' ? '#FEC401' : '#FB0102',
                     borderRadius: '2ex',
                     color: '#ffffff',
                 }}>
@@ -155,14 +155,17 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    paddingTop: '2.5ex',
-                }}><Typography sx={{ fontSize: '2ex', paddingRight: '0.5ex', fontWeight: 'bold' }}>
+                    //paddingTop: '2ex',
+                }}><Typography sx={{ fontSize: '2ex', fontWeight: 'bold',  }}>
                         Score
                     </Typography>
                     <InfoOutlinedIcon style={{ fontSize: 'medium' }} />
                 </div>
-                <Typography sx={{ fontSize: '7ex', fontWeight: 'bold' }}>
+                <Typography sx={{ fontSize: '6ex', fontWeight: 'bold' }}>
                     {parseFloat(modelRun?.score!.toString()).toFixed(2)}
+                </Typography>
+                <Typography sx={{ fontSize: '2ex', fontWeight: 'bold' }}>
+                    {modelRun?.loanStatus}
                 </Typography>
 
             </div>
@@ -178,6 +181,18 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                     {modelRun?.loanDetails.customerId}
                 </Typography>
 
+            </div>
+            <Divider orientation="vertical" variant="middle" flexItem sx={{ backgroundColor: '#000000' }} />
+            <div className="model-evaluation-header"
+                style={{
+                    flex: 6,
+                }}>
+                <Typography sx={summarySubHeadSx}>
+                    Product
+                </Typography>
+                <Typography sx={summarySubBodySx}>
+                    {modelRun?.loanDetails.product}
+                </Typography>
             </div>
             <Divider orientation="vertical" variant="middle" flexItem sx={{ backgroundColor: '#000000' }} />
             <div className="model-evaluation-header"
@@ -201,18 +216,6 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                 </Typography>
                 <Typography sx={summarySubBodySx}>
                     {modelRun?.loanDetails.term} Months
-                </Typography>
-            </div>
-            <Divider orientation="vertical" variant="middle" flexItem sx={{ backgroundColor: '#000000' }} />
-            <div className="model-evaluation-header"
-                style={{
-                    flex: 4,
-                }}>
-                <Typography sx={summarySubHeadSx}>
-                    Loan Status
-                </Typography>
-                <Typography sx={summarySubBodySx}>
-                    {modelRun?.loanStatus}
                 </Typography>
             </div>
         </div >
@@ -242,14 +245,14 @@ function ModelEvaluation() {
     const { data: modelRun } = useGetModelRunByIdQuery(id!, { refetchOnMountOrArgChange: true });
     return (
         <React.Fragment>
-            <Helmet title='Model Evaluation Dashboard' />
+            <Helmet title='Model Evaluation Details' />
             <div
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '3ex'
                 }}>
-                <CardHeader title={"Model Evaluation Dashboard"} titleTypographyProps={{ variant: "h3" }} />
+                <CardHeader title={`Model Evaluation Details - ${modelRun?.model?.name}`} titleTypographyProps={{ variant: "h3" }} />
                 <ModelEvaluationSummary modelRun={modelRun!} />
                 <ModelEvaluationTable modelRun={modelRun!} />
             </div>
