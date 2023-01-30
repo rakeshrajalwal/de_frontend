@@ -3,16 +3,20 @@ import {
   Grid,
   CardContent,
   Card,
-  TextField,
-  Typography, CardHeader, Button,
+  TextField,TextFieldProps,
+  Typography, CardHeader, Button, LinearProgress,
   MenuItem, Switch, Select, FormControl, FormHelperText
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { Form, Formik, useField } from "formik";
 import { IProduct, IRunModel } from './interfaces/ModelInterface';
-import { useGetAllProductsQuery, useGetManualInputsByProductNameQuery, useLazyGetManualInputsByProductNameQuery } from '../../redux/de';
+import { deApi, useGetAllProductsQuery, useLazyGetManualInputsByProductNameQuery } from '../../redux/de';
 import lodash from 'lodash';
 import * as Yup from "yup";
+import { randomNumberBetween } from './CreateModel';
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
+import { NumberFormatCustom } from './editors/NumberFormatCustom';
 
 const CustomStyledSwitch = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -64,7 +68,7 @@ const ColoredLine = ({ color }: { color: string }) => {
   />)
 };
 
-const CustomTextField = ({ fieldname, type, path }: { fieldname: string, type: string, path: string }) => {
+const CustomTextField = ({ fieldname, type, textFieldProps, path }: { fieldname: string, type: string, textFieldProps?: TextFieldProps, path: string }) => {
 
   const [field, meta, helpers] = useField(`${path}`);
 
@@ -85,6 +89,7 @@ const CustomTextField = ({ fieldname, type, path }: { fieldname: string, type: s
             helperText={meta.error}
             error={!!meta.error}
             {...field}
+            {...textFieldProps}
           />
         </Grid>
       </ControlContainer >
@@ -130,12 +135,12 @@ const TextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path
     name: `${path}.switchstate`,
     type: 'checkbox'
   });
-  
+
   return (
     <Grid item md={8} mt={3}>
       <ControlContainer>
         <Grid item md={3}>
-          <Label>{fieldname}</Label>
+          <Label>{fieldname.replace(/([a-z])([A-Z])/g, '$1 $2').replace('_', ' - ')}</Label>
         </Grid>
         <Grid item md={1}>
           <Typography>:</Typography>
@@ -192,29 +197,47 @@ const requiredString = Yup.string().required('Required');
 
 
 function RunModel() {
+  const navigate = useNavigate();
   const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
   const { data: products } = useGetAllProductsQuery();// fetching all the products
   const [product, setProduct] = React.useState<IProduct>();
   const [fetchManualInputs, { data: manualInputNames }] = useLazyGetManualInputsByProductNameQuery();// query to fetch manualinputs
+  const [runModel] = deApi.useRunModelMutation();
 
   const validationSchema = Yup.object().shape({
     loanDetails: Yup.object().shape({
       product: requiredString,
-      amount: positiveInteger.min(product?.policy.loanRange.min as number,`amount should be greater than or equal to product's policy minimum loan ${product?.policy.loanRange.min}`).max(product?.policy.loanRange.max as number, `amount should be less than or equal to in product's policy maximum loan ${product?.policy.loanRange.max}`),
+      amount: positiveInteger.min(product?.policy.loanRange.min as number, `amount should be greater than or equal to product's policy minimum loan ${product?.policy.loanRange.min}`).max(product?.policy.loanRange.max as number, `amount should be less than or equal to in product's policy maximum loan ${product?.policy.loanRange.max}`),
       secured: requiredString,
-      term: positiveInteger.min(product?.policy.loanTermInMonths.min as number,`term should be greater than or equal to product's policy minimum term ${product?.policy.loanTermInMonths.min}`).max(product?.policy.loanTermInMonths.max as number,`term should be less than or equal to product's policy maximum term ${product?.policy.loanTermInMonths.max}`),
+      term: positiveInteger.min(product?.policy.loanTermInMonths.min as number, `term should be greater than or equal to product's policy minimum term ${product?.policy.loanTermInMonths.min}`).max(product?.policy.loanTermInMonths.max as number, `term should be less than or equal to product's policy maximum term ${product?.policy.loanTermInMonths.max}`),
       purpose: requiredString,
       customerId: requiredString
     }),
-    manualInputs :  Yup.array().of(Yup.object().shape({
-      switchstate : Yup.boolean(),
-      value : Yup.string().when("switchstate", {
-        is:true,
+    manualInputs: Yup.array().of(Yup.object().shape({
+      switchstate: Yup.boolean(),
+      value: Yup.string().when("switchstate", {
+        is: true,
         then: Yup.string().required('required')
       })
     }))
   });
-  
+
+  function getRandomInput(): React.SetStateAction<IRunModel> {
+    const product = products![0];
+    const { loanPurpose, loanRange, loanTermInMonths, isSecured } = product.policy;
+    return {
+      loanDetails: {
+        product: product.name,
+        amount: randomNumberBetween(loanRange),
+        secured: isSecured,
+        term: randomNumberBetween(loanTermInMonths),
+        purpose: lodash.shuffle(loanPurpose)[0],
+        customerId: '0012z00000FPCeRAAX'
+      },
+      manualInputs: (manualInputNames || []).map(name => ({ name, value: randomNumberBetween({ min: 10, max: 100 }), switchstate: true }))
+    }
+  }
   return (
     <Formik
       initialValues={{
@@ -231,18 +254,24 @@ function RunModel() {
       validationSchema={validationSchema}
       validateOnChange={validateOnChange}
       validateOnBlur={false}
-      onSubmit={(values) => {
-        const {loanDetails, manualInputs : [...manualInputs]} = values;
-        values.manualInputs = manualInputs.map(({name,value}) => ({name,value}));
-        console.log(JSON.stringify(values, null, 2))
-        alert(JSON.stringify(values, null, 2));
+      onSubmit={async ({ manualInputs, loanDetails }) => {
+        setIsSubmitting(true);
+        const manualInputsObj = Object.fromEntries(manualInputs.map(({ name, value }) => [name, value]));
+        const runModelInput: any = { loanDetails, manualInput: manualInputsObj };
+        await runModel(runModelInput).unwrap().
+          then(() => {
+            toast.success("Model run successfull");
+            navigate("/home");
+          }).catch(() => {
+            setIsSubmitting(false);
+          });
       }}
     >
       {formik => {
         React.useEffect(() => {
           const product = lodash.find(products, { name: formik.values.loanDetails.product });
           setProduct(product);
-          if(product) {
+          if (product) {
             fetchManualInputs(product._id!) // triggering api to get the manual inputs for the selected product
           }
         }, [formik.values.loanDetails.product])
@@ -253,18 +282,23 @@ function RunModel() {
 
 
         const handleSubmit = () => {
+          setIsSubmitting(false);
           setValidateOnChange(true);
           formik.validateForm();
         };
+
         return (
           <Form>
             <CardHeader title={"Run Model"} titleTypographyProps={{ variant: "h3" }}
               action={<div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Button type="submit" variant={"contained"} onClick={handleSubmit}>
-                    Submit
+                  Submit
                 </Button>
+
+                <Button onClick={() => formik.setValues(getRandomInput())}>Populate</Button>
               </div>} />
 
+            {validateOnChange && isSubmitting && <LinearProgress />}
             <Card sx={{ boxShadow: '0px 3px 6px #00000029' }}>
               <CardContent>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -273,7 +307,14 @@ function RunModel() {
 
                     <SelectDropdown fieldname={'Product'} path={'loanDetails.product'} options={products?.map((i) => i.name)!} />
 
-                    <CustomTextField fieldname={'Loan Amount(£)'} path={'loanDetails.amount'} type={'number'} />
+                    <CustomTextField fieldname={'Loan Amount(£)'} path={'loanDetails.amount'} type={'number'} 
+                    textFieldProps={{
+                      variant: 'standard',
+                      InputProps: {
+                        inputComponent: NumberFormatCustom as any,
+                      },
+                      type: "unset"
+                    }} />
 
                     <CustomSwitch fieldname={'Is Secured?'} path={'loanDetails.secured'} />
 
@@ -288,7 +329,7 @@ function RunModel() {
 
                 <Grid container>
                   <Grid item md={2}>
-                    <h3 style={{ color: '#434DB0', margin: '0px' }}> Additonal Details</h3>
+                    <h3 style={{ color: '#434DB0', margin: '0px' }}> Additional Details</h3>
                   </Grid>
                   <Grid item md={10} mt={1}>
                     <ColoredLine color={'#434DB0'} />

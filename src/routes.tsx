@@ -25,7 +25,9 @@ import MaterialIcons from "./pages/icons/MaterialIcons";
 import RunSummaries from "./pages/decisionengine/RunSummaries";
 import ViewModels from "./pages/decisionengine/ViewModels";
 import CreateModel from "./pages/decisionengine/CreateModel";
+import ViewOrEditModel from "./pages/decisionengine/ViewOrEditModel";
 import RunModel from "./pages/decisionengine/RunModel";
+import ModelEvaluation from "./pages/decisionengine/ModelEvaluation";
 import Logout from "./pages/decisionengine/Logout";
 
 // Table components
@@ -38,7 +40,7 @@ import Landing from "./pages/presentation/Landing";
 // Protected routes
 import ProtectedPage from "./pages/protected/ProtectedPage";
 import Page404 from "./pages/auth/Page404";
-import PreviewModel from "./pages/decisionengine/PreviewModel";
+import { Navigate, RouteObject, useNavigate } from "react-router-dom";
 
 //const SaaS = async(() => import("./pages/dashboards/SaaS"));
 
@@ -60,13 +62,15 @@ const ApexCharts = async(() => import("./pages/charts/ApexCharts"));
 const GoogleMaps = async(() => import("./pages/maps/GoogleMaps"));
 const VectorMaps = async(() => import("./pages/maps/VectorMaps"));
 
-const routes = [
+const routes: RouteObject[] = [
+ 
   {
     path: "/",
     element: <PresentationLayout />,
     children: [
       {
         path: "",
+        // element: <Navigate to="/home" />,
         element: <Landing />,
       },
     ],
@@ -86,30 +90,30 @@ const routes = [
   },
 
   {
-    path: "model",
+    path: "models",
     element: <AuthGuard>
       <DELayout />
     </AuthGuard>,
     children: [
       {
-        path: "/model/create",
+        path: "/models/new",
         element: <CreateModel />,
       },
       {
-        path: "/model/:id/edit",
-        element: <CreateModel />,
+        path: "/models/:id",
+        element: <ViewOrEditModel />,
       },
       {
-        path: "/model/view",
+        path: "/models",
         element: <ViewModels />,
       },
       {
-        path: "/model/preview",
-        element: <PreviewModel />,
+        path: "/models/run",
+        element: <RunModel />,
       },
       {
-        path: "/model/run",
-        element: <RunModel />,
+        path: "/models/modelresult/:id",
+        element: <ModelEvaluation />,
       },
 
     ],

@@ -14,42 +14,40 @@ export interface IProduct {
     }[]
 }
 
-// export interface IManualInputs {
-//     name : string,
-//     value : number | string
-// }
-
 export interface IRunModel {
+    _id?: string,
     model?: IModel,
     loanDetails: {
         product: string,
-        amount: string,
+        amount: number | string,
         secured: boolean,
-        term: string,
+        term: number | string,
         purpose: string,
         customerId: string
     },
     manualInputs: {
         name: string,
         value: number | string
-    }[]
+    }[],
+    failedOperations?: {
+        type: string,
+        name: string,
+        source: string,
+        measuresNotProvided: string[]
+    }[],
+    signals?: {
+        name: string,
+        numericValue: number,
+        signalValue: string,
+        score: number,
+        weightedValue: number
+    }[],
+    score?: string,
+    result?: string,
+    loanStatus?: string,
+    status?: string
 
 }
-
-// export interface IRunModel {
-//     model?: IModel,
-//     loanDetails: {
-//         product: string,
-//         amount: string,
-//         secured: boolean,
-//         term: string,
-//         purpose: string,
-//         customerId: string
-//     },
-//     manualInputs: string[]
-
-// }
-
 
 export interface IRange {
     min: number | string,
@@ -72,32 +70,30 @@ export interface ILastRun {
 export const criteriaRangeNames = ["strong", "good", "satisfactory", "weak"] as const
 type CriteriaRangeName = typeof criteriaRangeNames[number];
 export type TCriteria = Record<CriteriaRangeName, IRange>;
-// export interface ICriteria {
-//     strong: IRange,
-//     good: IRange,
-//     satisfactory: IRange,
-//     weak: IRange
-// }
-export interface IModel {
-    __v?: number | string,
-    _id?: string,
-    modelId?: string,
+
+export interface IModelInput {
     name: string,
     product: string,
-    createdBy?: string,
-    createdAt?: string,
-    approvalStatus?: string,
-    isActive?: boolean,
-    approvedBy?: string,
-    approvedAt?: string,
-    activatedBy?: string,
-    activatedAt?: string,
-    runCount?: number,
-    lastRun?: ILastRun,
     policy: IPolicy,
-    factors: IFactor[],
+    factors: IFactor[]
 }
 
+export interface IModel extends IModelInput {
+    __v?: number | string,
+    _id?: string,
+    info: {
+        createdBy?: string,
+        createdAt?: string,
+        approvalStatus?: string,
+        isActive?: boolean,
+        approvedBy?: string,
+        approvedAt?: string,
+        activatedBy?: string,
+        activatedAt?: string,
+        runCount?: number,
+        lastRun?: ILastRun,
+    }
+}
 
 export interface IFactor {
     _id?: string,
@@ -118,7 +114,7 @@ export interface ISignal {
     name: string,
     weight: number | string,
     overallWeight?: number | string,
-    criteria?: TCriteria,
+    criteria?: TCriteria[],
 }
 
 
@@ -127,5 +123,5 @@ export interface INode {
     subFactors?: INode[],
     signals?: INode[],
     weight: number | string,
-    criteria?: TCriteria
+    criteria?: TCriteria[]
 }

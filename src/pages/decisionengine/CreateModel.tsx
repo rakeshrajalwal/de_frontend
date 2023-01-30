@@ -1,28 +1,31 @@
 import * as React from 'react';
-import { useCreateModelMutation, useGetAllProductsQuery } from '../../redux/de';
 import {
-    CardContent,
-    Card,
-    Button as MuiButton,
-    CardHeader,
-    Snackbar,
-} from "@mui/material";
+    deApi,
+    useCreateModelMutation,
+    useGetAllProductsQuery,
+    useGetOneModelQuery,
+    useModifyModelMutation,
+} from '../../redux/de';
+import { Button as MuiButton, ButtonProps as MuiButtonProps, Card, CardContent, CardHeader } from "@mui/material";
 import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
-import { IProduct, IModel } from "./interfaces/ModelInterface"
-import './styles/CreateModel.css';
+import { criteriaRangeNames, IModelInput, IProduct, IRange, TCriteria } from "./interfaces/ModelInterface"
 import lodash from 'lodash';
 import * as Yup from "yup";
 import { TotalWeight } from "./editors/WeightEditor";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import * as Faker from 'faker';
+import { ModelDataGrid } from "./ModelDataGrid";
+import { toast } from 'react-toastify';
 import './styles/CreateModel.css';
-import styled from "@emotion/styled";
-import { spacing } from "@mui/system";
 
-const Button = styled(MuiButton)(spacing);
+interface ButtonProps extends MuiButtonProps {
+    show?: boolean
+}
+const Button = ({ show = true, ...props }: ButtonProps) => show ? <MuiButton {...props} /> : <></>;
 
-function getEmptyModel(p: IProduct): IModel {
+function getEmptyModel(p: IProduct): IModelInput {
     return {
         name: '',//modelname
         product: '',
@@ -41,12 +44,12 @@ function getEmptyModel(p: IProduct): IModel {
                 signals: sf.signals.map(sig => ({
                     name: sig.name,
                     weight: '0',
-                    criteria: {
+                    criteria: [{
                         strong: { min: '', max: '' },
                         good: { min: '', max: '' },
                         satisfactory: { min: '', max: '' },
                         weak: { min: '', max: '' },
-                    }
+                    }]
                 }))
             }))
         }))
@@ -59,14 +62,29 @@ function randomSplit(total: number, count: number): number[] {
     return [part, ...randomSplit(total - part, count - 1)]
 }
 
-function getRandomModel(p: IProduct): IModel {
+export function randomNumberBetween({ min, max }: IRange): number {
+    return (+min + Math.floor((+max - +min) * Math.random()))
+}
+function randomRangeBetween(range: IRange, multipleOf?: number): IRange {
+    if (multipleOf) {
+        const { min, max } = randomRangeBetween({ min: Math.ceil(+range.min / multipleOf), max: Math.floor(+range.max / multipleOf) })
+        return { min: +min * multipleOf, max: +max * multipleOf }
+    }
+    const min = randomNumberBetween(range);
+    const max = randomNumberBetween({ ...range, min: min + 1 });
+    return { min, max };
+}
+
+function getRandomModel(p: IProduct): IModelInput {
+    const purposes = lodash.shuffle(p.policy.loanPurpose).slice(0, randomNumberBetween({ min: 1, max: 5 }))
+    const termRange = randomRangeBetween(p.policy.loanTermInMonths, 6);
     return {
-        name: "m1",
+        name: Faker.lorem.words(),
         product: p.name,
         policy: {
-            loanRange: { min: 100000, max: 500000 },
-            loanTermInMonths: { min: 12, max: 24 },
-            loanPurpose: [lodash.shuffle(p.policy.loanPurpose)[0]],
+            loanRange: randomRangeBetween(p.policy.loanRange, 1e4),
+            loanTermInMonths: termRange,
+            loanPurpose: purposes,
             isSecured: false,
         },
         factors: randomSplit(100, p.factors.length).map((weight, i) => {
@@ -80,21 +98,40 @@ function getRandomModel(p: IProduct): IModel {
                         name: subFactor.name,
                         weight,
                         signals: randomSplit(100, subFactor.signals.length).map((weight, i) => {
+                            if (subFactor.signals[i].name === "TermVsPurpose") {
+                                return {
+                                    name: subFactor.signals[i].name,
+                                    weight,
+                                    criteria: purposes.map((p) => {
+                                        let r = randomSplit(100, 4);
+                                        r = r.map((_, i) => lodash.sum(r.slice(0, i + 1)))
+                                        const { min, max } = termRange;
+                                        const rangeLength = +max - +min;
+                                        return {
+                                            weak: { min: min, max: +min + Math.ceil(rangeLength * r[0] / 100) },
+                                            satisfactory: { min: +min + Math.ceil(rangeLength * r[0] / 100), max: +min + Math.ceil(rangeLength * r[1] / 100) },
+                                            good: { min: +min + Math.ceil(rangeLength * r[1] / 100), max: +min + Math.ceil(rangeLength * r[2] / 100) },
+                                            strong: { min: +min + Math.ceil(rangeLength * r[2] / 100), max: max },
+                                            condition: `purpose == "${p}"`
+                                        }
+                                    })
+                                }
+                            }
                             return {
                                 name: subFactor.signals[i].name,
                                 weight,
-                                criteria: subFactor.signals[i].isReverseScale ? {
+                                criteria: subFactor.signals[i].isReverseScale ? [{
                                     weak: { min: 200, max: 300 },
                                     satisfactory: { min: 100, max: 200 },
                                     good: { min: 10, max: 100 },
                                     strong: { min: 0, max: 10 }
-                                } : {
+                                }] : [{
                                     strong: { min: 200, max: 300 },
                                     good: { min: 100, max: 200 },
                                     satisfactory: { min: 10, max: 100 },
                                     weak: { min: 0, max: 10 }
 
-                                }
+                                }]
                             }
                         })
                     }
@@ -116,8 +153,8 @@ let rangeSchema = Yup.object().shape({
 
 const requiredString = Yup.string().required('Required');
 const validationSchema = Yup.object().shape({
-    name: requiredString,
-    product: requiredString,
+    name: Yup.string().required('Required'),
+    product: Yup.string().required('Required'),
     policy: Yup.object().shape({
         loanRange: positiveIntRangeSchema,
         loanTermInMonths: positiveIntRangeSchema,
@@ -129,12 +166,12 @@ const validationSchema = Yup.object().shape({
             weight: Yup.number().required().min(0).max(100),
             signals: Yup.array().of(Yup.object().shape({
                 weight: Yup.number().required().min(0).max(100),
-                criteria: Yup.object().shape({
+                criteria: Yup.array().of(Yup.object().shape({
                     strong: rangeSchema,
                     good: rangeSchema,
                     satisfactory: rangeSchema,
                     weak: rangeSchema,
-                })
+                }))
             })).test('sum', 'Sum should be 100', (a) => lodash.sumBy(a, 'weight') === 100)
         })).test('sum', 'Sum should be 100', (a) => lodash.sumBy(a, 'weight') === 100)
     })).test('sum', 'Sum should be 100', (a) => lodash.sumBy(a, 'weight') === 100)
@@ -142,48 +179,71 @@ const validationSchema = Yup.object().shape({
 
 const CreateModel = () => {
     const navigate = useNavigate();
+    let { id } = useParams();
+    const { data: model, isLoading: isModelLoading } = useGetOneModelQuery(id || '', { skip: !id, refetchOnMountOrArgChange: true })
 
     const [product, setProduct] = React.useState<IProduct>();// to populate a select products features etc.
     const [validateOnChange, setValidateOnChange] = React.useState<boolean>(false); // handling the form validation
-    const [openSuccessNotfication, setOpenSuccessNotfication] = React.useState<boolean>(false);// notification for success model creation
-    const [openErrorNotfication, setOpenErrorNotfication] = React.useState<boolean>(false);//notification for error in model creation
-    const [createModelError, setcreateModelError] = React.useState<string>('');// set the error from api response
 
     let reverseSignalNames = product?.factors.flatMap(f => f.subFactors.flatMap(sf => sf.signals.filter(sig => sig.isReverseScale).map(sig => sig.name))) || [];
 
     const { data: products, error, isLoading } = useGetAllProductsQuery();// fetching all the products
 
     const [addNewModel, response] = useCreateModelMutation();// query to create model
-
-    //handles notification popups after submitting
-    const handleNotificationClose = () => {
-        if (openSuccessNotfication) {
-            setOpenSuccessNotfication(false);
-            navigate("/model/view");// navigating to view models screen on successful creation
-        }
-        if (openErrorNotfication) {
-            setOpenErrorNotfication(false); // showing error popup
-        }
-    };
+    const [modifyModel] = useModifyModelMutation();// query to modify model
+    const [mode, setMode] = React.useState(id ? "view" : "edit");
+    const [creatingCopy, setCreatingCopy] = React.useState(false);
 
     // function that sends the create model api request
-    async function submitModel(values: IModel) {
+    async function submitModel(model: IModelInput) {
+        const x = Yup.string().required("Required");
+        const iv = await x.isValid("");
 
-        await addNewModel(values).unwrap()
-            .then(() => {
-                setOpenSuccessNotfication(true);
-            })
-            .catch((error) => {
-                setcreateModelError(error.data)
-                setOpenErrorNotfication(true);
-            })
+        try {
+            if (id && !creatingCopy) {
+                await modifyModel({ id, model }).unwrap();
+                toast.success("Model Saved")
+            } else {
+                await addNewModel(model).unwrap();
+                toast.success("Model Created")
+            }
+            navigate("/models");
+        } catch (e: any) {
+            // toast.error(e.data.message)
+        }
     }
+
+    const [approveModel] = deApi.useApproveModelMutation();
+    const [activateModel] = deApi.useActivateModelMutation();
+
+    async function toggleActivation() {
+        const activate = !model?.info.isActive;
+        await activateModel({ id: id!, activate })
+        toast.success(`Model ${activate ? "Activated" : "De-activated"}`);
+        navigate(-1);
+    }
+
+    async function approve() {
+        await approveModel(id!);
+        toast.success("Model Approved");
+        navigate(-1);
+    }
+
+    const title = () => {
+        if (id) {
+            if(creatingCopy) return `Copy of Model - ${model?.name}`;
+            else  return model ? `Model - ${model.name}` : `View model`;
+        }
+        return "New Model"
+    }
+
+    const isApproved = model?.info.approvalStatus === "approved";
 
     return (
         <Formik
-            initialValues={{
+            initialValues={model || {
                 name: "",
-                product: '',
+                product: products?.length == 1 ? products[0].name : '',
                 policy: {
                     loanRange: { min: '', max: '' },
                     loanTermInMonths: { min: '', max: '' },
@@ -191,71 +251,87 @@ const CreateModel = () => {
                     isSecured: false,
                 },
                 factors: []
-            } as IModel}
+            } as IModelInput}
+            enableReinitialize
             validationSchema={validationSchema}
             validateOnBlur={false}
             validateOnChange={validateOnChange}
-            onSubmit={(values) => {
-                submitModel(values);
-            }}
+            onSubmit={submitModel}
         >
             {formik => {
                 React.useEffect(() => {
                     const product = lodash.find(products, { name: formik.values.product });
                     setProduct(product);
-                    if (product) {
-                        formik.setFieldValue("policy", product.policy);
+                    if (product && !model) {
+                        formik.setFieldValue("policy", { ...lodash.cloneDeep(product.policy), loanPurpose: [] });
                         formik.setFieldValue("factors", getEmptyModel(product).factors);
                     }
-                }, [formik.values.product]);
-                const v = formik.values;
+                }, [formik.values.product, model]);
                 return (
                     <Form>
-                        <CardHeader title={"Create Model"} titleTypographyProps={{ variant: "h3" }}
+                        <CardHeader title={title()} titleTypographyProps={{ variant: "h3" }}
                             action={<div style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
-                                <Button variant={"contained"} type="submit" disabled={formik.isValid && validateOnChange}
-                                    style={{ backgroundColor: formik.isValid && validateOnChange ? 'green' : 'blue', color: 'white' }}
-                                    onClick={() => { setValidateOnChange(true); formik.validateForm(); }}
-                                >Validate</Button>
+                                <Button
+                                    show={mode === "edit"}
+                                    variant={"contained"}
+                                    color={(validateOnChange && !formik.isValid) ? "warning" : undefined}
+                                    onClick={async () => {
+                                        setValidateOnChange(true);
+                                        const errors = await formik.validateForm();
+                                        if (lodash.isEmpty(errors)) {
+                                            setMode("preview");
+                                        }
+                                    }}
+                                >
+                                    Preview
+                                </Button>
 
-                                <Button type="submit" variant={"contained"} disabled={!validateOnChange || !formik.isValid}>Submit</Button>
-                                <Button onClick={() => formik.setValues(getRandomModel(product!))}>Populate</Button>
-                            </div>} />
-                        <PolicyEditor products={products!} />
+                                <Button show={mode !== "edit" && !isApproved} variant={"contained"} onClick={() => setMode("edit")}>
+                                    Edit
+                                </Button>
+                                <Button show={mode === "preview"} type={"submit"} variant={"contained"} disabled={!formik.isValid} color={"success"}>
+                                    Save
+                                </Button>
 
-                        <Card sx={{ boxShadow: '0px 3px 6px #00000029', marginTop: '15px' }}>
-                            <CardContent>
-                                {formik.values.factors?.map((f, i) => (
-                                    <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} reverseSignalNames={reverseSignalNames} />
-                                ))}
-
-                                {product && <TotalWeight level={1} nodes={formik.values.factors} />}
-                            </CardContent>
-                        </Card>
-                        <Snackbar
-                            open={openSuccessNotfication}
-                            anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
-                            autoHideDuration={2500}
-                            onClose={handleNotificationClose}
-                            message="model is created successfully"
-                            ContentProps={{
-                                sx: {
-                                    background: "green"
-                                }
-                            }}
+                                {(mode === "view") && (
+                                    <>
+                                        <Button variant={"contained"} onClick={() => {
+                                            setMode("edit");
+                                            formik.setFieldValue("name", "");
+                                            setCreatingCopy(true);
+                                        }}>
+                                            Duplicate
+                                        </Button>
+                                        <Button show={!isApproved} variant={"contained"} onClick={approve}>
+                                            Approve
+                                        </Button>
+                                        <Button show={isApproved} variant={"contained"} onClick={toggleActivation}>
+                                            {model?.info.isActive ? "De-activate" : "Activate"}
+                                        </Button>
+                                    </>
+                                )}
+                                <Button show={!model} onClick={() => formik.setValues(getRandomModel(product || products![0]))}>Populate</Button>
+                            </div>}
                         />
-                        <Snackbar
-                            open={openErrorNotfication}
-                            anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
-                            autoHideDuration={2500}
-                            onClose={handleNotificationClose}
-                            message={createModelError}
-                            ContentProps={{
-                                sx: {
-                                    background: "red"
-                                }
-                            }}
-                        />
+                        <div style={mode !== "edit" ? { pointerEvents: "none" } : undefined}>
+                            <PolicyEditor products={products!} />
+                        </div>
+
+                        {mode === 'edit' && (
+                            <Card sx={{ boxShadow: '0px 3px 6px #00000029', marginTop: '15px' }}>
+                                <CardContent>
+                                    {formik.values.factors?.map((f, i) => (
+                                        <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} reverseSignalNames={reverseSignalNames} />
+                                    ))}
+
+                                    {product && <TotalWeight level={1} nodes={formik.values.factors} />}
+                                </CardContent>
+                            </Card>
+                        )}
+                        {mode !== "edit" && (
+                            <ModelDataGrid model={formik.values} reverseSignalNames={reverseSignalNames} />
+                        )}
+
                     </Form>
                 );
             }}

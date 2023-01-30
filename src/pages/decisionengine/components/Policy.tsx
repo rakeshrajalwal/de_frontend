@@ -19,6 +19,7 @@ import { RangeEditor } from '../editors/EditorControllers';
 import styled from "@emotion/styled";
 import { IProduct } from "../interfaces/ModelInterface";
 import lodash from "lodash";
+import {NumberFormatCustom} from "../editors/NumberFormatCustom";
 
 const Label = styled(Typography)`
     font-weight: bold;
@@ -81,7 +82,15 @@ export const PolicyEditor = ({ products }: { products: IProduct[]}) => {
                         <Grid item md={6}>
                             <ControlContainer>
                                 <Label>Loan Range (£):</Label>
-                                <RangeEditor fieldPath={'policy.loanRange'} textFieldProps={{ variant: 'standard' }} />
+                                <RangeEditor
+                                    fieldPath={'policy.loanRange'}
+                                    textFieldProps={{
+                                        variant: 'standard',
+                                        InputProps: {
+                                            inputComponent: NumberFormatCustom as any,
+                                        },
+                                        type: "unset"
+                                    }}/>
                             </ControlContainer>
                         </Grid>
                         <Grid item md={6}>

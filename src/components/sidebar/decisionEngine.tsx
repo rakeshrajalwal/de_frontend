@@ -13,26 +13,22 @@ const pagesSection = [
     title: "Run Summaries",
   },
   {
-    href: "/model",
+    href: "/models",
     icon: Sliders,
     title: "Model",
     children: [
       {
-        href: "/model/view",
+        href: "/models",
         title: "View Models",
       },
       {
-        href: "/model/create",
+        href: "/models/new",
         title: "Create Model",
       },
       {
-        href: "/model/run",
+        href: "/models/run",
         title: "Run Model",
-      },
-      {
-        href: "/model/preview",
-        title: "Preview Model",
-      },
+      }
     ],
   },
   {
