@@ -295,7 +295,7 @@ function RunModel() {
                   Submit
                 </Button>
 
-                <Button onClick={() => formik.setValues(getRandomInput())}>Populate</Button>
+                {/* <Button onClick={() => formik.setValues(getRandomInput())}>Populate</Button> */}
               </div>} />
 
             {validateOnChange && isSubmitting && <LinearProgress />}
@@ -322,7 +322,7 @@ function RunModel() {
 
                     <SelectDropdown fieldname={'Purpose'} path={'loanDetails.purpose'} options={product?.policy.loanPurpose} />
 
-                    <CustomTextField fieldname={'Company Name'} path={'loanDetails.customerId'} type={'text'} />
+                    <CustomTextField fieldname={'Customer Id'} path={'loanDetails.customerId'} type={'text'} />
 
                   </Grid>
                 </div>
