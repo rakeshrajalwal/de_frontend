@@ -10,7 +10,7 @@ import { Button as MuiButton, ButtonProps as MuiButtonProps, Card, CardContent, 
 import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
-import { criteriaRangeNames, IModelInput, IProduct, IRange, TCriteria } from "./interfaces/ModelInterface"
+import { criteriaRangeNames, IFactor, IModelInput, IProduct, IRange, TCriteria } from "./interfaces/ModelInterface"
 import lodash from 'lodash';
 import * as Yup from "yup";
 import { TotalWeight } from "./editors/WeightEditor";
@@ -231,8 +231,8 @@ const CreateModel = () => {
 
     const title = () => {
         if (id) {
-            if(creatingCopy) return `Copy of Model - ${model?.name}`;
-            else  return model ? `Model - ${model.name}` : `View model`;
+            if (creatingCopy) return `Copy of Model - ${model?.name}`;
+            else return model ? `Model - ${model.name}` : `View model`;
         }
         return "New Model"
     }
