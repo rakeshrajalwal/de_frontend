@@ -163,15 +163,15 @@ const columns: GridColDef[] = [
     flex: 7,
     align: 'center',
     renderCell: (params) => {
-      const { Icon } = Icons[params.row.source == "DE" ? 'User' : 'Monitor' as keyof typeof Icons];
+      const { Icon } = Icons[params.row.runDetails && params.row.runDetails.source == "DE" ? 'User' : 'Monitor' as keyof typeof Icons];
       return (<div>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
-          <Typography mt={2} style={{ paddingRight: '1.2ex' }} >{params.row.runBy}</Typography>
-          <Tooltip title={params.row.source} placement='right'>
+          <Typography mt={2} style={{ paddingRight: '1.2ex' }} >{params.row.runDetails.runBy}</Typography>
+          <Tooltip title={params.row.runDetails.source} placement='right'>
             <Icon style={{ fontSize: '2.7ex' }} />
           </Tooltip>
         </div>
-        <div style={{ fontSize: '1.4ex' }}>{params.row.runAt}</div>
+        <div style={{ fontSize: '1.4ex' }}>{params.row.runDetails.modelrunAt}</div>
       </div>)
     },
   },
