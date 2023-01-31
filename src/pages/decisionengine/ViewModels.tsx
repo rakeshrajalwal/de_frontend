@@ -143,7 +143,7 @@ const columns: GridColDef[] = [
     flex: 7,
     headerAlign: "center",
     align: "center",
-    valueGetter: ({ row: { info: { lastRun: { source, runAt } } } }) => [source, runAt],
+    valueGetter: ({ row: { info: { lastRun: { source, runAt } } } }) => [source != 'null' ? source : '━', runAt!= '0' ? runAt : ''],
     renderCell: MultiStringCell,
   },
   {
