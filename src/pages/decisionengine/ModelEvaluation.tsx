@@ -6,7 +6,8 @@ import {
     Paper as MuiPaper,
     CardHeader,
     Typography,
-    Divider, Chip
+    Divider,
+    Chip,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { spacing } from "@mui/system";
@@ -14,56 +15,9 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import "./styles/ModelEvaluation.css";
 import { useGetModelRunByIdQuery } from "../../redux/de";
 import { IRunModel } from "./interfaces/ModelInterface";
+import { datagridSx, paperSx, MultiStringCell } from "./styles/DataGridCommonStyles";
 
 const Paper = styled(MuiPaper)(spacing);
-
-const paperSx = {
-    "& MuiPaper-root": {
-        fontFamily: "Verdana",
-    },
-    "& .css-1bpvgg-MuiPaper-root": {
-        padding: "10rem",
-    },
-};
-
-const datagridSx = {
-    "& .MuiDataGrid-columnHeaders": {
-        backgroundColor: "#D9F1FC",
-    },
-    "& .MuiDataGrid-columnHeaderTitle": {
-        fontFamily: "Verdana",
-        fontWeight: "bold",
-        letterSpacing: "0.05ex",
-        opacity: 1,
-        color: "#1B2430",
-    },
-    "& .MuiPaper-elevation1": {
-        backgroundColor: "#F3FBFE",
-    },
-    "& .MuiDataGrid-cellContent": {
-        fontFamily: "Verdana",
-        wordWrap: "break-word !important",
-        textAlign: "center",
-        fontSize: "1.8ex",
-        justifyContent: "center",
-        color: "#1B2430",
-        letterSpacing: "0.05ex",
-        opacity: 1,
-    },
-    "& .MuiDataGrid-cell": {
-        whiteSpace: "normal !important",
-    },
-    "& .MuiDataGrid-toolbarQuickFilter": {
-        border: "solid",
-    },
-    "& .MuiChip-label": {
-        textAlign: "center",
-        fontSize: "1.5ex",
-    },
-    "& .MuiDataGrid-toolbarContainer": {
-        backgroundColor: "#F7F9FC",
-    },
-};
 
 const columns: GridColDef[] = [
 
@@ -71,7 +25,7 @@ const columns: GridColDef[] = [
         field: "name",
         headerName: "Signal Name",
         flex: 10,
-        headerAlign: "center",
+        headerAlign: "left",
         align: "left",
         valueFormatter: ({ value }) => [value.replace(/([a-z])([A-Z])/g, '$1 $2').replace('_', ' - ')]
     },
@@ -132,7 +86,7 @@ const columns: GridColDef[] = [
 function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
 
     const summarySubBodySx = {
-        fontSize: '3ex',
+        fontSize: '2.6ex',
         fontWeight: 'bold'
     }
     const summarySubHeadSx = {
@@ -154,8 +108,8 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                 className="model-evaluation-header"
                 style={{
                     flex: 4,
-                    backgroundColor: modelRun?.loanStatus == 'Pass' ? '#078F08' :
-                        modelRun?.loanStatus == 'Refer' ? '#FEC401' : '#FB0102',
+                    backgroundColor: modelRun?.loanStatus?.toLowerCase() == 'pass' ? '#078F08' :
+                        modelRun?.loanStatus?.toLowerCase() == 'refer' ? '#FEC401' : '#FB0102',
                     borderRadius: '2ex',
                     color: '#ffffff',
                 }}>
