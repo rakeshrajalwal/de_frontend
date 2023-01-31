@@ -1,907 +1,1488 @@
 {
-    "_id": 2,
-    "product": "Working Capital Loan",
-    "name": "creditworkbook-excel",
-    "policy": {
-      "loanRange": {
-        "min": 1000,
-        "max": 5000000
-      },
-      "loanTermInMonths": {
-        "min": 1,
-        "max": 60
-      },
-      "loanPurpose": [
-        "Stock Purchase",
-        "Cashflow",
-        "VAT"
-      ],
-      "isSecured": false
+  "productId": "product101",
+  "name": "Working Capital Loan",
+  "factors": [
+    {
+      "name": "Financial Strength",
+      "subFactors": [
+        {
+          "name": "Market Conditions ",
+          "signals": [
+            {
+              "name": "SectorAppetite",
+              "isReverseScale": true
+            },
+            {
+              "name": "BusinessVsSector_GPRatio",
+              "isReverseScale": false
+            },
+            {
+              "name": "BusinessVsSector_NPRatio",
+              "isReverseScale": false
+            },
+            {
+              "name": "BusinessVsSector_Leverage",
+              "isReverseScale": true
+            },
+            {
+              "name": "BusinessVsSector_Gearing",
+              "isReverseScale": true
+            }
+          ]
+        },
+        {
+          "name": "Debt Service",
+          "signals": [
+            {
+              "name": "EBITDAvsDSC",
+              "isReverseScale": false
+            }
+          ]
+        },
+        {
+          "name": "Financial Stability",
+          "signals": [
+            {
+              "name": "TurnoverChangeYoY",
+              "isReverseScale": false
+            },
+            {
+              "name": "EBITDA_Ratio",
+              "isReverseScale": false
+            },
+            {
+              "name": "StressedEBITDAvsDSC",
+              "isReverseScale": false
+            },
+            {
+              "name": "RetainedProfits",
+              "isReverseScale": false
+            }
+          ]
+        },
+        {
+          "name": "Gearing ratio",
+          "signals": [
+            {
+              "name": "GearingRatio",
+              "isReverseScale": true
+            }
+          ]
+        },
+        {
+          "name": "Leverage",
+          "signals": [
+            {
+              "name": "Leverage",
+              "isReverseScale": true
+            }
+          ]
+        }
+      ]
     },
-    "factors": [
+    {
+      "name": "Strength of Business Owner/Guarantor & Security Package",
+      "subFactors": [
+        {
+          "name": "Financial Capacity & Willingness to Support",
+          "signals": [
+            {
+              "name": "SponsorPGVsNetWorth",
+              "isReverseScale": false
+            },
+            {
+              "name": "SponsorNetWorthVsFacilityApplied",
+              "isReverseScale": false
+            },
+            {
+              "name": "PromotersCreditScore",
+              "isReverseScale": false
+            },
+            {
+              "name": "ScopeOfInsuranceCover",
+              "isReverseScale": false
+            },
+            {
+              "name": "DebtInBusiness",
+              "isReverseScale": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Transaction Characteristics ",
+      "subFactors": [
+        {
+          "name": "Term of Loan vs. Purpose",
+          "signals": [
+            {
+              "name": "TermVsPurpose",
+              "isReverseScale": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "policy": {
+    "loanRange": {
+      "min": 1000,
+      "max": 5000000
+    },
+    "loanTermInMonths": {
+      "min": 1,
+      "max": 60
+    },
+    "loanPurpose": [
+      "Cashflow",
+      "Stock Purchase",
+      "VAT",
+      "Tax",
+      "Professional Indemnity Insurance",
+      "Practising Certificates",
+      "Memberships",
+      "Subscriptions",
+      "Computer Equipment",
+      "Aged Debt",
+      "Refurbishment",
+      "Acquisition",
+      "Buy In/Outs",
+      "Disbursements",
+      "Marketing",
+      "Case Funding",
+      "Software",
+      "Recruitment",
+      "Working Capital (Other)",
+      "Business Growth (Other)"
+    ],
+    "isSecured": true
+  },
+  "interestRateConfig": {
+    "baseRate": 10,
+    "termBasedMarkup": [
       {
-        "name": "Financial Strength",
-        "subFactors": [
+        "Purpose": "Cashflow",
+        "MarkupConfig": [
           {
-            "name": "Market Conditions ",
-            "signals": [
-              {
-                "name": "SectorAppetite",
-                "weight": 50,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 1,
-                      "max": 3
-                    },
-                    "good": {
-                      "min": 3,
-                      "max": 4.1
-                    },
-                    "satisfactory": {
-                      "min": 4.1,
-                      "max": 5.9
-                    },
-                    "weak": {
-                      "min": 5.9,
-                      "max": 9
-                    }
-                  }
-                ],
-                "overallWeight": 6
-              },
-              {
-                "name": "BusinessVsSector_GPRatio",
-                "weight": 13,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 10,
-                      "max": 10000
-                    },
-                    "good": {
-                      "min": 5,
-                      "max": 10
-                    },
-                    "satisfactory": {
-                      "min": -5,
-                      "max": 5
-                    },
-                    "weak": {
-                      "min": -10000,
-                      "max": -5
-                    }
-                  }
-                ],
-                "overallWeight": 1.56
-              },
-              {
-                "name": "BusinessVsSector_NPRatio",
-                "weight": 13,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 10,
-                      "max": 10000
-                    },
-                    "good": {
-                      "min": 5,
-                      "max": 10
-                    },
-                    "satisfactory": {
-                      "min": -5,
-                      "max": 5
-                    },
-                    "weak": {
-                      "min": -10000,
-                      "max": -5
-                    }
-                  }
-                ],
-                "overallWeight": 1.56
-              },
-              {
-                "name": "BusinessVsSector_Leverage",
-                "weight": 12,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": -10000,
-                      "max": 75
-                    },
-                    "good": {
-                      "min": 75,
-                      "max": 90
-                    },
-                    "satisfactory": {
-                      "min": 90,
-                      "max": 110
-                    },
-                    "weak": {
-                      "min": 110,
-                      "max": 10000
-                    }
-                  }
-                ],
-                "overallWeight": 1.44
-              },
-              {
-                "name": "BusinessVsSector_Gearing",
-                "weight": 12,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": -10000,
-                      "max": 75
-                    },
-                    "good": {
-                      "min": 75,
-                      "max": 90
-                    },
-                    "satisfactory": {
-                      "min": 90,
-                      "max": 110
-                    },
-                    "weak": {
-                      "min": 110,
-                      "max": 10000
-                    }
-                  }
-                ],
-                "overallWeight": 1.44
-              }
-            ],
-            "weight": 20
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
           },
           {
-            "name": "Debt Service",
-            "signals": [
-              {
-                "name": "EBIDTAvsDSC",
-                "weight": 100,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 200,
-                      "max": 100000
-                    },
-                    "good": {
-                      "min": 160,
-                      "max": 200
-                    },
-                    "satisfactory": {
-                      "min": 130,
-                      "max": 160
-                    },
-                    "weak": {
-                      "min": -10000,
-                      "max": 130
-                    }
-                  }
-                ],
-                "overallWeight": 12
-              }
-            ],
-            "weight": 20
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
           },
           {
-            "name": "Financial Stability",
-            "signals": [
-              {
-                "name": "TurnoverChangeYoY",
-                "weight": 15,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 20,
-                      "max": 100000
-                    },
-                    "good": {
-                      "min": 10,
-                      "max": 20
-                    },
-                    "satisfactory": {
-                      "min": -10,
-                      "max": 10
-                    },
-                    "weak": {
-                      "min": -100000,
-                      "max": -10
-                    }
-                  }
-                ],
-                "overallWeight": 2.7
-              },
-              {
-                "name": "EBIDTA_Ratio",
-                "weight": 20,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 20,
-                      "max": 1000000
-                    },
-                    "good": {
-                      "min": 10,
-                      "max": 20
-                    },
-                    "satisfactory": {
-                      "min": 5,
-                      "max": 10
-                    },
-                    "weak": {
-                      "min": -100000,
-                      "max": 5
-                    }
-                  }
-                ],
-                "overallWeight": 3.5999999999999996
-              },
-              {
-                "name": "StressedEBIDTAvsDSC",
-                "weight": 50,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 150,
-                      "max": 100000
-                    },
-                    "good": {
-                      "min": 100,
-                      "max": 150
-                    },
-                    "satisfactory": {
-                      "min": 75,
-                      "max": 100
-                    },
-                    "weak": {
-                      "min": -100000,
-                      "max": 75
-                    }
-                  }
-                ],
-                "overallWeight": 9
-              },
-              {
-                "name": "RetainedProfits",
-                "weight": 15,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 150,
-                      "max": 100000
-                    },
-                    "good": {
-                      "min": 100,
-                      "max": 150
-                    },
-                    "satisfactory": {
-                      "min": 50,
-                      "max": 100
-                    },
-                    "weak": {
-                      "min": -100000,
-                      "max": 50
-                    }
-                  }
-                ],
-                "overallWeight": 2.7
-              }
-            ],
-            "weight": 30
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
           },
           {
-            "name": "Gearing ratio",
-            "signals": [
-              {
-                "name": "GearingRatio",
-                "weight": 100,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": -10000,
-                      "max": 75
-                    },
-                    "good": {
-                      "min": 75,
-                      "max": 150
-                    },
-                    "satisfactory": {
-                      "min": 150,
-                      "max": 250
-                    },
-                    "weak": {
-                      "min": 250,
-                      "max": 100000
-                    }
-                  }
-                ],
-                "overallWeight": 9
-              }
-            ],
-            "weight": 15
-          },
-          {
-            "name": "Leverage",
-            "signals": [
-              {
-                "name": "Leverage",
-                "weight": 100,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": -100000,
-                      "max": 75
-                    },
-                    "good": {
-                      "min": 75,
-                      "max": 150
-                    },
-                    "satisfactory": {
-                      "min": 150,
-                      "max": 250
-                    },
-                    "weak": {
-                      "min": 250,
-                      "max": 100000
-                    }
-                  }
-                ],
-                "overallWeight": 9
-              }
-            ],
-            "weight": 15
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
           }
-        ],
-        "weight": 60
+        ]
       },
       {
-        "name": "Strength of Business Owner/Guarantor & Security Package",
-        "subFactors": [
+        "Purpose": "Stock Purchase",
+        "MarkupConfig": [
           {
-            "name": "Financial Capacity & Willingness to Support",
-            "signals": [
-              {
-                "name": "DebtInBusiness",
-                "weight": 20,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 150,
-                      "max": 100000
-                    },
-                    "good": {
-                      "min": 100,
-                      "max": 150
-                    },
-                    "satisfactory": {
-                      "min": 75,
-                      "max": 100
-                    },
-                    "weak": {
-                      "min": -100000,
-                      "max": 75
-                    }
-                  }
-                ],
-                "overallWeight": 6
-              },
-              {
-                "name": "SponsorLiabilitiesVsFacilityApplied",
-                "weight": 25,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 200,
-                      "max": 100000
-                    },
-                    "good": {
-                      "min": 150,
-                      "max": 200
-                    },
-                    "satisfactory": {
-                      "min": 100,
-                      "max": 150
-                    },
-                    "weak": {
-                      "min": -100000,
-                      "max": 100
-                    }
-                  }
-                ],
-                "overallWeight": 7.5
-              },
-              {
-                "name": "SponsorNetWorthVsFacilityApplied",
-                "weight": 25,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 200,
-                      "max": 100000
-                    },
-                    "good": {
-                      "min": 150,
-                      "max": 200
-                    },
-                    "satisfactory": {
-                      "min": 100,
-                      "max": 150
-                    },
-                    "weak": {
-                      "min": -100000,
-                      "max": 100
-                    }
-                  }
-                ],
-                "overallWeight": 7.5
-              },
-              {
-                "name": "PromotersCreditScore",
-                "weight": 20,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 800,
-                      "max": 850
-                    },
-                    "good": {
-                      "min": 700,
-                      "max": 800
-                    },
-                    "satisfactory": {
-                      "min": 600,
-                      "max": 700
-                    },
-                    "weak": {
-                      "min": 300,
-                      "max": 600
-                    }
-                  }
-                ],
-                "overallWeight": 6
-              },
-              {
-                "name": "BusinessInterruptionInsurance",
-                "weight": 10,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 12,
-                      "max": 15
-                    },
-                    "good": {
-                      "min": 6,
-                      "max": 12
-                    },
-                    "satisfactory": {
-                      "min": 3,
-                      "max": 6
-                    },
-                    "weak": {
-                      "min": 0,
-                      "max": 3
-                    }
-                  }
-                ],
-                "overallWeight": 3
-              }
-            ],
-            "weight": 100
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
           }
-        ],
-        "weight": 30
+        ]
       },
       {
-        "name": "Transaction Characteristics ",
-        "subFactors": [
+        "Purpose": "VAT",
+        "MarkupConfig": [
           {
-            "name": "Term of Loan vs. Purpose",
-            "signals": [
-              {
-                "name": "TermVsPurpose",
-                "weight": 100,
-                "criteria": [
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 6
-                    },
-                    "good": {
-                      "min": 6,
-                      "max": 12
-                    },
-                    "satisfactory": {
-                      "min": 12,
-                      "max": 18
-                    },
-                    "weak": {
-                      "min": 18,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Cashflow\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 6
-                    },
-                    "good": {
-                      "min": 6,
-                      "max": 12
-                    },
-                    "satisfactory": {
-                      "min": 12,
-                      "max": 15
-                    },
-                    "weak": {
-                      "min": 15,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Stock Purchase\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 1
-                    },
-                    "good": {
-                      "min": 1,
-                      "max": 2
-                    },
-                    "satisfactory": {
-                      "min": 2,
-                      "max": 3
-                    },
-                    "weak": {
-                      "min": 3,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"VAT\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 2
-                    },
-                    "good": {
-                      "min": 2,
-                      "max": 4
-                    },
-                    "satisfactory": {
-                      "min": 4,
-                      "max": 6
-                    },
-                    "weak": {
-                      "min": 6,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Tax\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 6
-                    },
-                    "good": {
-                      "min": 6,
-                      "max": 9
-                    },
-                    "satisfactory": {
-                      "min": 9,
-                      "max": 12
-                    },
-                    "weak": {
-                      "min": 12,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Professional Indemnity Insurance\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 6
-                    },
-                    "good": {
-                      "min": 6,
-                      "max": 9
-                    },
-                    "satisfactory": {
-                      "min": 9,
-                      "max": 12
-                    },
-                    "weak": {
-                      "min": 12,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Practicing Certificates\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 6
-                    },
-                    "good": {
-                      "min": 6,
-                      "max": 9
-                    },
-                    "satisfactory": {
-                      "min": 9,
-                      "max": 12
-                    },
-                    "weak": {
-                      "min": 12,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Memberships\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 6
-                    },
-                    "good": {
-                      "min": 6,
-                      "max": 9
-                    },
-                    "satisfactory": {
-                      "min": 9,
-                      "max": 12
-                    },
-                    "weak": {
-                      "min": 12,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Subscriptions\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 9
-                    },
-                    "good": {
-                      "min": 9,
-                      "max": 18
-                    },
-                    "satisfactory": {
-                      "min": 18,
-                      "max": 30
-                    },
-                    "weak": {
-                      "min": 30,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Computer Equipment\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 6
-                    },
-                    "good": {
-                      "min": 6,
-                      "max": 12
-                    },
-                    "satisfactory": {
-                      "min": 12,
-                      "max": 18
-                    },
-                    "weak": {
-                      "min": 18,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Aged Debt\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 12
-                    },
-                    "good": {
-                      "min": 12,
-                      "max": 24
-                    },
-                    "satisfactory": {
-                      "min": 24,
-                      "max": 36
-                    },
-                    "weak": {
-                      "min": 36,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Refurbishment\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 18
-                    },
-                    "good": {
-                      "min": 18,
-                      "max": 36
-                    },
-                    "satisfactory": {
-                      "min": 36,
-                      "max": 60
-                    },
-                    "weak": {
-                      "min": 60,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Acquisition\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 18
-                    },
-                    "good": {
-                      "min": 18,
-                      "max": 36
-                    },
-                    "satisfactory": {
-                      "min": 36,
-                      "max": 60
-                    },
-                    "weak": {
-                      "min": 60,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Buy In/Outs\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 6
-                    },
-                    "good": {
-                      "min": 6,
-                      "max": 12
-                    },
-                    "satisfactory": {
-                      "min": 12,
-                      "max": 18
-                    },
-                    "weak": {
-                      "min": 18,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Disbursements\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 3
-                    },
-                    "good": {
-                      "min": 3,
-                      "max": 6
-                    },
-                    "satisfactory": {
-                      "min": 6,
-                      "max": 9
-                    },
-                    "weak": {
-                      "min": 9,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Marketing\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 3
-                    },
-                    "good": {
-                      "min": 3,
-                      "max": 6
-                    },
-                    "satisfactory": {
-                      "min": 6,
-                      "max": 9
-                    },
-                    "weak": {
-                      "min": 9,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Case Funding\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 4
-                    },
-                    "good": {
-                      "min": 4,
-                      "max": 9
-                    },
-                    "satisfactory": {
-                      "min": 9,
-                      "max": 15
-                    },
-                    "weak": {
-                      "min": 15,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Software\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 3
-                    },
-                    "good": {
-                      "min": 3,
-                      "max": 6
-                    },
-                    "satisfactory": {
-                      "min": 6,
-                      "max": 9
-                    },
-                    "weak": {
-                      "min": 9,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Recruitment\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 6
-                    },
-                    "good": {
-                      "min": 6,
-                      "max": 9
-                    },
-                    "satisfactory": {
-                      "min": 9,
-                      "max": 12
-                    },
-                    "weak": {
-                      "min": 12,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Working Capital (Other)\""
-                  },
-                  {
-                    "strong": {
-                      "min": 0,
-                      "max": 12
-                    },
-                    "good": {
-                      "min": 12,
-                      "max": 24
-                    },
-                    "satisfactory": {
-                      "min": 24,
-                      "max": 36
-                    },
-                    "weak": {
-                      "min": 36,
-                      "max": 1000
-                    },
-                    "condition": "purpose == \"Business Growth (Other)\""
-                  }
-                ],
-                "overallWeight": 10
-              }
-            ],
-            "weight": 100
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
           }
-        ],
-        "weight": 10
+        ]
+      },
+      {
+        "Purpose": "Tax",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Professional Indemnity Insurance",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Practising Certificates",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Memberships",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Subscriptions",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Computer Equipment",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Aged Debt",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Refurbishment",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Acquisition",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Buy In/Outs",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Disbursements",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Marketing",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Case Funding",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Software",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Recruitment",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Working Capital (Other)",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
+      },
+      {
+        "Purpose": "Business Growth (Other)",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 6
+            },
+            "markup": 25
+          },
+          {
+            "range": {
+              "min": 7,
+              "max": 12
+            },
+            "markup": 45
+          },
+          {
+            "range": {
+              "min": 13,
+              "max": 18
+            },
+            "markup": 65
+          },
+          {
+            "range": {
+              "min": 19,
+              "max": 1000
+            },
+            "markup": 85
+          }
+        ]
       }
     ],
-    "info": {
-      "createdBy": "cu",
-      "createdAt": "2023-01-30 05:41:08",
-      "approvalStatus": "draft",
-      "isActive": false,
-      "lastRun": {
-        "source": "null",
-        "runAt": "0"
+    "amountBasedMarkup": [
+      {
+        "Purpose": "Cashflow",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
       },
-      "runCount": 0
-    },
-    "__v": 0
+      {
+        "Purpose": "Stock Purchase",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "VAT",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Tax",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Professional Indemnity Insurance",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Practising Certificates",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Memberships",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Subscriptions",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Computer Equipment",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Aged Debt",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Refurbishment",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Acquisition",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Buy In/Outs",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Disbursements",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Marketing",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Case Funding",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Software",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Recruitment",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Working Capital (Other)",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      },
+      {
+        "Purpose": "Business Growth (Other)",
+        "MarkupConfig": [
+          {
+            "range": {
+              "min": 0,
+              "max": 80000
+            },
+            "markup": 15
+          },
+          {
+            "range": {
+              "min": 80001,
+              "max": 150000
+            },
+            "markup": 35
+          },
+          {
+            "range": {
+              "min": 150001,
+              "max": 200000
+            },
+            "markup": 55
+          },
+          {
+            "range": {
+              "min": 200001,
+              "max": 2500000000000
+            },
+            "markup": 75
+          }
+        ]
+      }
+    ]
   }
+}
