@@ -3,7 +3,7 @@ import {
   Grid,
   CardContent,
   Card,
-  TextField,TextFieldProps,
+  TextField, TextFieldProps,
   Typography, CardHeader, Button, LinearProgress,
   MenuItem, Switch, Select, FormControl, FormHelperText
 } from "@mui/material";
@@ -17,6 +17,9 @@ import { randomNumberBetween } from './CreateModel';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { NumberFormatCustom } from './editors/NumberFormatCustom';
+import measuresJson from "./measures.json";
+import measuresJsonRefer from "./measures_refer.json";
+import measuresJsonFail from "./measures_fail.json";
 
 const CustomStyledSwitch = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -229,13 +232,45 @@ function RunModel() {
     return {
       loanDetails: {
         product: product.name,
-        amount: randomNumberBetween(loanRange),
-        secured: isSecured,
-        term: randomNumberBetween(loanTermInMonths),
-        purpose: lodash.shuffle(loanPurpose)[0],
+        amount: 80000,
+        secured: false,
+        term: 12,
+        purpose: 'Cashflow',
         customerId: '0012z00000FPCeRAAX'
       },
-      manualInputs: (manualInputNames || []).map(name => ({ name, value: randomNumberBetween({ min: 10, max: 100 }), switchstate: true }))
+      manualInputs: measuresJsonRefer
+    }
+  }
+
+  function getPassInput(): React.SetStateAction<IRunModel> {
+    const product = products![0];
+    const { loanPurpose, loanRange, loanTermInMonths, isSecured } = product.policy;
+    return {
+      loanDetails: {
+        product: product.name,
+        amount: 100000,
+        secured: false,
+        term: 12,
+        purpose: 'Cashflow',
+        customerId: '0012z00000FPCeRAAX'
+      },
+      manualInputs: measuresJson
+    }
+  }
+
+  function getFailInput(): React.SetStateAction<IRunModel> {
+    const product = products![0];
+    const { loanPurpose, loanRange, loanTermInMonths, isSecured } = product.policy;
+    return {
+      loanDetails: {
+        product: product.name,
+        amount: 800000,
+        secured: false,
+        term: 18,
+        purpose: 'Cashflow',
+        customerId: '0012z00000FPCeRAAX'
+      },
+      manualInputs: measuresJsonFail
     }
   }
   return (
@@ -295,7 +330,9 @@ function RunModel() {
                   Submit
                 </Button>
 
-                {/* <Button onClick={() => formik.setValues(getRandomInput())}>Populate</Button> */}
+                <Button onClick={() => formik.setValues(getPassInput())}>Pass Journey</Button>
+                <Button onClick={() => formik.setValues(getFailInput())}>Fail Journey</Button>
+                <Button onClick={() => formik.setValues(getRandomInput())}>Refer Journey</Button>
               </div>} />
 
             {validateOnChange && isSubmitting && <LinearProgress />}
@@ -307,14 +344,14 @@ function RunModel() {
 
                     <SelectDropdown fieldname={'Product'} path={'loanDetails.product'} options={products?.map((i) => i.name)!} />
 
-                    <CustomTextField fieldname={'Loan Amount(£)'} path={'loanDetails.amount'} type={'number'} 
-                    textFieldProps={{
-                      variant: 'standard',
-                      InputProps: {
-                        inputComponent: NumberFormatCustom as any,
-                      },
-                      type: "unset"
-                    }} />
+                    <CustomTextField fieldname={'Loan Amount(£)'} path={'loanDetails.amount'} type={'number'}
+                      textFieldProps={{
+                        variant: 'standard',
+                        InputProps: {
+                          inputComponent: NumberFormatCustom as any,
+                        },
+                        type: "unset"
+                      }} />
 
                     <CustomSwitch fieldname={'Is Secured?'} path={'loanDetails.secured'} />
 
