@@ -224,7 +224,7 @@ function RunSummariesGrid() {
               setRunModel(params.row)
             }
             else if (params.row.status == 'success' && params.colDef.field == 'status') {
-              navigate(`/models/modelresult/${params.row._id}`)
+              navigate(`/modelruns/${params.row._id}`)
             }
           }}
         />

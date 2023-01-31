@@ -63,7 +63,6 @@ const GoogleMaps = async(() => import("./pages/maps/GoogleMaps"));
 const VectorMaps = async(() => import("./pages/maps/VectorMaps"));
 
 const routes: RouteObject[] = [
-
   {
     path: "/",
     element: <PresentationLayout />,
@@ -125,7 +124,6 @@ const routes: RouteObject[] = [
         path: "/modelruns/:id",
         element: <ModelEvaluation />,
       },
-
     ],
   },
 
