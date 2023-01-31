@@ -6,7 +6,7 @@ import {
     useGetOneModelQuery,
     useModifyModelMutation,
 } from '../../redux/de';
-import { Button as MuiButton, ButtonProps as MuiButtonProps, Card, CardContent, CardHeader } from "@mui/material";
+import { Button as MuiButton, ButtonProps as MuiButtonProps, Card, CardContent, CardHeader, Box, Modal, Typography } from "@mui/material";
 import { Form, Formik } from "formik";
 import { PolicyEditor } from './components/Policy';
 import { NodeEditor } from './editors/NodeEditor';
@@ -17,12 +17,14 @@ import { TotalWeight } from "./editors/WeightEditor";
 import { useNavigate, useParams } from "react-router-dom";
 import * as Faker from 'faker';
 import { ModelDataGrid } from "./ModelDataGrid";
+import workinCapitalLoanJson from "./working-capital-loan.json";
 import { toast } from 'react-toastify';
 import './styles/CreateModel.css';
 
 interface ButtonProps extends MuiButtonProps {
     show?: boolean
 }
+
 const Button = ({ show = true, ...props }: ButtonProps) => show ? <MuiButton {...props} /> : <></>;
 
 function getEmptyModel(p: IProduct): IModelInput {
@@ -280,7 +282,7 @@ const CreateModel = () => {
                                         const errors = await formik.validateForm();
                                         if (lodash.isEmpty(errors)) {
                                             setMode("preview");
-                                        }
+                                        } 
                                     }}
                                 >
                                     Preview
@@ -310,7 +312,8 @@ const CreateModel = () => {
                                         </Button>
                                     </>
                                 )}
-                                <Button show={!model} onClick={() => formik.setValues(getRandomModel(product || products![0]))}>Populate</Button>
+                                
+                                <Button show={!model} onClick={() => formik.setValues(workinCapitalLoanJson)}>Populate</Button>
                             </div>}
                         />
                         <div style={mode !== "edit" ? { pointerEvents: "none" } : undefined}>
@@ -323,7 +326,6 @@ const CreateModel = () => {
                                     {formik.values.factors?.map((f, i) => (
                                         <NodeEditor key={i} node={f} path={`factors[${i}]`} level={1} reverseSignalNames={reverseSignalNames} />
                                     ))}
-
                                     {product && <TotalWeight level={1} nodes={formik.values.factors} />}
                                 </CardContent>
                             </Card>
