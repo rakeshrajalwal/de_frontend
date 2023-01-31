@@ -154,8 +154,8 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                 className="model-evaluation-header"
                 style={{
                     flex: 4,
-                    backgroundColor: modelRun?.loanStatus == 'pass' ? '#078F08' :
-                        modelRun?.loanStatus == 'refer' ? '#FEC401' : '#FB0102',
+                    backgroundColor: modelRun?.loanStatus == 'Pass' ? '#078F08' :
+                        modelRun?.loanStatus == 'Refer' ? '#FEC401' : '#FB0102',
                     borderRadius: '2ex',
                     color: '#ffffff',
                 }}>
