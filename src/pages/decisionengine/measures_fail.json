@@ -1,0 +1,102 @@
+[
+    {
+        "name": "amount",
+        "value": 800000
+    },
+    {
+        "name": "term",
+        "value": 18
+    },
+    {
+        "name": "SponsorNetWorth",
+        "value": 30000
+    },
+    {
+        "name": "SponsorPGValue",
+        "value": 50000
+    },
+    {
+        "name": "InsuranceCover",
+        "value": 3000
+    },
+    {
+        "name": "Dividends",
+        "value": 40
+    },
+    {
+        "name": "EBITDA",
+        "value": 5260
+    },
+    {
+        "name": "TotalDebtService",
+        "value": 90000
+    },
+    {
+        "name": "Turnover",
+        "value": 1500000
+    },
+    {
+        "name": "TurnoverLastYear",
+        "value": 1000000
+    },
+    {
+        "name": "ProfitAndLossAccount_Prev",
+        "value": 12000
+    },
+    {
+        "name": "SectorGrossProfit",
+        "value": 250000
+    },
+    {
+        "name": "SectorTurnover",
+        "value": 1500000
+    },
+    {
+        "name": "SectorNetOperatingProfit",
+        "value": 120000
+    },
+    {
+        "name": "SectorLeverage",
+        "value": 150
+    },
+    {
+        "name": "SectorGearing",
+        "value": 50
+    },
+    {
+        "name": "OverallRiskScore",
+        "value": 6.04
+    },
+    {
+        "name": "GrossProfit",
+        "value": 1100000
+    },
+    {
+        "name": "ProfitAndLossAccount",
+        "value": 28000
+    },
+    {
+        "name": "NetOperatingProfit",
+        "value": 480000
+    },
+    {
+        "name": "TotalShareholdersFunds",
+        "value": 2600000
+    },
+    {
+        "name": "TotalDebt",
+        "value": 920000
+    },
+    {
+        "name": "TotalTangibleNetWorth",
+        "value": 2600000
+    },
+    {
+        "name": "AppliedLoanDebtService",
+        "value": 13740.686046933748
+    },
+    {
+        "name": "PromotersCreditScore",
+        "value": 450
+    }
+]
