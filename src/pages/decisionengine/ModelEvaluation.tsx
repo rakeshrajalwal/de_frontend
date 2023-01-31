@@ -82,7 +82,7 @@ const columns: GridColDef[] = [
         flex: 10,
         headerAlign: "right",
         align: "right",
-        valueFormatter: ({ value }) => [parseFloat(value.toString()).toFixed(2)],
+        valueFormatter: ({ value }) => [value ? parseFloat(value.toString()).toFixed(2) : ''],
     },
     {
         field: "signalValue",
