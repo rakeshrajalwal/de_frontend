@@ -135,15 +135,15 @@ const columns: GridColDef[] = [
         return (
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "left" }}>
             <strong style={{ paddingRight: '1ex', }}>{parseFloat(params.row.score.toString()).toFixed(2)}</strong>
-            <Chip label={status_params.text} color="primary" variant="outlined" size="small" 
-            style={{ borderRadius: '2.2ex', color: status_params.color, borderColor: status_params.color }}></Chip>
+            <Chip label={status_params.text} color="primary" variant="outlined" size="small"
+              style={{ borderRadius: '2.2ex', color: status_params.color, borderColor: status_params.color }}></Chip>
           </div>
         )
       }
       else {
         return (
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center"}}>
-            <Chip label={params.row.status[0].toUpperCase() + params.row.status.slice(1)}  variant="filled" size="small"  color="error"
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
+            <Chip label={params.row.status[0].toUpperCase() + params.row.status.slice(1)} variant="filled" size="small" color="error"
             // style={{ backgroundColor: '#FF4433', color: '#fff'}}
             ></Chip>
             <Tooltip title={'missing measure values'} placement='right'>
@@ -311,16 +311,17 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
 
                       <CustomInfoField fieldname={'Model Run Id'} fieldvalue={formik.values._id!} />
 
-                      <CustomInfoField fieldname={'Product'} fieldvalue={formik.values.loanDetails?.product! || ''} />
+                      {/* <CustomInfoField fieldname={'Product'} fieldvalue={formik.values.loanDetails?.product! || ''} />
                       <CustomInfoField fieldname={'Amount'} fieldvalue={formik.values.loanDetails?.amount! || ''} currencyOrNot={true} />
                       <CustomInfoField fieldname={'Term(Months)'} fieldvalue={formik.values.loanDetails?.term! || ''} />
                       <CustomInfoField fieldname={'Purpose'} fieldvalue={formik.values.loanDetails?.purpose! || ''} />
                       <CustomInfoField fieldname={'Secured'} fieldvalue={formik.values.loanDetails?.secured! || false} />
-                      <CustomInfoField fieldname={'Customer Id'} fieldvalue={formik.values.loanDetails?.customerId! || ''} />
+                      <CustomInfoField fieldname={'Customer Id'} fieldvalue={formik.values.loanDetails?.customerId! || ''} /> */}
 
-                      {/* {Object.entries(formik.values.loanDetails || {}).map(([key, val], i) => (
-                        <CustomInfoField key={`${key}`} fieldname={`${key}`} fieldvalue={`${val}`} />
-                      ))} */}
+                      {Object.entries(formik.values.loanDetails || {}).map(([key, val], i) => (
+                        key == 'amount' ? <CustomInfoField fieldname={'Amount'} fieldvalue={formik.values.loanDetails?.amount! || ''} currencyOrNot={true} /> :
+                          key == 'term' ? <CustomInfoField fieldname={'Term(Months)'} fieldvalue={formik.values.loanDetails?.term! || ''} /> : <CustomInfoField key={`${key}`} fieldname={`${key}`} fieldvalue={`${val}`} />
+                      ))}
 
                     </>
                   </Grid>
@@ -359,7 +360,8 @@ const CustomInfoField = ({ fieldname, fieldvalue, currencyOrNot = false }: { fie
     <Grid item md={6} mt={3}>
       <ControlContainer>
         <Grid item md={4} >
-          <Typography color={'#fff'} > {fieldname} </Typography>
+          <Typography color={'#fff'} > {fieldname.charAt(0).toUpperCase() +
+            fieldname.slice(1).replace(/([a-z])([A-Z])/g, '$1 $2').replace('_', ' - ')} </Typography>
         </Grid>
         <Grid item md={1}>
           <Typography color={'#fff'}>:</Typography>
