@@ -77,16 +77,16 @@ const columns: GridColDef[] = [
     },
     {
         field: "numericValue",
-        headerName: "Numeric Value",
+        headerName: "Signal Value",
         description: "Value",
         flex: 10,
-        headerAlign: "center",
+        headerAlign: "right",
         align: "right",
         valueFormatter: ({ value }) => [parseFloat(value.toString()).toFixed(2)],
     },
     {
         field: "signalValue",
-        headerName: "Signal Value",
+        headerName: "Signal Strength",
         description: "signalValue",
         flex: 10,
         headerAlign: "center",
@@ -111,8 +111,17 @@ const columns: GridColDef[] = [
     },
     {
         field: "score",
-        headerName: "Score",
+        headerName: "Unweighted Score",
         description: "score",
+        flex: 10,
+        headerAlign: "center",
+        align: "center",
+        valueFormatter: ({ value }) => [parseFloat(value.toString()).toFixed(2)],
+    },
+    {
+        field: "weightedValue",
+        headerName: "Weighted Score",
+        description: "Weighted Score",
         flex: 10,
         headerAlign: "center",
         align: "center",
@@ -156,7 +165,7 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     //paddingTop: '2ex',
-                }}><Typography sx={{ fontSize: '2ex', fontWeight: 'bold',  }}>
+                }}><Typography sx={{ fontSize: '2ex', fontWeight: 'bold', }}>
                         Score
                     </Typography>
                     <InfoOutlinedIcon style={{ fontSize: 'medium' }} />
@@ -165,7 +174,7 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                     {parseFloat(modelRun?.score!.toString()).toFixed(2)}
                 </Typography>
                 <Typography sx={{ fontSize: '2ex', fontWeight: 'bold' }}>
-                    {modelRun?.loanStatus}
+                    {modelRun?.loanStatus?.charAt(0).toUpperCase()! + modelRun?.loanStatus?.slice(1)}
                 </Typography>
 
             </div>
@@ -175,7 +184,7 @@ function ModelEvaluationSummary({ modelRun }: { modelRun: IRunModel }) {
                 }}>
 
                 <Typography sx={summarySubHeadSx}>
-                    Company Id
+                    Customer Id
                 </Typography>
                 <Typography sx={summarySubBodySx}>
                     {modelRun?.loanDetails.customerId}
@@ -232,6 +241,7 @@ function ModelEvaluationTable({ modelRun }: { modelRun: IRunModel }) {
                     columns={columns}
                     getRowId={(row) => row.name}
                     rowsPerPageOptions={[]}
+                    sortModel={[{ field: 'numericValue', sort: 'desc' }]}
                     hideFooter
                     autoHeight
                 />
@@ -252,7 +262,7 @@ function ModelEvaluation() {
                     flexDirection: 'column',
                     gap: '3ex'
                 }}>
-                <CardHeader title={`Model Evaluation Details - ${modelRun?.model?.name}`} titleTypographyProps={{ variant: "h3" }} />
+                <CardHeader title={`Model Evaluation Details - #${modelRun?._id}`} titleTypographyProps={{ variant: "h3" }} />
                 <ModelEvaluationSummary modelRun={modelRun!} />
                 <ModelEvaluationTable modelRun={modelRun!} />
             </div>

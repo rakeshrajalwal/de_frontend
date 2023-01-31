@@ -135,15 +135,18 @@ const columns: GridColDef[] = [
         return (
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "left" }}>
             <strong style={{ paddingRight: '1ex', }}>{parseFloat(params.row.score.toString()).toFixed(2)}</strong>
-            <Chip label={status_params.text} color="primary" variant="outlined" size="small" style={{ borderRadius: '2.2ex', color: status_params.color, borderColor: status_params.color }}></Chip>
+            <Chip label={status_params.text} color="primary" variant="outlined" size="small"
+              style={{ borderRadius: '2.2ex', color: status_params.color, borderColor: status_params.color }}></Chip>
           </div>
         )
       }
       else {
         return (
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
-            <p>{params.row.status[0].toUpperCase() + params.row.status.slice(1)}</p>
-            <Tooltip title={params.row.failedOperations.error} placement='right'>
+            <Chip label={params.row.status[0].toUpperCase() + params.row.status.slice(1)} variant="filled" size="small" color="error"
+            // style={{ backgroundColor: '#FF4433', color: '#fff'}}
+            ></Chip>
+            <Tooltip title={'missing measure values'} placement='right'>
               <IconButton aria-label="Info" size="small">
                 <InfoOutlinedIcon />
               </IconButton>
@@ -160,15 +163,15 @@ const columns: GridColDef[] = [
     flex: 7,
     align: 'center',
     renderCell: (params) => {
-      const { Icon } = Icons[params.row.source == "DE" ? 'User' : 'Monitor' as keyof typeof Icons];
+      const { Icon } = Icons[params.row.runDetails && params.row.runDetails.source == "DE" ? 'User' : 'Monitor' as keyof typeof Icons];
       return (<div>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
-          <Typography mt={2} style={{ paddingRight: '1.2ex' }} >{params.row.runBy}</Typography>
-          <Tooltip title={params.row.source} placement='right'>
+          <Typography mt={2} style={{ paddingRight: '1.2ex' }} >{params.row.runDetails.runBy}</Typography>
+          <Tooltip title={params.row.runDetails.source} placement='right'>
             <Icon style={{ fontSize: '2.7ex' }} />
           </Tooltip>
         </div>
-        <div style={{ fontSize: '1.4ex' }}>{params.row.runAt}</div>
+        <div style={{ fontSize: '1.4ex' }}>{params.row.runDetails.modelrunAt}</div>
       </div>)
     },
   },
@@ -205,7 +208,7 @@ function RunSummariesGrid() {
           disableColumnSelector
           disableDensitySelector
           hideFooterSelectedRowCount
-          getRowClassName={(params) => params.row.status == 'failed' ? 'failed-runs' : ''}
+          //getRowClassName={(params) => params.row.status == 'failed' ? 'failed-runs' : ''}
           components={{ Toolbar: GridToolbar }}
           componentsProps={{
             toolbar: {
@@ -308,8 +311,16 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
 
                       <CustomInfoField fieldname={'Model Run Id'} fieldvalue={formik.values._id!} />
 
+                      {/* <CustomInfoField fieldname={'Product'} fieldvalue={formik.values.loanDetails?.product! || ''} />
+                      <CustomInfoField fieldname={'Amount'} fieldvalue={formik.values.loanDetails?.amount! || ''} currencyOrNot={true} />
+                      <CustomInfoField fieldname={'Term(Months)'} fieldvalue={formik.values.loanDetails?.term! || ''} />
+                      <CustomInfoField fieldname={'Purpose'} fieldvalue={formik.values.loanDetails?.purpose! || ''} />
+                      <CustomInfoField fieldname={'Secured'} fieldvalue={formik.values.loanDetails?.secured! || false} />
+                      <CustomInfoField fieldname={'Customer Id'} fieldvalue={formik.values.loanDetails?.customerId! || ''} /> */}
+
                       {Object.entries(formik.values.loanDetails || {}).map(([key, val], i) => (
-                        <CustomInfoField key={`${key}`} fieldname={`${key}`} fieldvalue={`${val}`} />
+                        key == 'amount' ? <CustomInfoField fieldname={'Amount'} fieldvalue={formik.values.loanDetails?.amount! || ''} currencyOrNot={true} /> :
+                          key == 'term' ? <CustomInfoField fieldname={'Term(Months)'} fieldvalue={formik.values.loanDetails?.term! || ''} /> : <CustomInfoField key={`${key}`} fieldname={`${key}`} fieldvalue={`${val}`} />
                       ))}
 
                     </>
@@ -343,26 +354,26 @@ const ReRunPopup = ({ runModel, disabled, setValue }: { runModel?: IRunModel, di
   )
 }
 
-const CustomInfoField = ({ fieldname, fieldvalue }: { fieldname: string, fieldvalue: string }) => {
+const CustomInfoField = ({ fieldname, fieldvalue, currencyOrNot = false }: { fieldname: string, fieldvalue: string | number | boolean, currencyOrNot?: boolean }) => {
 
   return (
     <Grid item md={6} mt={3}>
       <ControlContainer>
         <Grid item md={4} >
-          <Typography color={'#fff'} > {
-            fieldname.charAt(0).toUpperCase() +
+          <Typography color={'#fff'} > {fieldname.charAt(0).toUpperCase() +
             fieldname.slice(1).replace(/([a-z])([A-Z])/g, '$1 $2').replace('_', ' - ')} </Typography>
         </Grid>
         <Grid item md={1}>
           <Typography color={'#fff'}>:</Typography>
         </Grid>
         <Grid item md={6} >
-          <Typography color={'#fff'}> {fieldvalue} </Typography>
+          {currencyOrNot ? <Typography color={'#fff'}> {"£" + fieldvalue.toLocaleString()} </Typography> :
+            <Typography color={'#fff'}> {fieldvalue}</Typography>}
+          {typeof fieldvalue == 'boolean' && <Typography color={'#fff'}> {fieldvalue ? 'Yes' : 'No'} </Typography>}
         </Grid>
       </ControlContainer >
     </Grid >
   )
-
 }
 
 const CustomInputField = ({ fieldname, description, path }: { fieldname: string, description?: string, path: string }) => {

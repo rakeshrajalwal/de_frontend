@@ -145,10 +145,10 @@ const TextInputFieldWithSwitch = ({ fieldname, path }: { fieldname: string, path
         <Grid item md={1}>
           <Typography>:</Typography>
         </Grid>
-        <Grid item md={2}>
+        {/* <Grid item md={2}>
           <CustomStyledSwitch {...switchField} />
-        </Grid>
-        {switchField.checked && <Grid item md={5} >
+        </Grid> */}
+        {<Grid item md={5} >
           <TextField
             fullWidth
             variant="standard"
@@ -295,7 +295,7 @@ function RunModel() {
                   Submit
                 </Button>
 
-                <Button onClick={() => formik.setValues(getRandomInput())}>Populate</Button>
+                {/* <Button onClick={() => formik.setValues(getRandomInput())}>Populate</Button> */}
               </div>} />
 
             {validateOnChange && isSubmitting && <LinearProgress />}
@@ -322,7 +322,7 @@ function RunModel() {
 
                     <SelectDropdown fieldname={'Purpose'} path={'loanDetails.purpose'} options={product?.policy.loanPurpose} />
 
-                    <CustomTextField fieldname={'Company Name'} path={'loanDetails.customerId'} type={'text'} />
+                    <CustomTextField fieldname={'Customer Id'} path={'loanDetails.customerId'} type={'text'} />
 
                   </Grid>
                 </div>
